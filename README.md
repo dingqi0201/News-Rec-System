@@ -34,6 +34,8 @@
 
 ![./docs/FF.PyAdmin.png](./docs/FF.PyAdmin.png)
 
+![./docs/update.v1.1.png](./docs/update.v1.1.png)
+
 ## 依赖
 
 1. Flask==1.1.1
