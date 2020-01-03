@@ -159,7 +159,7 @@ asn.asn_delete"></textarea>
                     let txt = '确定删除权限组（<b>' + d.role_name + '</b>）？<br>' +
                         '<b class="c-danger">该权限组的所有用户将无法登录!</b>';
                     layer.confirm(txt, {icon: 3, title: '请仔细核对'}, function () {
-                        $.mkAjax({role: d.role}, '{{ url_for('role.role_delete') }}', '删除权限组',
+                        $.mkAjax({role_id: d.role_id}, '{{ url_for('role.role_delete') }}', '删除权限组',
                             function (r) {
                                 BTN_SEARCH.trigger('click');
                             });

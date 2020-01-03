@@ -1,0 +1,7 @@
+登录成功: {{ current_user.realname }}
+
+登录时间: 2019-12-20 00:00:00
+
+------
+系统邮件, 请勿回复.
+FF.PyAdmin for you.

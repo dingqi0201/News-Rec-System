@@ -17,6 +17,8 @@ from flask.json import JSONEncoder as _JSONEncoder, jsonify
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 
 from .services.auth import oauth, login_manager
+from .services.mail import mail
+from .services.observers import observer
 from .models import db, DBModel
 from .forms import csrf
 from .views import init_blueprint, init_template_global
@@ -34,7 +36,7 @@ class JSONEncoder(_JSONEncoder):
         e.g.::
 
             # {job_number: 114, mobile: "13880000009", last_login: "2019-09-10 09:04:59", status: 1}
-            return jsonify(TBUser.query.get(114).hide_keys('realname', 'role'))
+            return jsonify(TBUser.query.get(114).hide_keys('realname', 'role_id'))
 
         :param o:
         :return:
@@ -131,7 +133,7 @@ def init_error(app):
     def global_exception_handler(e):
         # 500 错误时记录日志
         code = getattr(e, 'code', 500)
-        code == 500 and app.logger.error(e)
+        code in app.config.get('EXCEPTION_LOG_CODE', [500]) and app.logger.error(e)
 
         if isinstance(e, APIException):
             return e
@@ -176,6 +178,12 @@ def create_app(config_name=None, config=None):
 
     # 注册 flask_login
     login_manager.init_app(app)
+
+    # 注册邮件
+    mail.init_app(app)
+
+    # 注册自定义信号
+    observer.init_app(app)
 
     # CSRF 保护
     csrf.init_app(app)

@@ -47,3 +47,16 @@ SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://db_user_demo:db_pass_demo@127.0.0.1:3
                           '/db_ff_pyadmin?charset=utf8mb4'
 # 调试模式, 显示 SQL
 SQLALCHEMY_ECHO = True
+
+##########
+# Mail
+##########
+
+MAIL_OPEN = False
+MAIL_DEBUG = True
+MAIL_SERVER = 'smtp.qq.com'
+MAIL_PROT = 465
+MAIL_USE_TLS = True
+MAIL_USERNAME = 'yfufuok@qq.com'
+MAIL_PASSWORD = ''
+MAIL_DEFAULT_SENDER = 'yfufuok@qq.com'

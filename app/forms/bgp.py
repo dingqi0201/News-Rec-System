@@ -9,8 +9,8 @@ from wtforms import StringField
 from wtforms.validators import ValidationError
 
 from . import BaseForm, StripString, PositiveInteger
+from ..libs.ip import get_ipv4_address
 from ..models.bgp import TBBGP, TBASN
-from ..libs.helper import get_ipv4_address
 
 
 def validate_bgp_ip(form, field):

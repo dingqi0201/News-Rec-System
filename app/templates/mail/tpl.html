@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>登录提醒</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+</head>
+<body style="margin: 0; padding: 0; background-color: #f0f0f0; line-height: 1.5; font-weight: 700; color: #252525;
+font-family: 'Microsoft Yahei', 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', Tahoma, Arial; font-size: 14px;">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+       style="border-collapse: collapse; background-color: #f0f0f0;">
+    <tr>
+        <td style="text-align: center; padding-top: 25px; padding-bottom: 20px;">
+            <img border="0" src="{{ url_for('static', filename='images/xunyou-mail-dns.png', _external=True) }}"
+                 alt="示例图片,请自行修改" style="width: 400px;">
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
+                   style="width: 100%; min-width: 320px; max-width: 666px; border-collapse: collapse; margin:0 auto;
+                   background-color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                   border-radius: 4px; word-break: break-all;">
+                <tr>
+                    <td style="text-align: center; font-weight: 700; font-family: 'Agency FB'; color: #3498db;
+                               font-size: 36px; padding: 40px 30px 20px;">
+                        <p style="margin:0; padding: 0 0 25px;
+                        border-bottom: 1px solid #e0e0e0;">成功登录: FF_PyAdmin</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; padding: 10px 40px 5px; font-size: 28px;">
+                        （{{ current_user.realname }}）
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; padding: 10px 40px 5px; color: #666;">
+                        2019-12-20 00:00:00
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; padding: 5px 40px 10px; color: #666;">
+                        127.0.0.1
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="padding: 10px 40px">
+                            <pre style="border: 1px solid #f0f0f0; border-left-width: 4px;
+                        font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono',
+                        monospace; padding: 10px; font-size: 18px;">{{ data | default({'Action':'Demo'}) | tojson(indent=2) }}</pre>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="height: 47px; padding: 25px; text-align: center; background: #526069;">
+                            <a href="{{ url_for('web.web_index', _external=True) }}" target="_blank"
+                               style="padding: 10px 18px; display: inline-block; font-size: 18px;
+                               letter-spacing: 1px; text-decoration: none; border-radius: 4px;
+                               background-color: #e4eaec; color: #76838f; margin: 0 auto">进入管理</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; padding-top: 5px; padding-bottom: 25px; color: #666; font-style: italic;">
+            FF.PyAdmin for you. (系统邮件, 请勿回复)
+        </td>
+    </tr>
+</table>
+</body>
+</html>

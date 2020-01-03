@@ -39,3 +39,15 @@ SQLALCHEMY_ENGINE_OPTIONS = {
     'pool_recycle': 3599,
     'pool_size': 100
 }
+
+##########
+# Mail
+##########
+
+MAIL_OPEN = False
+MAIL_SERVER = 'smtp.qq.com'
+MAIL_PROT = 465
+MAIL_USE_TLS = True
+MAIL_USERNAME = 'yfufuok@qq.com'
+MAIL_PASSWORD = ''
+MAIL_DEFAULT_SENDER = 'yfufuok@qq.com'

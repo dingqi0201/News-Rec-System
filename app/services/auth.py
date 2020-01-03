@@ -9,14 +9,15 @@
 import pickle
 from functools import wraps
 
+from authlib.integrations.flask_client import OAuth
 from flask import abort, current_app, request, session
 from flask_login import LoginManager as _LoginManager, login_user, current_user
-from authlib.integrations.flask_client import OAuth
 
-from ..models.user import TBUser, TBRole
-from ..models.bgp import TBBGP
 from ..libs.exceptions import MsgException, APIFailure, APIForbidden, APIClosed
 from ..libs.helper import is_accept_json
+from ..models.bgp import TBBGP
+from ..models.user import TBUser, TBRole
+from ..services.events import event_user_logined
 from ..services.log import LogCharge
 
 
@@ -33,20 +34,15 @@ oauth = OAuth()
 oauth.register('OA')
 
 login_manager = LoginManager()
+login_manager.session_protection = 'strong'
 login_manager.login_view = 'web.web_login'
 login_manager.login_message = '请先登录'
 login_manager.login_message_category = 'info'
 
 
 @login_manager.user_loader
-def load_user(job_number):
-    """
-    Flask-login 获取用户信息
-    user = TBUser.query.get(int(job_number))
-
-    :param job_number:
-    :return:
-    """
+def load_user(user_id):
+    """Flask-login 获取用户信息"""
     try:
         user = pickle.loads(session['load_user'])
     except Exception:
@@ -64,7 +60,6 @@ def permission_required(fn):
     """
     校验登录状态
     检验权限
-    日志记录
 
     e.g.::
 
@@ -91,9 +86,6 @@ def permission_required(fn):
         bp = view_fn.split('.')[0]
         if view_fn in session['role_deny'] or bp not in session['role_allow'] and view_fn not in session['role_allow']:
             abort(403)
-
-        # 记录日志
-        LogCharge.to_db()
 
         return fn(*args, **kwargs)
 
@@ -196,17 +188,18 @@ def set_user_login(user_info):
     :param user_info: dict, 用户资料
     :return:
     """
-    # 更新 TBUser 表信息
-    user = TBUser().replace({
-        'job_number': user_info['job_number'],
-        'realname': user_info['realname']
-    }, skip=True)
+    # 根据工号获取用户资料, 工号不存在时新增用户(表字段默认值确定新用户状态)
+    user = TBUser().replace(
+        {'job_number': user_info['job_number'], 'realname': user_info['realname']},
+        filter_by={'job_number': user_info['job_number']},
+        skip=True
+    )
     if user:
-        if user.status != 1 or not user.role:
+        if user.status != 1 or user.role_id <= 0:
             raise MsgException('账号未激活', code=401)
 
         # 用户权限列表
-        role = TBRole.query.filter_by(role=user.role).first()
+        role = TBRole.query.get(user.role_id)
         if not role or not role.role_allow:
             raise MsgException('账号未授权', code=401)
 
@@ -217,8 +210,7 @@ def set_user_login(user_info):
         session['role_deny'] = role.role_deny.split(',')
         session.permanent = True
 
-        # 登录日志
-        LogCharge.to_db()
+        event_user_logined.send(log_status=1)
 
         return True
 

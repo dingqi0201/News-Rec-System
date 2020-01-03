@@ -11,12 +11,13 @@
 
 DEBUG = False
 TIME_ZONE = 'Asia/Shanghai'
+EXCEPTION_LOG_CODE = [500, 400]
 EXCEPTION_DESC = {
     401: '未授权的请求',
     403: '请求权限不足',
     404: '页面未找到',
     405: '错误的请求方法',
-    400: '错误的请求',
+    400: '错误请求, 请刷新重试',
     500: '系统服务异常',
     'dbapi': '数据库操作失败',
 }
@@ -38,11 +39,15 @@ LOG_BACKUP = 30
 
 # 可设置 APP_NAME 名称或 FLASK_CONFIG 环境变量值为: development / testing / production
 APP_NAME = 'FF_PyAdmin'
+# 系统管理员组(与数据库对应)
+SYS_ROLE_ID = 1
 # API 为 True 时所有请求都返回 JSON
 API = False
 # 保持键序
 JSON_SORT_KEYS = False
-# SESSION 和 CSRF 生命周期
-PERMANENT_SESSION_LIFETIME = WTF_CSRF_TIME_LIMIT = 1440
+# SESSION 生命周期
+PERMANENT_SESSION_LIFETIME = 1440
+# CSRF 生命周期
+WTF_CSRF_TIME_LIMIT = 86400
 # 运维接口白名单 IP
 LOCAL_GW = ''

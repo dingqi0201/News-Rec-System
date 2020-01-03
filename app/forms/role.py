@@ -16,11 +16,16 @@ class RoleSearchForm(BaseForm):
     role = StringField('权限标识', validators=[StripString(plain_text=True, allow_none=True)])
 
 
-class RoleForm(BaseForm):
+class RoleDeleteForm(BaseForm):
+    role_id = StringField('权限ID', validators=[PositiveInteger()])
+
+    def validate_role_id(self, field):
+        if not TBRole.query.get(field.data):
+            raise ValidationError('权限组异常, 无法删除')
+
+
+class RoleAddEditForm(BaseForm):
     role = StringField('权限标识', validators=[StripString(plain_text=True)])
-
-
-class RoleAddEditForm(RoleForm):
     role_id = StringField('权限ID', validators=[PositiveInteger(allow_0=True)])
     role_name = StringField('权限名称', validators=[StripString(plain_text=True)])
     role_allow = StringField('允许权限', validators=[StripString(plain_text=True)])

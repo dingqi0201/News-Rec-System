@@ -33,13 +33,15 @@
                             </button>
                         </div>
                     </div>
-                    <div class="layui-inline">
-                        <div>
-                            <a href="{{ url_for('role.role_index') }}" class="layui-btn btn-danger"><i
-                                    class="ficon icon-kehu"></i>权限组管理
-                            </a>
+                    {% if is_can('role.role_index') %}
+                        <div class="layui-inline">
+                            <div>
+                                <a href="{{ url_for('role.role_index') }}" class="layui-btn btn-danger"><i
+                                        class="ficon icon-kehu"></i>权限组管理
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -56,9 +58,9 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">权限：</label>
                 <div class="layui-input-block">
-                    <select id="f_role" name="role" title="" lay-filter="f_role" lay-verify="required"
+                    <select id="f_role_id" name="role_id" title="" lay-filter="f_role_id" lay-verify="required"
                             lay-vertype="tips" data-fjson="{{ url_for('role.role_data') }}"
-                            data-fvalue="" data-fx="role"></select>
+                            data-fvalue="" data-fx="role_id"></select>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -76,13 +78,14 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">手机：</label>
+                <label class="layui-form-label">邮箱：</label>
                 <div class="layui-input-block">
-                    <input name="mobile" type="text" class="layui-input" value=""
+                    <input name="email" type="text" class="layui-input" value=""
                            lay-verify="required" lay-vertype="tips">
                 </div>
             </div>
             <div class="center">
+                <input type="hidden" name="id" value="0">
                 <button class="layui-btn layui-btn-sm btn-primary" type="submit" lay-submit
                         lay-filter="btn_authorize_save">
                     <i class="ficon icon-gou"></i>保 存
@@ -125,10 +128,12 @@
                                     return s.substr(s.length - 4);
                                 }
                             },
-                            {field: 'realname', title: '用户名', sort: true},
-                            {field: 'role', title: '权限', sort: true},
+                            {field: 'realname', title: '姓名', sort: true},
+                            {field: 'email', title: '邮箱', sort: true},
+                            {field: 'role', title: '权限组标识', sort: true},
+                            {field: 'role_name', title: '权限组名称', sort: true},
                             {
-                                field: 'status', title: '状态', templet: function (d) {
+                                field: 'status', title: '状态', width: 80, templet: function (d) {
                                     return d.status === 1
                                         ? '<i class="ficon icon-roundcheck text-success"></i>'
                                         : '<i class="ficon icon-roundclose text-brown"></i>'
@@ -146,7 +151,7 @@
                 // 授权
                 authorize: function (d) {
                     form.val('frm_authorize', d);
-                    $('#f_role').data('fvalue', d.role);
+                    $('#f_role_id').data('fvalue', d.role_id);
                     layer.open({
                         title: '用户授权',
                         type: 1,
@@ -192,7 +197,7 @@
             FN.tb_main();
 
             // 下拉列表
-            $.fselect('f_role');
+            $.fselect('f_role_id');
 
             // 查询
             form.on('submit(btn_search)', function (data) {

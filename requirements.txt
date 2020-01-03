@@ -12,3 +12,5 @@ requests==2.22.0
 concurrent_log_handler==0.9.16
 xxtea==1.3.0
 behave==1.2.6
+Flask-Mail==0.9.1
+blinker==1.4

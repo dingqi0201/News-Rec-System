@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
 {% block title %}主页{% endblock %}
+{% block css %}
+    <style>
+        .layui-field-box {
+            line-height: 2;
+            padding: 10px 30px 20px;
+        }
+
+        .layui-field-box h2 {
+            font-size: 16px;
+            padding-top: 10px;
+        }
+
+        .layui-field-box ul li:before {
+            font-family: "ficon" !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-stroke-width: .2px;
+            -moz-osx-font-smoothing: grayscale;
+            content: "\e67b";
+            color: #83b944;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div class="panel">
         <div class="panel-title">
@@ -13,9 +37,42 @@
         <div class="panel-box pl25">
             <div id="grid_main" class="font-iosevka">
                 <fieldset class="layui-elem-field">
-                    <legend><i class="ficon icon-pc text-success f20"></i> 主页</legend>
+                    <legend><i class="ficon icon-pc text-success f20"></i> v1.1</legend>
                     <div class="layui-field-box">
-                        暂未开放主页功能
+                        <h2>2019.12.20 更新:</h2>
+                        <hr>
+                        <ul>
+                            <li>
+                                新增配置项: `MAIL_OPEN` 邮件发送开关, 与邮件配置项配合使用, 默认 `False`
+                            </li>
+                            <li>
+                                新增配置项: `EXCEPTION_LOG_CODE` 触发记录文件日志的响应码, 默认 `[500]`
+                            </li>
+                            <li>
+                                新增配置项: `SYS_ROLE_ID` 保留角色(权限组) ID 设置, 禁止将其他用户授权为该角色, 默认 `0`
+                            </li>
+                            <li>
+                                用户表使用 `id` 字段配合 `flask_login` (原使用 `job_number` 字段)
+                            </li>
+                            <li>
+                                用户权限组关联使用 `role_id` 字段 (原使用 `role` 标识)
+                            </li>
+                            <li>
+                                日志表增加 `log_content` 字段, 用于记录日志详情, 日志记录方式见 ASNCharge.add()
+                            </li>
+                            <li>
+                                数据库操作使用 `replace` 方法新增数据时, 确保总能获取到最新插入数据后的自增主键 ID
+                            </li>
+                            <li>
+                                自定义信号机制(事件订阅-发布), 使用见示例代码: 系统管理事件, 用户登录成功事件
+                            </li>
+                            <li>
+                                封装了邮件发送类, 基于 `flask_mail`, 支持邮件内容按模板渲染(HTML, TEXT), 支持异步发送邮件(默认)
+                            </li>
+                            <li>
+                                附带了一个通用的邮件模板, 通过手机系统邮件/钉钉/QQ/微信/Foxmail/Outlook等邮件客户端兼容性测试
+                            </li>
+                        </ul>
                     </div>
                 </fieldset>
             </div>

@@ -9,10 +9,10 @@
 from flask import Blueprint, render_template
 from flask_login import current_user
 
-from ..forms.role import RoleSearchForm, RoleAddEditForm, RoleForm
+from ..forms.role import RoleSearchForm, RoleAddEditForm, RoleDeleteForm
 from ..libs.exceptions import APISuccess, APIFailure
-from ..services.role import RoleCharge
 from ..services.auth import permission_required
+from ..services.role import RoleCharge
 
 bp_role = Blueprint('role', __name__, url_prefix='/role')
 
@@ -54,9 +54,9 @@ def role_add_edit():
 @permission_required
 def role_delete():
     """删除权限组"""
-    form = RoleForm().check()
-    if current_user.role == form.role.data:
+    form = RoleDeleteForm().check()
+    if current_user.role_id == form.role_id.data:
         return APIFailure('不能删除自己所在的权限组')
-    RoleCharge.delete(form.role.data, as_api=True)
+    RoleCharge.delete(form.role_id.data, as_api=True)
 
     return APISuccess()

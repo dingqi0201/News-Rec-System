@@ -9,14 +9,14 @@ import hashlib
 import re
 import sys
 import time
-import ipaddress
+from datetime import datetime
 from functools import wraps
 from itertools import chain
-from datetime import datetime
+from threading import Thread
 
 import requests
-from requests.adapters import HTTPAdapter
 from flask import request
+from requests.adapters import HTTPAdapter
 
 
 def run_perf(fn):
@@ -81,6 +81,22 @@ def list2dict(key, *value):
         return []
 
 
+def data2list(data, sep=','):
+    """
+    字符串转列表
+
+    :param data: 非字符串和列表外, 其他类型返回空列表
+    :param sep: 字符串分隔符
+    :return: list
+    """
+    if isinstance(data, list):
+        return data
+    elif data and isinstance(data, str):
+        return data.split(sep)
+    else:
+        return []
+
+
 def get_int(s=None, default=None, sep=None):
     """
     检查是否为整数, 转换并返回 int 或 列表
@@ -122,121 +138,11 @@ def get_int(s=None, default=None, sep=None):
     return ret
 
 
-def get_ipv4(ip=None, sep=None, fn='IPv4Address'):
-    """
-    检查是否为 IP 地址/网段/接口, 清除每个 IP 的空白, 返回 IP 字符串或 IP 列表
-
-    e.g.::
-
-        # 127.0.0.1
-        get_ipv4(' 127.0.0.1   ')
-
-        # 127.0.0.1
-        get_ipv4(0x7f000001)
-
-        # ['127.0.0.1', '8.8.8.8', '0.0.0.7']
-        get_ipv4('127.0.0.1, 8.8.8.8,, 10a, 7,,127.0.0.1,::1 ', ',')
-
-        # 0.0.0.10
-        get_ipv4(10)
-
-        # 172.16.0.0/12
-        get_ipv4('172.16.0.0/12', fn='IPv4Network')
-
-        # 172.16.0.1/12
-        get_ipv4('172.16.0.1/12', fn='IPv4Interface')
-
-        # ['127.0.0.1/31', '8.8.8.8/24', '0.0.0.7/32', '127.0.1.0/24']
-        get_ipv4('127.0.0.1/31, 8.8.8.8/24,, 10a, 7,,127.0.1.0/24,::1 ', ',' , fn='IPv4Interface')
-
-    :param ip: str, IP 地址
-    :param sep: str, 指定分隔符时返回 list
-    :param fn: str, ip_address / ip_network / ip_interface
-    :return: str / list
-    """
-    if not ip:
-        return None
-
-    if sep:
-        ret = []
-        for x in ip.split(sep):
-            ipv4 = get_ipv4(x, fn=fn)
-            if ipv4 and not ipv4 in ret:
-                ret.append(ipv4)
-    else:
-        if isinstance(ip, str):
-            ip = ip.strip()
-            if ip.count('.') != 3:
-                return None
-        try:
-            ret = str(getattr(ipaddress, fn)(ip))
-        except Exception:
-            ret = None
-
-    return ret
-
-
-def get_ipv4_address(ip=None, sep=None):
-    """
-    检查是否为 IP 地址, 清除每个 IP 的空白, 返回 IP 字符串或 IP 列表
-
-    e.g.::
-
-        # 127.0.0.1
-        get_ipv4_address(' 127.0.0.1   ')
-
-        # 127.0.0.1
-        get_ipv4_address(0x7f000001)
-
-        # ['127.0.0.1', '8.8.8.8', '0.0.0.7']
-        get_ipv4_address('127.0.0.1, 8.8.8.8,, 10a, 7,,127.0.0.1,::1 ', ',')
-
-        # 0.0.0.10
-        get_ipv4_address(10)
-
-    :param ip: str, IP 地址
-    :param sep: str, 指定分隔符时返回 list
-    :return: str / list
-    """
-    return get_ipv4(ip, sep, fn='IPv4Address')
-
-
-def get_ipv4_network(ip=None, sep=None):
-    """
-    检查是否为 IP 网段, 清除每个 IP 的空白, 返回 IP 字符串或 IP 列表
-
-    e.g.::
-
-        # 172.16.0.0/12
-        get_ipv4_network('172.16.0.0/12')
-
-        # ['127.0.0.1/32', '8.8.8.8/32', '127.0.1.0/24']
-        get_ipv4_network('127.0.0.1/32, 8.8.8.8,, 10a, 7,,127.0.1.0/24,::1 ', ',')
-
-    :param ip: str, IP 地址
-    :param sep: str, 指定分隔符时返回 list
-    :return: str / list
-    """
-    return get_ipv4(ip, sep, fn='IPv4Network')
-
-
-def get_ipv4_interface(ip=None, sep=None):
-    """
-    检查是否为 IP 接口, 清除每个 IP 的空白, 返回 IP 字符串或 IP 列表
-
-    e.g.::
-
-        # 172.16.0.1/12
-        get_ipv4_interface('172.16.0.1/12')
-
-        # ['127.0.0.1/31', '8.8.8.8/24', '0.0.0.7/32', '127.0.1.0/24']
-        get_ipv4_interface('127.0.0.1/31, 8.8.8.8/24,, 10a, 7,,127.0.1.0/24,::1 ', ',')
-
-    :param ip: str, IP 地址
-    :param sep: str, 指定分隔符时返回 list
-    :return: str / list
-    """
-    return get_ipv4(ip, sep, fn='IPv4Interface')
+def get_domain(domain=None):
+    """检查是否为域名, 清除域名前后空白后返回"""
+    domain = domain.strip()
+    patt = r'^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$'
+    return domain if re.match(patt, domain) else None
 
 
 def get_date(dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True):
@@ -328,3 +234,25 @@ def get_large_file(url, file=None, chunk_size=4096, retries=3, timeout=(30, 30),
         if throw:
             raise e
         return False
+
+
+def async_task(fn):
+    """
+    装饰器: 异步执行任务
+
+    e.g.::
+
+        @async_task
+        def _async_send_mail():
+            pass
+
+    :param fn:
+    :return:
+    """
+
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        t = Thread(target=fn, args=args, kwargs=kwargs)
+        t.start()
+
+    return wrapper

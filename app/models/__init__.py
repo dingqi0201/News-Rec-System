@@ -4,6 +4,7 @@
     模型基类
 
     :author: Fufu, 2019/9/2
+    :update: Fufu, 2019/12/20 replace 方法新增记录时, 避免待插入数据中主键字段为 0 时, 插入后无法获取新 ID 的问题
 """
 from collections import ChainMap
 from contextlib import contextmanager
@@ -50,7 +51,7 @@ class BaseQuery(_BaseQuery):
             if not res:
                 return []
             if isinstance(res[0], tuple):
-                rows = [dict(ChainMap(*[x.to_dict for x in row])) for row in res]
+                rows = [dict(ChainMap(*[x.to_dict for x in row if x])) for row in res]
             else:
                 rows = [x.to_dict for x in res]
             return rows
@@ -164,7 +165,7 @@ class DBModel(db.Model):
     def __getitem__(self, item):
         return getattr(self, item)
 
-    def set_attrs(self, attrs):
+    def set_attrs(self, attrs, fix_primary_key=False):
         """
         设置当前实例变量(字段)值
         插入, 更新时绑定数据
@@ -179,8 +180,12 @@ class DBModel(db.Model):
                 db.session.add(user)
 
         :param attrs: dict
-        :return:
+        :param fix_primary_key: bool, True 清除值为空的主键字段, 插入数据时使用
+        :return: self
         """
+        if fix_primary_key:
+            [attrs.pop(x, None) for x in self.get_primary_keys() if not attrs.get(x, None)]
+
         for key, value in attrs.items():
             hasattr(self, key) and setattr(self, key, value)
 
@@ -189,6 +194,7 @@ class DBModel(db.Model):
     def replace(self, data, filter_by=None, skip=False, skip_add=False, throw=False):
         """
         单条记录, 存在则更新, 不存在则新增(自动提交, 屏蔽/抛出异常)
+        返回最终结果集, 比如插入后的自增ID
 
         e.g.::
 
@@ -220,7 +226,7 @@ class DBModel(db.Model):
                     skip or row.set_attrs(data)
                 else:
                     # 插入数据(新增)
-                    skip_add or db.session.add(self.set_attrs(data))
+                    skip_add or db.session.add(self.set_attrs(data, fix_primary_key=True))
             return row if row else self
         except Exception as e:
             if throw:
@@ -290,13 +296,12 @@ class DBModel(db.Model):
 
         :return: DBModel
         """
-        cls_primary_keys = tuple(k.name for k in inspect(cls).primary_key)
-        if cls_primary_keys:
-            # 主键:值字典
-            primary_keys = cls_primary_keys if isinstance(cls_primary_keys, tuple) else (cls_primary_keys,)
-            param = {field: data[field] for field in primary_keys if field in data}
-            if len(param) == len(primary_keys):
-                return cls.query.filter_by(**param).first()
+        if data:
+            primary_keys = cls.get_primary_keys()
+            if primary_keys:
+                primary_key_params = {field: data[field] for field in primary_keys if field in data}
+                if len(primary_key_params) == len(primary_keys):
+                    return cls.query.filter_by(**primary_key_params).first()
 
         return None
 
@@ -316,6 +321,19 @@ class DBModel(db.Model):
         :return: dict
         """
         return dict(self)
+
+    @classmethod
+    def get_primary_keys(cls):
+        """
+        获取当前 DBModel 主键字段(元组)
+
+        :return: tuple
+        """
+        cls_primary_keys = tuple(k.name for k in inspect(cls).primary_key)
+        if cls_primary_keys:
+            return cls_primary_keys if isinstance(cls_primary_keys, tuple) else (cls_primary_keys,)
+
+        return tuple()
 
     def keys(self):
         """

@@ -11,7 +11,7 @@
  Target Server Version : 50630
  File Encoding         : 65001
 
- Date: 26/11/2019 23:05:13
+ Date: 03/01/2020 08:17:34
 */
 
 SET NAMES utf8mb4;
@@ -60,8 +60,9 @@ DROP TABLE IF EXISTS `ff_log`;
 CREATE TABLE `ff_log`  (
   `log_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `log_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '日志写入时间',
-  `log_action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作, BGP 更新状态',
-  `log_operator` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作者姓名, BGP IP',
+  `log_action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作动作',
+  `log_operator` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作者姓名',
+  `log_content` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作详情',
   `log_status` smallint(6) NOT NULL DEFAULT 1 COMMENT '操作是否成功',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `ix_ff_log_log_operator`(`log_operator`) USING BTREE,
@@ -76,7 +77,7 @@ CREATE TABLE `ff_log`  (
 DROP TABLE IF EXISTS `ff_role`;
 CREATE TABLE `ff_role`  (
   `role_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-  `role` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色标识, 如: admin, readonly',
+  `role` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色标识, 如: admin, readonly',
   `role_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称, 如: 管理员, 只读权限',
   `role_allow` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '允许的权限列表(蓝图/视图函数名), 逗号分隔',
   `role_deny` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '禁止的权限(视图函数名), 最高优先级, 逗号分隔',
@@ -95,21 +96,23 @@ INSERT INTO `ff_role` VALUES (2, 'QA', '质量管理', 'asn,bgp,log', 'asn_add,b
 -- ----------------------------
 DROP TABLE IF EXISTS `ff_user`;
 CREATE TABLE `ff_user`  (
-  `job_number` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键, 工号',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键, UserMixin.get_id()',
+  `job_number` int(11) NOT NULL COMMENT '工号, 重要',
   `realname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '姓名',
-  `mobile` varchar(23) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机号',
-  `role` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色标识',
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '邮箱',
+  `role_id` int(11) NULL DEFAULT 0 COMMENT '角色标识ID',
   `status` smallint(6) NULL DEFAULT 0 COMMENT '状态: 1 正常, 0 禁用',
-  PRIMARY KEY (`job_number`) USING BTREE,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `job_number`(`job_number`) USING BTREE,
   INDEX `ix_ff_user_status`(`status`) USING BTREE,
-  INDEX `ix_ff_user_role`(`role`) USING BTREE
+  INDEX `ix_ff_user_role_id`(`role_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ff_user
 -- ----------------------------
-INSERT INTO `ff_user` VALUES (777, 'QA', '13000000000', '', 0);
-INSERT INTO `ff_user` VALUES (7777, 'Fufu', '', 'Admin', 1);
-INSERT INTO `ff_user` VALUES (9999, 'BDDTester', '', 'Admin', 1);
+INSERT INTO `ff_user` VALUES (1, 777, 'QA', 'demo@gmail.com', 2, 1);
+INSERT INTO `ff_user` VALUES (2, 7777, 'Fufu', '', 1, 1);
+INSERT INTO `ff_user` VALUES (3, 9999, 'BDDTester', '', 0, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

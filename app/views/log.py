@@ -9,11 +9,11 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 
-from ..services.auth import bgp_required
-from ..services.log import LogCharge
 from ..forms import csrf
 from ..forms.log import LogSearchForm, LogReportForm
 from ..libs.exceptions import APISuccess
+from ..services.auth import bgp_required
+from ..services.log import LogCharge
 
 bp_log = Blueprint('log', __name__, url_prefix='/log')
 

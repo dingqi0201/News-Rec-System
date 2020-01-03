@@ -6,7 +6,7 @@
             <h3 class="fleft">
                 日志查询
                 <span class="layui-badge-rim c-green font-iosevka">
-                    用户操作日志, BGP 获取/更新日志等
+                    用户操作日志
                 </span>
             </h3>
             <div class="fright">
@@ -15,7 +15,7 @@
                         <label>谁：</label>
                         <div class="layui-input-inline">
                             <input name="log_operator" type="text" class="layui-input txt-focus" value=""
-                                   placeholder="姓名/BGP-IP">
+                                   placeholder="姓名">
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -69,11 +69,13 @@
                         loading: true,
                         cols: [[
                             {type: 'numbers'},
-                            {field: 'log_time', title: '操作时间', sort: true},
-                            {field: 'log_operator', title: '操作者', sort: true},
-                            {field: 'log_action', title: '具体操作', sort: true},
+                            {field: 'log_time', title: '操作时间', width: 170, sort: true},
+                            {field: 'log_operator', title: '操作者', width: 100, sort: true},
+                            {field: 'log_action', title: '具体操作', width: 200, sort: true},
+                            {field: 'log_content', title: '详情'},
                             {
-                                field: 'log_status', title: '操作结果', sort: true, templet: function (d) {
+                                field: 'log_status', title: '结果', width: 80, sort: true, align: 'center',
+                                templet: function (d) {
                                     return d.log_status === 1
                                         ? '<i class="ficon icon-roundcheck text-success"></i>'
                                         : '<i class="ficon icon-roundclose text-brown"></i>'

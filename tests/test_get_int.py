@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 """
-    test_basic_demo.py
+    test_get_int.py
     ~~~~~~~~
 
     :author: Fufu, 2019/9/12
@@ -37,6 +37,7 @@ class TestGetInt(unittest.TestCase):
     def test_other(self):
         self.assertEqual(get_int(None, sep=','), [])
         self.assertEqual(get_int(None, 0), 0)
+
 
 if __name__ == '__main__':
     unittest.main()

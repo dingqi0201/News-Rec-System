@@ -19,7 +19,7 @@ class MsgException(HTTPException):
     code = 406
 
     def __init__(self, description=None, response=None, code=None):
-        if not description is None:
+        if description is not None:
             try:
                 # form.errors, dict, 返回第一个错误消息
                 self.description = list(description.values())[0][0]

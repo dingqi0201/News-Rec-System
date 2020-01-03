@@ -8,8 +8,9 @@
 """
 from flask import current_app
 
-from ..models.bgp import *
+from .log import LogCharge
 from ..libs.exceptions import APIFailure
+from ..models.bgp import *
 
 
 class ASNCharge:
@@ -25,7 +26,16 @@ class ASNCharge:
         :return:
         """
         res = TBASN().insert(data)
+
+        # 1. 可选写文件日志
         current_app.logger.info('{}, {}'.format(res, data))
+
+        # 2. 可选写数据库日志
+        LogCharge.to_db({'log_content': data})
+
+        # 3. 可选使用信号机制, 见: UserCharge.authorize()
+        # event_asn_changed.send(**data)
+
         if not res and as_api:
             raise APIFailure('ASN 入库失败')
 

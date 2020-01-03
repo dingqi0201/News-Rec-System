@@ -6,7 +6,6 @@
 
     :author: Fufu, 2019/9/21
 """
-from flask import current_app
 from sqlalchemy import desc
 
 from ..models.bgp import TBBGP
@@ -26,7 +25,6 @@ class BGPCharge:
         :return:
         """
         res = TBBGP().insert(data)
-        current_app.logger.info('{}, {}'.format(res, data))
         if not res and as_api:
             raise APIFailure('BGP 入库失败')
 

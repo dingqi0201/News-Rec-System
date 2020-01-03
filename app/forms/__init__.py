@@ -9,9 +9,9 @@ from flask_wtf import FlaskForm
 from wtforms.validators import StopValidation
 
 from .csrf import CSRFProtect
+from ..conf import get_conf_json
 from ..libs.exceptions import APIParameterError, MsgException
 from ..libs.helper import get_int, is_accept_json, get_plain_text
-from ..conf import get_conf_json
 
 csrf = CSRFProtect()
 

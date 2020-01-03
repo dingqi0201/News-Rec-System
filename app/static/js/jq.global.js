@@ -21,6 +21,9 @@ $(function () {
     $('.txt-focus').focus(function () {
         this.select();
     });
+
+    /* 禁用拼写检查 */
+    $('input, textarea').attr('spellcheck', false);
 });
 
 /* 点击复制文本 */
@@ -39,6 +42,21 @@ $.extend({
             layer.msg('复制错误, 请手动复制')
         }
         tmp.remove();
+    }
+});
+
+/* 替换 XML 特殊字符 */
+$.extend({
+    fxmlchars: function (a) {
+        if (a) {
+            var b = ["_x003C_", "_x003E_", "_x0022_", "_x002A_", "_x0025_", "_x0026_", "_x0028_", "_x0029_", "_x003D_"],
+                c = ["&lt;", "&gt;", "&quot;", "*", "%", "&amp;", "(", ")", "="];
+            $.each(b, function (b, d) {
+                a = a.toString().replace(new RegExp(d, "gm"), c[b])
+            });
+            return a.replace(new RegExp("_x003(\\d+)_", "gm"), "$1")
+        }
+        return ""
     }
 });
 

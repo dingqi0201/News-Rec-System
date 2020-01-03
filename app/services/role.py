@@ -8,10 +8,11 @@
 """
 from flask import current_app
 
-from ..models import db
-from ..models.user import TBRole, TBUser
 from ..libs.exceptions import APIFailure
 from ..libs.helper import list2dict
+from ..models import db
+from ..models.user import TBRole, TBUser
+from ..services.events import event_sys_admin
 
 
 class RoleCharge:
@@ -27,25 +28,25 @@ class RoleCharge:
         :return:
         """
         res = TBRole().replace(data)
-        current_app.logger.info('{}, {}'.format(res, data))
+        event_sys_admin.send(log_status=res, log_content=data)
         if not res and as_api:
             raise APIFailure('权限组保存失败')
 
         return res
 
     @staticmethod
-    def delete(role, as_api=False):
+    def delete(role_id, as_api=False):
         """
         删除权限组
         禁用该权限组所有用户
 
-        :param role: 权限标识
+        :param role_id: 权限组ID
         :param as_api: True 入库失败返回 APIException
         :return:
         """
         # 禁用该权限组的用户
-        deny = TBUser.query.filter_by(role=role).update({
-            'role': '',
+        deny = TBUser.query.filter_by(role_id=role_id).update({
+            'role_id': 0,
             'status': 0,
         })
         if deny is False:
@@ -54,8 +55,8 @@ class RoleCharge:
             return False
 
         # 删除权限组
-        res = TBRole.query.filter_by(role=role).delete()
-        current_app.logger.info('{}, {}'.format(res, role))
+        res = TBRole.query.filter_by(role_id=role_id).delete()
+        event_sys_admin.send(log_status=res, log_content=role_id)
         if not res and as_api:
             raise APIFailure('权限组删除失败')
 
@@ -83,12 +84,15 @@ class RoleCharge:
         :param as_kv: True 时返回前端下拉框键值对
         :return: list
         """
-        data = db.session.query(TBRole.role, TBRole.role_name).all()
+        data = db.session. \
+            query(TBRole.role_id, TBRole.role_name). \
+            filter(TBRole.role_id != current_app.config.get('SYS_ROLE_ID', 0)). \
+            all()
 
         if as_kv:
             return list2dict(('Key', 'Value'), data)
 
         if as_dict:
-            return list2dict(('role', 'role_name'), data)
+            return list2dict(('role_id', 'role_name'), data)
 
         return data
