@@ -9,10 +9,10 @@
 """
 from sqlalchemy import desc
 
+from .events import event_sys_admin
 from ..libs.exceptions import APIFailure
 from ..models import db
 from ..models.user import TBUser, TBRole
-from ..services.events import event_sys_admin
 
 
 class UserCharge:

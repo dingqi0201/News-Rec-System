@@ -6,7 +6,7 @@
 
     :author: Fufu, 2019/12/20
 """
-from ...services.log import LogCharge
+from ..log import LogCharge
 
 
 def sys_admin_handler(sender, **data):

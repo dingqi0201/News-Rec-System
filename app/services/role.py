@@ -8,11 +8,11 @@
 """
 from flask import current_app
 
+from .events import event_sys_admin
 from ..libs.exceptions import APIFailure
 from ..libs.helper import list2dict
 from ..models import db
 from ..models.user import TBRole, TBUser
-from ..services.events import event_sys_admin
 
 
 class RoleCharge:

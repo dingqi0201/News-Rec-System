@@ -9,8 +9,8 @@
 from flask import request, current_app
 from flask_login import current_user
 
-from ...services.log import LogCharge
-from ...services.mail import MailCharge
+from ..log import LogCharge
+from ..mail import MailCharge
 
 
 def user_logined_handler(sender, **data):
