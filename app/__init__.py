@@ -7,23 +7,24 @@
 
     :author: Fufu, 2019/9/2
 """
-import os
 import logging
-from datetime import datetime, date
+import os
+import traceback
 from collections import namedtuple
+from datetime import datetime, date
 
+from concurrent_log_handler import ConcurrentRotatingFileHandler
 from flask import Flask as _Flask, render_template
 from flask.json import JSONEncoder as _JSONEncoder, jsonify
-from concurrent_log_handler import ConcurrentRotatingFileHandler
 
+from .forms import csrf
+from .libs.exceptions import APIException, APIServerError, APIFailure
+from .libs.helper import is_accept_json
+from .models import db, DBModel
 from .services.auth import oauth, login_manager
 from .services.mail import mail
 from .services.observers import observer
-from .models import db, DBModel
-from .forms import csrf
 from .views import init_blueprint, init_template_global
-from .libs.exceptions import APIException, APIServerError, APIFailure
-from .libs.helper import is_accept_json
 
 
 class JSONEncoder(_JSONEncoder):
@@ -133,7 +134,7 @@ def init_error(app):
     def global_exception_handler(e):
         # 500 错误时记录日志
         code = getattr(e, 'code', 500)
-        code in app.config.get('EXCEPTION_LOG_CODE', [500]) and app.logger.error(e)
+        code in app.config.get('EXCEPTION_LOG_CODE', [500]) and app.logger.error(traceback.format_exc())
 
         if isinstance(e, APIException):
             return e
