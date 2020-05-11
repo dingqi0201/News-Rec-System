@@ -9,7 +9,6 @@
 """
 import logging
 import os
-import traceback
 from collections import namedtuple
 from datetime import datetime, date
 
@@ -134,7 +133,7 @@ def init_error(app):
     def global_exception_handler(e):
         # 500 错误时记录日志
         code = getattr(e, 'code', 500)
-        code in app.config.get('EXCEPTION_LOG_CODE', [500]) and app.logger.error(traceback.format_exc())
+        code in app.config.get('EXCEPTION_LOG_CODE', [500]) and app.logger.error(e, exc_info=True)
 
         if isinstance(e, APIException):
             return e
