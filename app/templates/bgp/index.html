@@ -167,12 +167,21 @@
                         elem: '#tbl_main',
                         even: true,
                         height: height,
+
                         page: true,
-                        dataPage: true,
-                        limit: 60,
+                        // 开启 dataPage: true 则为前端分页, 先在后端请求所有数据, 再前端分页
+                        // dataPage: true,
+                        // 每页显示数量, 演示分页, 这里一般默认 60
+                        limit: 1,
+                        // 后端分页时指定请求方法与后端一致
+                        method: 'POST',
+
                         loading: true,
+
+                        // 排序时后端排序
                         initSort: s || {field: 'bgp_update', type: 'asc'},
                         autoSort: false,
+
                         // 可指定要显示的字段, 且按指定的顺序显示到表格
                         // 当列表中有后端结果集中不存在的字段时, 自动显示为空
                         // 不指定则表格自动按后端返回的数据集中的字段匹配 def 后显示
@@ -180,6 +189,7 @@
                         colsFields: ['bgp_ip', 'bgp_asn', 'bgp_test_float', 'non_existent', 'bgp_update', 'bgp_desc'],
                         // 默认居中显示, 在字段中指定的对齐方式优先
                         colsAlign: 'center',
+
                         // 也可以使用原生的固定字段方式
                         // cols: [[
                         //    {type: 'numbers'},

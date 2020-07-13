@@ -8,6 +8,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 
+from ..forms import PagesForm
 from ..libs.exceptions import APISuccess, APIFailure
 from ..services.auth import permission_required
 from ..services.bgp import BGPCharge
@@ -29,10 +30,11 @@ def bgp_list():
     """BGP 列表"""
     form_search = BGPSearchForm().check()
     form_order = BGPListOrderByForm().check()
+    form_pages = PagesForm().check()
     order_by = {form_order.order__field.data: form_order.order__type.data} if form_order.order__field.data else {}
-    data = BGPCharge.get_list(form_search.data, order_by)
+    data, count = BGPCharge.get_list(form_search.data, pages=form_pages.data, order_by=order_by)
 
-    return APISuccess(data)
+    return APISuccess(data, count=count)
 
 
 @bp_bgp.route('/add', methods=['POST'])

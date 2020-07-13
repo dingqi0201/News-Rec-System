@@ -6,6 +6,7 @@
     :author: Fufu, 2019/9/2
 """
 from flask_wtf import FlaskForm, CSRFProtect
+from wtforms import StringField
 from wtforms.validators import StopValidation
 
 # from .csrf import CSRFProtect
@@ -163,3 +164,10 @@ class FloatRound:
             if self.message is None:
                 self.message = '{}(错误的浮点数)'.format(field.label.text)
             raise StopValidation(self.message)
+
+
+class PagesForm(BaseForm):
+    """后端分页"""
+    page = StringField('页码', default=1, validators=[PositiveInteger(allow_none=True)])
+    limit = StringField('每页记录数', default=60, validators=[PositiveInteger(allow_none=True)])
+    count = StringField('总记录数', default=0, validators=[PositiveInteger(allow_none=True, allow_0=True)])
