@@ -23,8 +23,7 @@
 9. 依托 Flask 蓝图和视图函数, 适应大部分情况下的权限管理需求. 扩展性强.
 10. WTForms 二次封装, 极简调用, 适应性强. 中文内置错误消息, 自动数据获取的验证.
 11. 验证失败自动按需返回 JSON 或错误页. 自定义了通用的字符串和正整数验证方法, 适用性广.
-12. 修正 Flask-wtf 0.14.2, @csrf.exempt 无效的问题.
-13. SQLAlchemy 数据库交互二次封装, 实现自动提交机制和完善的异常处理, CRUD 全封装, 极简调用.
+12. SQLAlchemy 数据库交互二次封装, 实现自动提交机制和完善的异常处理, CRUD 全封装, 极简调用.
 14. 自带文件日志, 按日志文件大小自动滚动, 无须配置.
 15. 安全, 方便, 完善的配置文件方案.
 
@@ -34,24 +33,30 @@
 
 ![./docs/FF.PyAdmin.png](./docs/FF.PyAdmin.png)
 
-![./docs/update.v1.1.png](./docs/update.v1.1.png)
+![./docs/update.v1.2.png](./docs/update.v1.2.png)
 
 ## 依赖
 
-1. Flask==1.1.1
-2. Flask_Login==0.4.1
-3. Flask_WTF==0.14.2
-4. Flask_Script==2.0.6
-5. Flask_Migrate==2.5.2
-6. Flask_SQLAlchemy==2.4.0
-7. SQLAlchemy==1.3.11
-8. cymysql==0.9.14
-9. WTForms==2.2.1
-10. Authlib==0.13
-11. requests==2.22.0
-12. concurrent_log_handler==0.9.16
-13. xxtea==1.3.0
-14. behave==1.2.6
+1. pycryptodome==3.9.8
+2. Authlib==0.14.3
+3. behave==1.2.6
+4. blinker==1.4
+5. concurrent-log-handler==0.9.16
+6. cymysql==0.9.14
+7. requests==2.24.0
+8. SQLAlchemy==1.3.18
+9. Werkzeug==1.0.1
+10. WTForms==2.3.1
+11. email-validator==1.1.1
+12. xxtea==2.0.0.post0
+13. Flask==1.1.2
+14. Flask-Login==0.5.0
+15. Flask-Mail==0.9.1
+16. Flask-Migrate==2.5.3
+17. Flask-Script==2.0.6
+18. Flask-SQLAlchemy==2.4.3
+19. Flask-WTF==0.14.3
+20. PS: 升级了相关软件包到最新, 旧依赖包见 `requirements.old.txt` 同样兼容.
 
 该框架基于公司内部 OA 系统 OAuth2 登录, 在登录画面点击即可进入演示后台. 需要自行准备 OAuth2 参数配置到配置文件, 如 QQ, 微信, GitHub, 钉钉等. 也可自行实现账号密码登录.
 
@@ -135,12 +140,14 @@ source /etc/profile.d/ffpyadmin.sh
 OA_CLIENT_SECRET = get_environ('PYADMIN_OAUTH_SECRET')
 ```
 
+**建议开发环境直接使用快捷方式启动: `python3 dev.py`**
+
 ## 使用
 
-1. Python3.5+, pip, MySQL 环境
+1. Python3.5+(Python3.8测试通过), pip, MySQL 环境
 2. 建好 MySQL 数据库, 导入 data/db_ff_pyadmin.sql 示例数据, 修改配置文件
-3. pip3 install -r requirements.txt
-4. python3 start.py
+3. `pip3 install -r requirements.txt`
+4. `python3 start.py` 或 `python3 dev.py`
 5. 访问: http://127.0.0.1:5000  [http://ff.pyadmin:777](http://ff.pyadmin:777/)
 
 ## 资料

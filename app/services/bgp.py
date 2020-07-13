@@ -33,7 +33,7 @@ class BGPCharge:
     @staticmethod
     def get_list(where=None, order_by=None):
         """
-        获取 BGP 列表(暂未分页)
+        获取 BGP 列表(分页)
 
         :param where: dict
         :param order_by: dict, 排序字段 e.g. {'bgp_update'} {'bgp_update': 'desc'}
@@ -49,4 +49,5 @@ class BGPCharge:
             # 默认 BGP 最后更新时间升序
             q = q.order_by('bgp_update')
 
-        return q.to_dicts
+        # bgp_test_decimal 字段将不会发送给前端. 比如根据权限不同, 敏感字段可选是否发送给前端显示
+        return q.hide_keys_dicts(['bgp_test_decimal'])

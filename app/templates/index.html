@@ -2,6 +2,10 @@
 {% block title %}主页{% endblock %}
 {% block css %}
     <style>
+        .overflow {
+            overflow: auto;
+        }
+
         .layui-field-box {
             line-height: 2;
             padding: 10px 30px 20px;
@@ -35,7 +39,73 @@
             </h3>
         </div>
         <div class="panel-box pl25">
-            <div id="grid_main" class="font-iosevka">
+            <div id="grid_main" class="font-iosevka overflow">
+                <fieldset class="layui-elem-field">
+                    <legend><i class="ficon icon-pc text-success f20"></i> v1.2</legend>
+                    <div class="layui-field-box">
+                        <h2>2020.07.10 更新:</h2>
+                        <hr>
+                        <ul>
+                            <li>
+                                升级所有包为最新版本(Python3.8测试通过): `Flask==1.1.2, WTForms==2.3.1`, 旧依赖库(正常可用):
+                                `requirements.old.txt`
+                            </li>
+                            <li>
+                                升级 `LayUI==2.5.6`
+                            </li>
+                            <li>
+                                自动表格 `$.autoTbl` 增加属性 `colsFields`, 可指定要显示的表格字段. 增加属性 `colsAlign` 指定默认对齐方式
+                            </li>
+                            <li>
+                                新增示例: 真分页, 真排序, 前端增加字段, 后端隐藏字段, 指定显示字段, 控制表格字段显示顺序, 指定对齐方式等, 详见 `/bgp` 及前后端注释
+                            </li>
+                            <li>
+                                异步请求 `$.mkAjax` 增加回调方法 `done_err`, Ajax 请求成功但返回 `ok!=1` 时可触发
+                            </li>
+                            <li>
+                                增加信号中异步任务示例: `/async_signal_demo`
+                            </li>
+                            <li>
+                                使用 `flask_wtf` 原生 `CSRFProtect`, 增加例外示例: `/log/csrf_exempt_demo`
+                            </li>
+                            <li>
+                                表单校验增加 `FloatRound` 用于校验浮点数, 金额等, 银行家舍入法, 默认保留2位小数
+                            </li>
+                            <li>
+                                增加默认消息页面: `base-msg.html`
+                            </li>
+                            <li>
+                                增加开发环境快捷启动方式: `python3 dev.py`, `PyCharm Script path` 可指向该文件
+                            </li>
+                            <li>
+                                增加助手函数: `get_round` `get_ymd` `get_next_month_first` `get_month_last`
+                                `get_last_month_last`
+                            </li>
+                            <li>
+                                增加模板函数: `get_date`, 示例表单默认昨天日期: `&lt;input
+                                value="{{ 'get_date(out_fmt="%Y-%m-%d", add_days=-1)' }}"&gt;`
+                            </li>
+                            <li>
+                                对称加密类库更新: `AESCipher`, 增加助手函数, 用法详见注释
+                            </li>
+                            <li>
+                                `flask.json` 增加 `JSONEncoder` 对 `Decimal` 支持
+                            </li>
+                            <li>
+                                数据库日志服务改用 `flask.json`, 以适应常见各类数据类型
+                            </li>
+                            <li>
+                                ORM 增加 `hide_keys_dicts` 方法, 将 `.all()` 转为字典并隐藏指定字段
+                            </li>
+                            <li>
+                                调试模式且 Ajax POST 请求时将 Response JSON 显示在控制器方便调试
+                            </li>
+                            <li>
+                                修正 `logger` 文件日志级别
+                            </li>
+                        </ul>
+                    </div>
+                </fieldset>
                 <fieldset class="layui-elem-field">
                     <legend><i class="ficon icon-pc text-success f20"></i> v1.1</legend>
                     <div class="layui-field-box">

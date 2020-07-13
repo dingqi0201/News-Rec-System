@@ -192,6 +192,8 @@ $.extend({
                 if (r['ok'] == 1) {
                     icon = {icon: 1};
                     func['done'] && typeof func['done'] === 'function' && func['done'](r, d, textStatus, jqXHR);
+                } else {
+                    func['done_err'] && typeof func['done_err'] === 'function' && func['done_err'](r, d, textStatus, jqXHR);
                 }
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -242,11 +244,15 @@ $.extend({
                         width: cfg["w"]
                     }]];
                 } else {
-                    $.each(cfg["r"]["data"][0], function (field) {
+                    // 指定字段及顺序优先
+                    var fields = cfg["colsFields"] || Object.keys(cfg["r"]["data"][0]);
+                    $.each(fields, function (_, field) {
                         var col = {
                             field: field,
                             title: $.fxmlchars(field)
                         };
+                        // 默认对齐方式
+                        cfg["colsAlign"] && (col["align"] = cfg["colsAlign"]);
                         cfg["w"] && (col['width'] = cfg["w"]);
                         //.优先使用传参中的字段配置: {field: {cols.option}}
                         def["main"] && def["main"][field] && $.each(def["main"][field], function (k, v) {

@@ -2,7 +2,7 @@
 @asn
 Feature: AS 号管理
   请先清除数据(暂未开放删除操作)
-  delete from bgp_asn where asn in (1, 99999990);
+  delete from ff_asn where asn in (1, 99999990);
 
   @success
   Scenario Outline: 1. 添加 ASN (正例)

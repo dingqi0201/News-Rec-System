@@ -12,6 +12,7 @@ from .log import bp_log
 from .user import bp_user
 from .role import bp_role
 from ..services.auth import is_can
+from ..libs.helper import get_date
 
 
 def init_blueprint(app):
@@ -32,6 +33,7 @@ def init_blueprint(app):
 def init_template_global(app):
     """模板全局函数"""
     app.add_template_global(is_can)
+    app.add_template_global(get_date)
     # 清除空行
     app.jinja_env.trim_blocks = app.config.get('JINJA_ENV_TRIM_BLOCKS', True)
     app.jinja_env.lstrip_blocks = app.config.get('JINJA_ENV_LSTRIP_BLOCKS', True)

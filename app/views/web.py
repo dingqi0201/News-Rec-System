@@ -15,6 +15,7 @@ from requests.exceptions import RequestException
 
 from ..forms import csrf
 from ..services.auth import oauth, chk_user_login, set_user_login
+from ..services.events import event_async_with_app_demo
 
 bp_web = Blueprint('web', __name__)
 csrf.exempt(bp_web)
@@ -78,3 +79,10 @@ def web_favicon():
     """浏览器地址栏图标"""
     return send_from_directory(os.path.join(current_app.root_path, 'static'), 'favicon.ico',
                                mimetype='image/vnd.microsoft.icon')
+
+
+@bp_web.route('/async_signal_demo')
+def async_signal_demo():
+    """异步信息示例"""
+    event_async_with_app_demo.send(current_app._get_current_object(), mydata='view.data')
+    return render_template('base-msg.html', e={'content': '页面已返回, 5秒后查看控制台日志'})

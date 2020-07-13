@@ -1983,6 +1983,10 @@ html, body {
     max-height: 255px;
 }
 
+.layer-pop .layui-form-select dl {
+    max-height: 200px;
+}
+
 .layui-form-pane .form-label-lg {
     width: 160px;
 }
@@ -2513,6 +2517,10 @@ html, body {
 
 .w280 {
     width: 280px !important;
+}
+
+.w160 {
+    width: 160px !important;
 }
 
 .b600 {

@@ -5,10 +5,10 @@
 
     :author: Fufu, 2019/9/21
 """
-from wtforms import StringField
+from wtforms import StringField, FloatField
 from wtforms.validators import ValidationError
 
-from . import BaseForm, StripString, PositiveInteger
+from . import BaseForm, StripString, PositiveInteger, FloatRound
 from ..libs.ip import get_ipv4_address
 from ..models.bgp import TBBGP, TBASN
 
@@ -49,6 +49,7 @@ class BGPIPForm(BaseForm):
 class BGPAddForm(BGPIPForm):
     bgp_asn = StringField('所属 ASN', validators=[PositiveInteger(), validate_bgp_asn])
     bgp_desc = StringField('BGP 描述', validators=[StripString(plain_text=True)])
+    bgp_test_float = FloatField('测试字段', validators=[FloatRound(allow_0=True)])
 
     def validate_bgp_ip(self, field):
         if TBBGP.query.filter_by(bgp_ip=field.data).first():

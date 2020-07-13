@@ -69,6 +69,13 @@
                            placeholder="BGP 关联的 ASN" lay-verify="required" lay-vertype="tips">
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">测试字段：</label>
+                <div class="layui-input-block">
+                    <input name="bgp_test_float" type="text" class="layui-input txt-focus" value=""
+                           placeholder="浮点数, 保留2位小数" lay-verify="required" lay-vertype="tips">
+                </div>
+            </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">BGP 描述信息：</label>
                 <div class="layui-input-block">
@@ -102,6 +109,59 @@
                 tb_main: function (d, s) {
                     let height = $('#grid_main').height();
                     height < 222 && (height = 345);
+                    // 字段设置, 可由其他 js 引入或由后端生成, 与 table 配置解耦
+                    var def = {
+                        before: [
+                            {type: 'numbers'}
+                        ],
+                        main: {
+                            'bgp_ip': {title: 'BGP 管理 IP', width: 140, sort: true},
+                            'bgp_asn': {title: 'ASN', width: 100, sort: true},
+                            'bgp_update': {title: '最后更新', width: 170, sort: true},
+                            'bgp_desc': {title: 'BGP 描述'},
+                            // 一个表格多个不固定数据源时, 这里可以是所有字段格式的集合
+                            // 表格会按后端传过来的字段集中字段名自动匹配并渲染
+                            'days_last_month_peak_rate': {
+                                title: '没用到的字段, 没关系', width: 160, align: 'right',
+                                templet: function (d) {
+                                    return '<span style="color:'
+                                        + (d.days_last_month_peak_rate > 0 ? '#df5640' : '#46be8a') + '">'
+                                        + (Math.round(d.days_last_month_peak_rate * 10000) / 100).toFixed(2)
+                                        + '%</span>';
+                                }
+                            },
+                            'bgp_test_float': {
+                                title: '右对齐(金额)', width: 140, align: 'right',
+                                templet: function (d) {
+                                    return '￥' + d.bgp_test_float;
+                                }
+                            },
+                            // 指定隐藏显示该字段
+                            'bgp_test_hide1': {hide: true},
+                            'days_desc': {title: '备注', align: 'left', width: 180}
+                        },
+                        main_add: {
+                            // 在某个字段之后附加字段, 可以是多个
+                            'bgp_asn': [
+                                {
+                                    title: 'ASN后增加的字段', width: 180,
+                                    templet: function (d) {
+                                        return 'demo.main_add: ' + d['bgp_asn'];
+                                    }
+                                },
+                                {title: '可以有多个', templet: '<div>常用于前端计算和显示百分比字段</div>'}
+                            ],
+                            'total_avg': [
+                                {
+                                    title: '总延迟%',
+                                    templet: function (d) {
+                                        return '<div>' + (d["total_avg"] / d["total_valid"] * 100).toFixed(2) + '%</div>';
+                                    }
+                                }
+                            ]
+                        },
+                        after: [{title: '操作', width: 100, align: 'center', fixed: 'right', toolbar: '#bar_action'}]
+                    };
                     let cfg = {
                         id: 'tbl_main',
                         elem: '#tbl_main',
@@ -113,20 +173,28 @@
                         loading: true,
                         initSort: s || {field: 'bgp_update', type: 'asc'},
                         autoSort: false,
-                        cols: [[
-                            {type: 'numbers'},
-                            {field: 'bgp_ip', title: 'BGP 管理 IP', width: 140, sort: true},
-                            {field: 'bgp_asn', title: 'ASN', width: 100, sort: true},
-                            {field: 'bgp_update', title: '最后更新', width: 170, sort: true},
-                            {field: 'bgp_desc', title: 'BGP 描述'},
-                            {title: '操作', width: 100, align: 'center', fixed: 'right', toolbar: '#bar_action'}
-                        ]],
+                        // 可指定要显示的字段, 且按指定的顺序显示到表格
+                        // 当列表中有后端结果集中不存在的字段时, 自动显示为空
+                        // 不指定则表格自动按后端返回的数据集中的字段匹配 def 后显示
+                        // bgp_ip_id, bgp_test_hide2 没被选择, 自动被隐藏
+                        colsFields: ['bgp_ip', 'bgp_asn', 'bgp_test_float', 'non_existent', 'bgp_update', 'bgp_desc'],
+                        // 默认居中显示, 在字段中指定的对齐方式优先
+                        colsAlign: 'center',
+                        // 也可以使用原生的固定字段方式
+                        // cols: [[
+                        //    {type: 'numbers'},
+                        //    {field: 'bgp_ip', title: 'BGP 管理 IP', width: 140, sort: true},
+                        //    {field: 'bgp_asn', title: 'ASN', width: 100, sort: true},
+                        //    {field: 'bgp_update', title: '最后更新', width: 170, sort: true},
+                        //    {field: 'bgp_desc', title: 'BGP 描述'},
+                        //    {title: '操作', width: 100, align: 'center', fixed: 'right', toolbar: '#bar_action'}
+                        //]],
                         d: {
                             url: '{{ url_for('bgp.bgp_list') }}',
                             where: d || FRM_SEARCH.serializeJson()
                         }
                     };
-                    $.autoTbl(cfg);
+                    $.autoTbl(cfg, def);
                 },
                 // 新增
                 add: function () {

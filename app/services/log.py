@@ -6,9 +6,7 @@
 
     :author: Fufu, 2019/9/16
 """
-import json
-
-from flask import request
+from flask import request, json
 from flask_login import current_user
 from sqlalchemy import desc
 

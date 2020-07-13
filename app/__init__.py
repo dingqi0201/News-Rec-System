@@ -11,6 +11,7 @@ import logging
 import os
 from collections import namedtuple
 from datetime import datetime, date
+from decimal import Decimal
 
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 from flask import Flask as _Flask, render_template
@@ -45,6 +46,8 @@ class JSONEncoder(_JSONEncoder):
             return o.strftime('%Y-%m-%d %H:%M:%S')
         if isinstance(o, date):
             return o.strftime('%Y-%m-%d')
+        if isinstance(o, Decimal):
+            return float(o)
         if hasattr(o, 'keys') and hasattr(o, '__getitem__'):
             return dict(o)
         raise APIServerError()
@@ -119,6 +122,7 @@ def init_logger(app):
     fh.setFormatter(logging.Formatter(
         app.config.get('LOG_FORMAT', '%(asctime)s %(levelname)s %(module)s.%(funcName)s: %(message)s')))
     app.logger.addHandler(fh)
+    app.logger.setLevel(logging.DEBUG if app.debug else log_level)
 
 
 def init_error(app):
@@ -145,10 +149,10 @@ def init_error(app):
 
         if app.config.get('API') or is_accept_json():
             return APIFailure(description=err.description)
-        if app.config['DEBUG']:
+        if app.debug:
             raise e
 
-        return render_template('base-error.html', e=err), code
+        return render_template('base-msg.html', e=err), code
 
 
 def create_app(config_name=None, config=None):
@@ -195,5 +199,11 @@ def create_app(config_name=None, config=None):
     db.init_app(app)
     with app.app_context():
         db.create_all()
+
+    @app.after_request
+    def after_request(resp):
+        if app.debug and is_accept_json():
+            app.logger.debug("Response: {}, {}, {}".format(resp.status, resp.mimetype, resp.get_data(as_text=True)))
+        return resp
 
     return app

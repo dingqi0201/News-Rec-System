@@ -5,13 +5,13 @@
 
     :author: Fufu, 2019/9/2
 """
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, CSRFProtect
 from wtforms.validators import StopValidation
 
-from .csrf import CSRFProtect
+# from .csrf import CSRFProtect
 from ..conf import get_conf_json
 from ..libs.exceptions import APIParameterError, MsgException
-from ..libs.helper import get_int, is_accept_json, get_plain_text
+from ..libs.helper import get_int, is_accept_json, get_plain_text, get_round
 
 csrf = CSRFProtect()
 
@@ -134,3 +134,32 @@ class PositiveInteger:
                 self.message = '{}错误(非正整数{})'.format(field.label.text, '或0' if self.allow_0 else '')
             raise StopValidation(self.message)
         getattr(form, field.name).data = fdata
+
+
+class FloatRound:
+    """DataRequired + 浮点数赋值, 可指定小数位数"""
+
+    def __init__(self, message=None, allow_none=False, allow_0=False, allow_lt0=False, precision=2):
+        self.message = message
+        self.allow_none = allow_none
+        self.allow_0 = allow_0
+        self.allow_lt0 = allow_lt0
+        self.precision = precision
+
+    def __call__(self, form, field):
+        """
+        e.g.::
+
+            class BWPeakForm(BaseForm):
+                bw_peak = FloatField('保留2位小数', validators=[FloatRound()])
+
+        """
+        data = field.data.strip() if isinstance(field.data, str) else field.data
+        fdata = get_round(data, precision=self.precision)
+        if (data == '' or data is None) and self.allow_none or (
+                fdata is not None and (fdata > 0 or self.allow_lt0 and fdata < 0 or self.allow_0 and fdata == 0.0)):
+            getattr(form, field.name).data = fdata
+        else:
+            if self.message is None:
+                self.message = '{}(错误的浮点数)'.format(field.label.text)
+            raise StopValidation(self.message)

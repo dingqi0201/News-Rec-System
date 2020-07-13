@@ -5,6 +5,7 @@
 
     :author: Fufu, 2019/9/2
     :update: Fufu, 2019/12/20 replace 方法新增记录时, 避免待插入数据中主键字段为 0 时, 插入后无法获取新 ID 的问题
+    :update: Fufu, 2020/7/10 增加 hide_keys_dicts 方法, 与 to_dicts 类似, 将 .all() 转为字典并隐藏指定字段
 """
 from collections import ChainMap
 from contextlib import contextmanager
@@ -46,14 +47,31 @@ class BaseQuery(_BaseQuery):
             asn_country = TBASNCountryCode.query.filter_by(asn=31001).to_dicts
 
         """
+        return self.hide_keys_dicts()
+
+    def hide_keys_dicts(self, hide_keys=None):
+        """
+        将 .all() 转换为列表字典, 隐藏指定字段
+
+        e.g.::
+
+            db.session. \
+                query(TBDays, TBLine). \
+                filter(TBDays.days_date == days_date). \
+                join(TBLine, TBDays.days_line_id == TBLine.line_id). \
+                order_by(desc(TBDays.days_date)). \
+                hide_keys_dicts(hide_keys=current_app.config.get('REPORT_HIDE_FIELDS', ['month_cost', 'price']))
+
+        """
         try:
             res = self.all()
             if not res:
                 return []
+            hide_keys = [] if hide_keys is None else list(hide_keys)
             if isinstance(res[0], tuple):
-                rows = [dict(ChainMap(*[x.to_dict for x in row if x])) for row in res]
+                rows = [dict(ChainMap(*[x.hide_keys(*hide_keys).to_dict for x in row if x])) for row in res]
             else:
-                rows = [x.to_dict for x in res]
+                rows = [x.hide_keys(*hide_keys).to_dict for x in res]
             return rows
         except Exception:
             return []

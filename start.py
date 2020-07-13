@@ -3,8 +3,7 @@
 """
     start.py
     ~~~~~~~~
-    环网自动路由表
-    启动服务：python3 start.py
+    启动服务(使用环境变量中的配置文件)：python3 start.py
 
     :author: Fufu, 2019/9/2
 """

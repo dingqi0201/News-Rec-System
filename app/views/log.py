@@ -41,3 +41,16 @@ def log_report(bgp_info):
     LogCharge.to_db(form.data)
 
     return APISuccess()
+
+
+@bp_log.route('/csrf_demo', methods=['POST'])
+def csrf_demo():
+    """WTF_CSRF_ENABLED = True 时, 会返回 400 错误"""
+    return 'Be: flask_wtf.csrf.CSRFError: 400 Bad Request: The CSRF token is missing.'
+
+
+@bp_log.route('/csrf_exempt_demo', methods=['POST'])
+@csrf.exempt
+def csrf_exempt_demo():
+    """上例的正确使用方式"""
+    return 'Be: csrf_exempt_demo'

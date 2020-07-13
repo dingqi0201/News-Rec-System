@@ -262,10 +262,11 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
     
     //响应数据的自定义格式
     options.response = $.extend({
-      statusName: 'code'
-      ,statusCode: 0
-      ,msgName: 'msg'
-      ,dataName: 'data'
+      statusName: 'code' //规定数据状态的字段名称
+      ,statusCode: 0 //规定成功的状态码
+      ,msgName: 'msg' //规定状态信息的字段名称
+      ,dataName: 'data' //规定数据总数的字段名称
+      ,totalRowName: 'totalRow' //规定数据统计的字段名称
       ,countName: 'count'
     }, options.response);
     
@@ -693,10 +694,10 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
       //参数
       var data = $.extend(params, options.where);
       if(options.contentType && options.contentType.indexOf("application/json") == 0){ //提交 json 格式
-         //.++ json
-         options.method = 'POST';
-         //.end
-         data = JSON.stringify(data);
+          //.++ json
+          options.method = 'POST';
+          //.end
+        data = JSON.stringify(data);
       }
       
       that.loading();
@@ -740,47 +741,52 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
         }
       });
     } else if(options.data && options.data.constructor === Array){ //已知数据
-      var res = {}
-      ,startLimit = curr*options.limit - options.limit;
-      
-      //.++自动表格：第一次请求状态及消息，以下两个参数用于模拟 Ajax 请求后表格主体上显示的错误消息
-      if (options.firstCode && options.firstMsg) {
-        that.errorView(options.firstMsg || '返回的数据状态异常');
-        that.renderForm();
-        that.setColsWidth();
-        return false;
-      }
-      //.Ajax 自动表格：系统接管后续的分页请求，不会再执行到这里
-      if (options.page && options.setUrl) {
-          //.后续请求的 url 和参数
-          that.config.url = options.setUrl;
-          options.setWhere && $.extend(that.config.where, options.setWhere);
-          //.请求增加总数参数
-          res[response.dataName]  = options.data;
-          res[response.countName] = options.setCount;
-          that.config.where.count = res[response.countName];
-      } else {
-          //.原代码
-          res[response.dataName]  = options.data.concat().splice(startLimit, options.limit);
-          res[response.countName] = options.data.length;
-      }
-      //.end
+        var res = {}
+        ,startLimit = curr*options.limit - options.limit;
+        
+        //.++自动表格：第一次请求状态及消息，以下两个参数用于模拟 Ajax 请求后表格主体上显示的错误消息
+        if (options.firstCode && options.firstMsg) {
+          that.errorView(options.firstMsg || '返回的数据状态异常');
+          that.renderForm();
+          that.setColsWidth();
+          return false;
+        }
+        //.Ajax 自动表格：系统接管后续的分页请求，不会再执行到这里
+        if (options.page && options.setUrl) {
+            //.后续请求的 url 和参数
+            that.config.url = options.setUrl;
+            options.setWhere && $.extend(that.config.where, options.setWhere);
+            //.请求增加总数参数
+            res[response.dataName]  = options.data;
+            res[response.countName] = options.setCount;
+            that.config.where.count = res[response.countName];
+        } else {
+            //.原代码
+            res[response.dataName]  = options.data.concat().splice(startLimit, options.limit);
+            res[response.countName] = options.data.length;
+        }
+        //.end
+  
+        //.++如果有数据解析的回调，则获得其返回的数据
+        if(typeof options.parseData === 'function'){
+          res = options.parseData(res) || res;
+        }
+        //记录合计行数据
+        if(typeof options.totalRow === 'object'){
+          res[response.totalRowName] = $.extend({}, options.totalRow);
+        }
 
-      //.++如果有数据解析的回调，则获得其返回的数据
-      if(typeof options.parseData === 'function'){
-        res = options.parseData(res) || res;
-      }
-      that.renderData(res, curr, res[response.countName]), sort();
-      that.setColsWidth();
-      //.+-完成回调使用原始数据集或表格渲染使用的数据
-      typeof options.done === 'function' && options.done(options.setRes || res, curr, res[response.countName]);
+        that.renderData(res, curr, res[response.countName]), sort();
+        that.setColsWidth();
+        //.+-完成回调使用原始数据集或表格渲染使用的数据
+        typeof options.done === 'function' && options.done(options.setRes || res, curr, res[response.countName]);
+        //.end
+        
+        //.++返回数据集中数据字段不正确时
+      } else {
+          that.errorView('数据接口请求异常');
       //.end
-      
-      //.++返回数据集中数据字段不正确时
-    } else {
-        that.errorView('数据接口请求异常');
-    //.end
-    }
+      }
   };
   
   //遍历表头
@@ -794,7 +800,8 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
   Class.prototype.renderData = function(res, curr, count, sort){
     var that = this
     ,options = that.config
-    ,data = res[options.response.dataName] || []
+    ,data = res[options.response.dataName] || [] //列表数据
+    ,totalRowData = res[options.response.totalRowName] //合计行数据
     ,trs = []
     ,trs_fixed = []
     ,trs_fixed_r = []
@@ -932,7 +939,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
     }
     
     render(); //渲染数据
-    that.renderTotal(data); //数据合计
+    that.renderTotal(data, totalRowData); //数据合计
 
     //同步分页状态
     if(options.page){
@@ -947,11 +954,11 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
         ,next: '<i class="layui-icon">&#xe602;</i>'
         ,jump: function(obj, first){
 
-        //.++增加切换分页时的回调，需要返回 obj 对象
-        typeof options.myJump === 'function' && (obj = options.myJump(obj, first));
-        //.附加 jump 自定义回调方法中的请求参数
-        obj.q && $.extend(that.config.where, obj.q);
-        //.end
+            //.++增加切换分页时的回调，需要返回 obj 对象
+            typeof options.myJump === 'function' && (obj = options.myJump(obj, first));
+            //.附加 jump 自定义回调方法中的请求参数
+            obj.q && $.extend(that.config.where, obj.q);
+            //.end
 
           if(!first){
             //分页本身并非需要做以下更新，下面参数的同步，主要是因为其它处理统一用到了它们
@@ -969,7 +976,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
   };
   
   //数据合计行
-  Class.prototype.renderTotal = function(data){
+  Class.prototype.renderTotal = function(data, totalRowData){
     var that = this
     ,options = that.config
     ,totalNums = {};
@@ -990,7 +997,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
     });
     
     that.dataTotal = {};
-    
+
     var tds = [];
     that.eachCols(function(i3, item3){
       var field = item3.field || i3;
@@ -1004,7 +1011,12 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
         tplData[field] = thisTotalNum;
         thisTotalNum = parseTempData(item3, thisTotalNum, tplData);
         
-        return item3.totalRow ? (thisTotalNum || text) : text;
+        //如果直接传入了合计行数据，则不输出自动计算的结果
+        if(totalRowData){
+          return totalRowData[item3.field] || text;
+        } else {
+          return item3.totalRow ? (thisTotalNum || text) : text;
+        }
       }()
       ,td = ['<td data-field="'+ field +'" data-key="'+ options.index + '-'+ item3.key +'" '+ function(){
         var attr = [];

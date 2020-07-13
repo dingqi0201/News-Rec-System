@@ -42,6 +42,10 @@ CREATE TABLE `ff_bgp`  (
   `bgp_asn` int(11) NOT NULL COMMENT 'BGP 所属 ASN',
   `bgp_desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'BGP 服务器描述',
   `bgp_update` datetime(0) NULL DEFAULT NULL COMMENT '最后更新成功时间',
+  `bgp_test_decimal` decimal(13, 2) NOT NULL DEFAULT 0.00 COMMENT '(返回数据集前时隐藏该字段)',
+  `bgp_test_float` float NULL DEFAULT 1 COMMENT '(测试浮点数)',
+  `bgp_test_hide1` float NULL DEFAULT 2 COMMENT '(前端自动表格测试指定隐藏)',
+  `bgp_test_hide2` float NULL DEFAULT 3 COMMENT '(前端自动表格测试)',
   PRIMARY KEY (`bgp_ip_id`) USING BTREE,
   UNIQUE INDEX `bgp_ip`(`bgp_ip`) USING BTREE,
   INDEX `ix_ff_bgp_bgp_update`(`bgp_update`) USING BTREE,
@@ -51,7 +55,7 @@ CREATE TABLE `ff_bgp`  (
 -- ----------------------------
 -- Records of ff_bgp
 -- ----------------------------
-INSERT INTO `ff_bgp` VALUES (1, '10.1.1.1', 666, '示例 BGP', NULL);
+INSERT INTO `ff_bgp` VALUES (1, '10.1.1.1', 666, '示例 BGP', '2020-01-01 12:00:00', 1.23, 2.34, 2, 3);
 
 -- ----------------------------
 -- Table structure for ff_log

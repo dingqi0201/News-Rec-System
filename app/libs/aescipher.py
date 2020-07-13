@@ -1,8 +1,27 @@
 # -*- coding:utf-8 -*-
 """
-    asecipher.py
+    aescipher.py
     ~~~~~~~~
     AES_128_CBC, AES_192_CBC, AES_256_CBC
+    pycryptodome==3.9.8
+
+    e.g.::
+
+        my_aes_bit = 256
+        my_data = 123.05
+        my_key = b'ff\xf4YF7777777\x024\x66~\xa7\xb6\x5c12356'
+        my_iv = 'xyz1234abc1234'
+        my_key_hex = AESCipher.mk_key(my_key, int(my_aes_bit / 8)).hex()
+        my_iv_hex = AESCipher.mk_key(my_iv, AES.block_size).hex()
+        print(f'my_key: {my_key}\nmy_iv: {my_iv}\n')
+        print(f'my_key_hex: {my_key_hex}\nmy_iv_hex: {my_iv_hex}\n')
+
+        encrypted_data, encrypted_key, encrypted_iv = encrypt_aes_cbc_hex(my_data, my_key, my_iv)
+        print(f'encrypted: {encrypted_data}\nkey_hex: {encrypted_key}\niv_hex: {encrypted_iv}\n')
+
+        print(decrypt_aes_cbc_hex(encrypted_data, encrypted_key, encrypted_iv).decode())
+        print(decrypt_aes_cbc_hex(encrypted_data, my_key_hex, my_iv_hex).decode())
+        print(decrypt_aes_cbc_hex_src(encrypted_data, my_key, my_iv).decode())
 
     :author: Fufu, 2019/11/5
 """
@@ -25,15 +44,27 @@ def encrypt_aes_cbc_hex(data_src, key=None, iv=None, bits=256):
 
 
 def decrypt_aes_cbc(encrypted, key, iv):
-    return AESCipher().decrypt_aes_cbc(encrypted, key, iv)
+    return AESCipher.decrypt_aes_cbc(encrypted, key, iv)
 
 
 def decrypt_aes_cbc_base64(encrypted, key, iv):
-    return AESCipher().decrypt_aes_cbc(b64decode(encrypted), b64decode(key), b64decode(iv))
+    return AESCipher.decrypt_aes_cbc(b64decode(encrypted), b64decode(key), b64decode(iv))
 
 
 def decrypt_aes_cbc_hex(encrypted, key, iv):
-    return AESCipher().decrypt_aes_cbc(bytes.fromhex(encrypted), bytes.fromhex(key), bytes.fromhex(iv))
+    return AESCipher.decrypt_aes_cbc(bytes.fromhex(encrypted), bytes.fromhex(key), bytes.fromhex(iv))
+
+
+def decrypt_aes_cbc_src(encrypted, key, iv):
+    return AESCipher.decrypt_aes_cbc_src(encrypted, key, iv)
+
+
+def decrypt_aes_cbc_base64_src(encrypted, key, iv):
+    return AESCipher.decrypt_aes_cbc_src(b64decode(encrypted), key, iv)
+
+
+def decrypt_aes_cbc_hex_src(encrypted, key, iv):
+    return AESCipher.decrypt_aes_cbc_src(bytes.fromhex(encrypted), key, iv)
 
 
 class AESCipher:
@@ -100,9 +131,20 @@ class AESCipher:
         """
         return b64encode(self.data), b64encode(self.key), b64encode(self.iv)
 
-    def decrypt_aes_cbc(self, encrypted, key, iv):
+    @staticmethod
+    def decrypt_aes_cbc(encrypted, key, iv):
         key = AESCipher.mk_bytes(key)
         iv = AESCipher.mk_bytes(iv)
+        res = AES.new(key, AES.MODE_CBC, iv=iv).decrypt(encrypted)
+        res = Padding.unpad(res, AES.block_size)
+
+        return res
+
+    @staticmethod
+    def decrypt_aes_cbc_src(encrypted, key, iv, bits=256):
+        """使用 key 和 iv 原始字符解密"""
+        key = AESCipher.mk_key(key, int(bits / 8))
+        iv = AESCipher.mk_key(iv, AES.block_size)
         res = AES.new(key, AES.MODE_CBC, iv=iv).decrypt(encrypted)
         res = Padding.unpad(res, AES.block_size)
 
