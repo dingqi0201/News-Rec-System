@@ -1876,7 +1876,7 @@ body {
     color: #252525;
 }
 
-.layui-table thead tr, .layui-table-click, .layui-table-header, .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table[lay-even] tr:nth-child(even) {
+.layui-table thead tr, .layui-table-click, .layui-table-header, .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table[lay-even] tr:nth-child(even), .layui-table-total tr {
     background-color: rgba(243, 247, 249, .3);
 }
 
