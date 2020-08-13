@@ -141,6 +141,8 @@ def init_error(app):
 
         if isinstance(e, APIException):
             return e
+        if app.debug:
+            raise e
 
         # 自定义异常描述
         err = namedtuple('MyError', ['code', 'description'])(
@@ -149,8 +151,6 @@ def init_error(app):
 
         if app.config.get('API') or is_accept_json():
             return APIFailure(description=err.description)
-        if app.debug:
-            raise e
 
         return render_template('base-msg.html', e=err), code
 
