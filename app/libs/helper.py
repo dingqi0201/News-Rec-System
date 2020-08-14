@@ -370,3 +370,37 @@ def async_task(fn):
         t.start()
 
     return wrapper
+
+
+def get_real_ip(header=''):
+    """
+    获取 nginx 代理真实 IP
+
+    e.g.::
+
+        get_real_ip()
+        get_real_ip('X-Real-IP')
+
+    nginx 代理 uwsgi 可以直接使用 request.remote_addr 获取到客户端 IP
+    e.g.::
+        location / {
+            include uwsgi_params;
+            uwsgi_pass 127.0.0.1:12137;
+        }
+
+    nginx 转发到 gunicorn 需要使用 X-Real-IP 或 X-Forwarded-For
+    e.g.::
+        # set_real_ip_from 100.125.0.0/16;
+        # set_real_ip_from 192.168.2.1;
+        # set_real_ip_from 2001:0db8::/32;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        # proxy_set_header X-Forwarded-For;
+        # proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        real_ip_recursive on;
+
+        location / {
+            proxy_pass http://127.0.0.1:5001;
+        }
+    """
+    return request.headers.get(header, '0.0.0.0') if header else request.remote_addr

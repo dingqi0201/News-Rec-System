@@ -16,7 +16,7 @@ from flask_login import LoginManager as _LoginManager, login_user, current_user
 from .events import event_user_logined
 from .log import LogCharge
 from ..libs.exceptions import MsgException, APIFailure, APIForbidden, APIClosed
-from ..libs.helper import is_accept_json
+from ..libs.helper import is_accept_json, get_real_ip
 from ..models.bgp import TBBGP
 from ..models.user import TBUser, TBRole
 
@@ -111,7 +111,7 @@ def bgp_required(fn):
 
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        client_ip = request.remote_addr
+        client_ip = get_real_ip(current_app.config.get('REAL_IP_HEADER'))
         res = TBBGP.query.filter_by(bgp_ip=client_ip).first()
         if not res:
             raise APIForbidden('非法请求')
@@ -149,7 +149,7 @@ def devops_required(fn):
 
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        client_ip = request.remote_addr
+        client_ip = get_real_ip(current_app.config.get('REAL_IP_HEADER'))
         if client_ip \
                 and client_ip != current_app.config.get('LOCAL_GW') \
                 and client_ip[0:8] not in ['192.168.', '127.0.0.']:

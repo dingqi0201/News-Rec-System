@@ -21,6 +21,11 @@ EXCEPTION_DESC = {
     500: '系统服务异常',
     'dbapi': '数据库操作失败',
 }
+# 获取客户端 IP 的标头, 空串表示使用 request.remote_addr 获取, 详见: libs/helper::get_real_ip()
+# 如: script/nginx/pyadmin.conf + script/gunicorn/gunicorn.conf.py 时启用 'X-Real-IP'
+# 如用 uwsgi 部署 或 python3 dev.py 调试时则不需要下列配置, 或配置为空串
+# REAL_IP_HEADER = 'X-Real-IP'
+# REAL_IP_HEADER = 'X-Forwarded-For'
 
 ##########
 # LOG

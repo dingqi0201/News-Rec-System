@@ -93,7 +93,7 @@ def web_authorize():
     │   └── steps
     ├── logs  日志目录
     │   └── behave.reports
-    ├── scripts  脚本
+    ├── scripts  脚本, 配置文件
     ├── tests  单元测试
     ├── tmp  临时文件
     └── venv  虚拟环境
@@ -149,6 +149,7 @@ OA_CLIENT_SECRET = get_environ('PYADMIN_OAUTH_SECRET')
 3. `pip3 install -r requirements.txt`
 4. `python3 start.py` 或 `python3 dev.py`
 5. 访问: http://127.0.0.1:5000  [http://ff.pyadmin:777](http://ff.pyadmin:777/)
+6. 生产环境部署方案见 `script`
 
 ## 资料
 

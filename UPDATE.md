@@ -1,5 +1,13 @@
 # FF.PyAdmin
 
+
+## v1.2.1
+
+**2020-08-14 更新:**
+
+- 增加助手函数 `get_real_ip`, 方便获取客户端 IP
+- 增加部署方案示例配置: `script/gunicorn` `script/uwsgi`
+
 ## v1.2
 
 **2020-07-10 更新:**
