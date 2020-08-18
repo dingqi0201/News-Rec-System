@@ -6,12 +6,11 @@
 
     :author: Fufu, 2019/9/16
 """
-from flask import request, json, current_app
+from flask import request, json
 from flask_login import current_user
 from sqlalchemy import desc
 
 from ..libs.exceptions import APIFailure
-from ..libs.helper import get_real_ip
 from ..models.user import TBLog
 
 
@@ -29,7 +28,7 @@ class LogCharge:
         """
         log = {
             'log_action': request.endpoint,
-            'log_operator': getattr(current_user, 'realname', get_real_ip(current_app.config.get('REAL_IP_HEADER')))
+            'log_operator': getattr(current_user, 'realname', request.remote_addr)
         }
 
         isinstance(data, dict) and log.update(data)

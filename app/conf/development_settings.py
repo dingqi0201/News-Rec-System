@@ -24,6 +24,7 @@
 DEBUG = True
 JSON_AS_ASCII = False
 WTF_CSRF_ENABLED = True
+PROXY_FIX_X_FOR = 0
 
 # 域名访问, 写 HOSTS: 127.0.0.1 ff.pyadmin
 # SERVER_NAME = 'ff.pyadmin:777'

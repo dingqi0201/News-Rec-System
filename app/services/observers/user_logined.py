@@ -6,12 +6,11 @@
 
     :author: Fufu, 2019/12/20
 """
-from flask import current_app
+from flask import current_app, request
 from flask_login import current_user
 
 from ..log import LogCharge
 from ..mail import MailCharge
-from ...libs.helper import get_real_ip
 
 
 def user_logined_handler(sender, **data):
@@ -29,7 +28,7 @@ def user_logined_handler(sender, **data):
     # 日志
     LogCharge.to_db({
         'log_status': 1 if data.pop('log_status', 0) else 0,
-        'log_content': get_real_ip(current_app.config.get('REAL_IP_HEADER')),
+        'log_content': request.remote_addr,
     })
 
     # 邮件

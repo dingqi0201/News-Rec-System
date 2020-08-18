@@ -16,10 +16,11 @@ from decimal import Decimal
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 from flask import Flask as _Flask, render_template
 from flask.json import JSONEncoder as _JSONEncoder, jsonify
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .forms import csrf
 from .libs.exceptions import APIException, APIServerError, APIFailure
-from .libs.helper import is_accept_json
+from .libs.helper import is_accept_json, get_int
 from .models import db, DBModel
 from .services.auth import oauth, login_manager
 from .services.mail import mail
@@ -167,6 +168,10 @@ def create_app(config_name=None, config=None):
 
     # 加载环境配置
     init_config(app, config_name=config_name, config=config)
+
+    x_for = get_int(app.config.get('PROXY_FIX_X_FOR'))
+    if x_for:
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=x_for, x_host=x_for)
 
     # 日志配置
     init_logger(app)

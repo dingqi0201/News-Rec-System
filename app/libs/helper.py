@@ -403,4 +403,4 @@ def get_real_ip(header=''):
             proxy_pass http://127.0.0.1:5001;
         }
     """
-    return request.headers.get(header, '0.0.0.0') if header else request.remote_addr
+    return request.headers.get(header, '0.0.0.0').split(',')[0].strip() if header else request.remote_addr
