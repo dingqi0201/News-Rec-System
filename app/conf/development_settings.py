@@ -22,6 +22,7 @@
 ##########
 
 DEBUG = True
+DEBUG_RESPONSE = True
 JSON_AS_ASCII = False
 WTF_CSRF_ENABLED = True
 PROXY_FIX_X_FOR = 0
@@ -48,6 +49,9 @@ SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://db_user_demo:db_pass_demo@127.0.0.1:3
                           '/db_ff_pyadmin?charset=utf8mb4'
 # 调试模式, 显示 SQL
 SQLALCHEMY_ECHO = True
+
+# ASN 列表缓存
+ASN_LIST = set()
 
 ##########
 # Mail

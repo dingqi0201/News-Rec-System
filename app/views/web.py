@@ -82,7 +82,13 @@ def web_favicon():
 
 
 @bp_web.route('/async_signal_demo')
-def async_signal_demo():
+def web_async_signal_demo():
     """异步信息示例"""
     event_async_with_app_demo.send(current_app._get_current_object(), mydata='view.data')
     return render_template('base-msg.html', e={'content': '页面已返回, 5秒后查看控制台日志'})
+
+
+@bp_web.route('/show_asn_cache')
+def web_show_asn_cache():
+    """显示 ASN 缓存"""
+    return current_app.config.get('ASN_LIST', set())

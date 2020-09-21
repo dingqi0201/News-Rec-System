@@ -37,7 +37,8 @@ SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://db_user_demo:{}@127.0.0.1:3306' \
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ENGINE_OPTIONS = {
     'pool_recycle': 3599,
-    'pool_size': 100
+    'pool_size': 100,
+    'max_overflow': -1,
 }
 
 ##########

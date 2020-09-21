@@ -39,6 +39,9 @@ class ASNCharge:
         if not res and as_api:
             raise APIFailure('ASN 入库失败')
 
+        # 更新 ASN_LIST 缓存数据
+        current_app.config['ASN_LIST'].add(data['asn'])
+
         return res
 
     @staticmethod

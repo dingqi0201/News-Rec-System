@@ -22,6 +22,7 @@ from .forms import csrf
 from .libs.exceptions import APIException, APIServerError, APIFailure
 from .libs.helper import is_accept_json, get_int
 from .models import db, DBModel
+from .models.dbcache import init_db_cache
 from .services.auth import oauth, login_manager
 from .services.mail import mail
 from .services.observers import observer
@@ -69,6 +70,8 @@ class Flask(_Flask):
         :param rv:
         :return:
         """
+        if isinstance(rv, set):
+            rv = list(rv)
         if isinstance(rv, (list, dict, DBModel)):
             rv = jsonify(rv)
         return super(Flask, self).make_response(rv=rv)
@@ -204,10 +207,11 @@ def create_app(config_name=None, config=None):
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        init_db_cache(app)
 
     @app.after_request
     def after_request(resp):
-        if app.debug and is_accept_json():
+        if app.debug and app.config.get('DEBUG_RESPONSE') and is_accept_json():
             app.logger.debug("Response: {}, {}, {}".format(resp.status, resp.mimetype, resp.get_data(as_text=True)))
         return resp
 

@@ -4,6 +4,7 @@
     助手函数集
 
     :author: Fufu, 2019/9/9
+    :update: Fufu, 2020/9/7 get_date() 增加支持传入时间戳
 """
 import calendar
 import hashlib
@@ -191,7 +192,7 @@ def get_domain(domain=None):
     return domain if re.match(patt, domain) else None
 
 
-def get_date(dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=0, add_hours=0):
+def get_date(any_dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=0, add_hours=0):
     """
     检查日期是否正确并返回日期
 
@@ -199,20 +200,35 @@ def get_date(dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=0, a
 
         get_date('2018-10-10')
         get_date('2018-10-10 12:00:00', '%Y-%m-%d %H:%M:%S')
+        get_date('1599444062')
 
-    :param dt: mixed, 输入的日期, 空/日期字符串/日期对象
+    :param any_dt: mixed, 输入的日期, 空/日期字符串/日期对象/时间戳
     :param in_fmt: str, 源日期格式
-    :param out_fmt: str, 返回的日期格式, 默认返回日期对象
+    :param out_fmt: str, 返回的日期格式, 默认返回日期对象, 特殊: timestamp 时返回时间戳
     :param default: bool, True 源日期格式不正确时返回今天
     :param add_days: int, 正负数, 与输入日期相差的天数
     :param add_hours: int, 正负数, 与输入日期相差的小时数
     :return: datetime|None|str
     """
-    if not isinstance(dt, (datetime, date)):
+    dt = None
+    if isinstance(any_dt, (datetime, date)):
+        dt = any_dt
+    else:
         try:
-            dt = datetime.strptime(dt, in_fmt)
+            dt = datetime.strptime(any_dt, in_fmt)
         except Exception:
-            dt = datetime.now() if default else None
+            timestamp = get_int(any_dt)
+            if timestamp:
+                try:
+                    dt = datetime.fromtimestamp(timestamp)
+                except Exception:
+                    pass
+
+    if not dt:
+        if default:
+            dt = datetime.now()
+        else:
+            return None
 
     if add_days and isinstance(add_days, int):
         dt = dt + timedelta(days=add_days)
@@ -220,7 +236,12 @@ def get_date(dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=0, a
     if add_hours and isinstance(add_hours, int):
         dt = dt + timedelta(hours=add_hours)
 
-    return (datetime.strftime(dt, out_fmt) if out_fmt else dt) if dt else None
+    if not out_fmt:
+        return dt
+    if out_fmt == 'timestamp':
+        return dt.timestamp()
+
+    return datetime.strftime(dt, out_fmt)
 
 
 def get_ymd(dt=None, in_fmt='%Y-%m-%d', out_fmt='%Y-%m-%d', default=True, add_days=0):

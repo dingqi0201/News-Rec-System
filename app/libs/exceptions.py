@@ -43,6 +43,7 @@ class APIException(HTTPException):
         msg: 错误消息, 成功时必定为空
         code: 0 成功, 1 失败 (前端框架使用方便)
         data: 各类型数据或数据集, 默认为列表
+        info: 附加信息, 不受请求成功或失败影响
         count: 总记录数 (数据分页时可用)
         err_code: 接口自定义的错误码
             0 成功
@@ -75,12 +76,13 @@ class APIException(HTTPException):
     err_code = 400
     code = 400
 
-    def __init__(self, description=None, response=None, ret=None, code=None, err_code=None, headers=None):
+    def __init__(self, description=None, response=None, ret=None, code=None, err_code=None, info=None, headers=None):
         """同 HTTPException, 增加 ret 属性"""
         self.ret = {
             'ok': 0,
             'msg': '',
             'data': [],
+            'info': '' if info is None else info,
             'code': 1,
             'count': 0,
             'err_code': 400
@@ -88,11 +90,11 @@ class APIException(HTTPException):
         if ret and isinstance(ret, dict):
             self.ret.update(ret)
 
-        if not code is None:
+        if code is not None:
             self.code = code
-        if not err_code is None:
+        if err_code is not None:
             self.err_code = err_code
-        if not description is None:
+        if description is not None:
             self.description = description
 
         # 自定义响应头 e.g. [('xunyou', 'xxx')]
@@ -148,8 +150,9 @@ class APISuccess(APIException):
     err_code = 0
     description = 'OK'
 
-    def __init__(self, data=None, count=0, response=None, headers=None):
-        super(APISuccess, self).__init__(ret={'data': data, 'count': count}, response=response, headers=headers)
+    def __init__(self, data=None, count=0, info=None, response=None, headers=None):
+        super(APISuccess, self).__init__(ret={'data': data, 'count': count}, info=info,
+                                         response=response, headers=headers)
 
 
 class APIFailure(APIException):

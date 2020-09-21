@@ -2,7 +2,7 @@
     font-family: iosevka;
     font-weight: 700;
     font-style: normal;
-    src: url('fonts/iosevka/iosevka-bold.woff2') format('woff2'), url('fonts/iosevka/iosevka-bold.woff') format('woff'), url('/v/css/fonts/iosevka/iosevka-bold.ttf') format('truetype');
+    src: url('fonts/iosevka/iosevka-bold.woff2') format('woff2'), url('fonts/iosevka/iosevka-bold.woff') format('woff'), url('fonts/iosevka/iosevka-bold.ttf') format('truetype');
 }
 
 body {

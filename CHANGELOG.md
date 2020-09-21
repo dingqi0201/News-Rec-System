@@ -1,5 +1,19 @@
 # FF.PyAdmin
 
+## v1.2.2
+
+**2020-09-21 更新:**
+
+- 助手函数 `get_date` 增加支持传入时间戳
+- 增加 `DEBUG_RESPONSE` 配置参数, 开关是否在 DEBUG` 模式下启用响应日志
+- API 返回结果增加 `info` 字段, 无论成功或失败都可以附带该信息
+- 新版 WTForms 同样有例外问题, 启用自定义 `CSRFProtect`
+- SQLAlchemy 增加默认参数: `max_overflow': -1` 
+- 新增 `init_db_cache` 机制, 用于将更新频率低, 使用频率高的数据存入全局变量(如 IP 白名单, 示例中是 ASN 表: `/show_asn_cache`), 并实时更新, 应用启动后不再请求数据库
+- 视图函数可直接返回集合数据类型 `return set()`
+- 表单验证 `StripString()` 新增 `cls_whitespace=True` 用于清除所有空白字符
+- 权限禁用 `role_deny` 限制只能禁用小权限(视图函数级别)
+
 
 ## v1.2.1
 

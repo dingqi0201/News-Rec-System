@@ -5,11 +5,13 @@
 
     :author: Fufu, 2019/9/2
 """
-from flask_wtf import FlaskForm, CSRFProtect
+import re
+
+from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import StopValidation
 
-# from .csrf import CSRFProtect
+from .csrf import CSRFProtect
 from ..conf import get_conf_json
 from ..libs.exceptions import APIParameterError, MsgException
 from ..libs.helper import get_int, is_accept_json, get_plain_text, get_round
@@ -79,20 +81,21 @@ class BaseForm(FlaskForm):
 class StripString:
     """DataRequired + 去除首尾空白赋值(或清除HTML标签)"""
 
-    def __init__(self, message=None, allow_none=False, plain_text=False):
+    def __init__(self, message=None, allow_none=False, plain_text=False, cls_whitespace=False):
         self.message = message
         self.allow_none = allow_none
         self.plain_text = plain_text
+        self.cls_whitespace = cls_whitespace
 
     def __call__(self, form, field):
         """
         e.g.::
 
             class SpecialRouteSearchForm(BaseForm):
-                special_route = StringField('可为空, 空格, 有值时去除空白', validators=[StripString(allow_none=True)])
+                special_route = StringField('可为空, 空格, 去除首尾空白赋值', validators=[StripString(allow_none=True)])
 
             class SpecialRouteForm(BaseForm):
-                special_route = StringField('必填, 去除空白赋值', validators=[StripString()])
+                special_route = StringField('必填, 去除首尾空白赋值', validators=[StripString()])
 
         """
         fdata = field.data
@@ -105,7 +108,7 @@ class StripString:
             if self.message is None:
                 self.message = '{}不能为空{}'.format(field.label.text, '(纯文本)' if self.plain_text else '')
             raise StopValidation(self.message)
-        getattr(form, field.name).data = fdata
+        getattr(form, field.name).data = re.sub(r'\s+', '', fdata) if self.cls_whitespace else fdata
 
 
 class PositiveInteger:
