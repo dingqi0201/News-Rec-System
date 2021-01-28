@@ -1,5 +1,17 @@
 # FF.PyAdmin
 
+## v1.2.3
+
+**2021-01-28 更新:**
+
+- 修正自定义异常描述显示问题
+- 新增访问第三方数据库的快捷方式, 数据源与逻辑分离, 详见: `/result_tpl`, 配置见: `development_settings.py`
+  - `OCI` Oracle 需要下载客户端环境, 安装 `cx-oracle`
+  - `MSSQL` SQLServer 推荐使用 `pyodbc`, 也可以用 `pymssql`
+  - `MYSQL` 驱动任选
+- 助手函数新增 `get_json_loads`, `get_iso_date`
+- 助手函数 `get_date` 增加秒参数, 增加输出时间戳(毫秒), 增加输出时间日期对象
+
 ## v1.2.2
 
 **2020-09-21 更新:**

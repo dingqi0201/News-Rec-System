@@ -14,6 +14,9 @@ from flask_login import logout_user, login_required
 from requests.exceptions import RequestException
 
 from ..forms import csrf
+from ..libs.exceptions import APISuccess
+from ..models.dao.mssql import MSSQL
+from ..models.dao.mysql import MYSQL
 from ..services.auth import oauth, chk_user_login, set_user_login
 from ..services.events import event_async_with_app_demo
 
@@ -92,3 +95,15 @@ def web_async_signal_demo():
 def web_show_asn_cache():
     """显示 ASN 缓存"""
     return current_app.config.get('ASN_LIST', set())
+
+
+@bp_web.route('/result_tpl')
+def web_result_tpl():
+    """访问第三方提供的数据库示例"""
+    # 原始 SQL 查询, 或执行存储过程
+    # 因依附于 SQLAlchemy, 各数据库请求方式相同
+    # 原生方式参考 result_tpl 的实现, 注: MSSQL 先安装 pyodbc 或 pymssql; Oracle 先配置环境, 安装 cx_Oracle
+    res = MYSQL.result_tpl('other_mysqldb_test', {'num': 5}, ['工号', '姓名'])
+    # res = MSSQL.result_tpl('mssql_case1_test')
+    # res = OCI.result_tpl('...')
+    return APISuccess(res)

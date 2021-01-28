@@ -41,6 +41,36 @@
         <div class="panel-box pl25">
             <div id="grid_main" class="font-iosevka overflow">
                 <fieldset class="layui-elem-field">
+                    <legend><i class="ficon icon-pc text-success f20"></i> v1.2.3</legend>
+                    <div class="layui-field-box">
+                        <h2>2021-01-28 更新:</h2>
+                        <hr>
+                        <ul>
+                            <li>
+                                修正自定义异常描述显示问题
+                            </li>
+                            <li>
+                                新增访问第三方数据库的快捷方式, 数据源与逻辑分离, 详见: `/result_tpl`, 配置见: `development_settings.py`
+                            </li>
+                            <li>
+                                `OCI` Oracle 需要下载客户端环境, 安装 `cx-oracle`
+                            </li>
+                            <li>
+                                `MSSQL` SQLServer 推荐使用 `pyodbc`, 也可以用 `pymssql`
+                            </li>
+                            <li>
+                                `MYSQL` 驱动任选
+                            </li>
+                            <li>
+                                助手函数新增 `get_json_loads`, `get_iso_date`
+                            </li>
+                            <li>
+                                助手函数 `get_date` 增加秒参数, 增加输出时间戳(毫秒), 增加输出时间日期对象
+                            </li>
+                        </ul>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
                     <legend><i class="ficon icon-pc text-success f20"></i> v1.2.2</legend>
                     <div class="layui-field-box">
                         <h2>2020-09-21 更新:</h2>

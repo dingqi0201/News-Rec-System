@@ -103,10 +103,10 @@ def web_authorize():
 1. `secret_settings.py` 必须, 一般设置 SECRET_KEY 及数据库配置, 不要加入 Git.
 2. `settings.py` 必须, 常规配置, APP_NAME, 日志参数, 错误消息等.
 3. `production_settings.py` 可选, 默认加载项, 生产环境额外配置.
-4. `development_settings.py` 可选, 开发环境额外配置.
-5. `testing_settings.py` 可选, 测试环境额外配置, BDD 或单元测试时使用.
+4. `development_settings.py` 可选, 开发环境额外配置, 不建议加入 Git.
+5. `testing_settings.py` 可选, 测试环境额外配置, BDD 或单元测试时使用, 不建议加入 Git.
 
-第 3/4/5 项需要设置环境变量, 默认为 `production`, 可选: `development` `testing`. 如:
+默认只会加载第 1, 2 项配置, 第 3/4/5 项需要设置环境变量, 可选: `production` `development` `testing`. 如:
 
 ```shell
 # 1. Windows:

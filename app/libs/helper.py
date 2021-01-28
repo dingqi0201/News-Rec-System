@@ -4,10 +4,12 @@
     助手函数集
 
     :author: Fufu, 2019/9/9
-    :update: Fufu, 2020/9/7 get_date() 增加支持传入时间戳
+    :update: Fufu, 2020/9/7 get_date() 增加支持时间戳(秒/毫秒)
+    :update: Fufu, 2020/12/16 get_iso_date()
 """
 import calendar
 import hashlib
+import json
 import re
 import sys
 import time
@@ -192,7 +194,7 @@ def get_domain(domain=None):
     return domain if re.match(patt, domain) else None
 
 
-def get_date(any_dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=0, add_hours=0):
+def get_date(any_dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=0, add_hours=0, add_seconds=0):
     """
     检查日期是否正确并返回日期
 
@@ -201,13 +203,20 @@ def get_date(any_dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=
         get_date('2018-10-10')
         get_date('2018-10-10 12:00:00', '%Y-%m-%d %H:%M:%S')
         get_date('1599444062')
+        get_date(out_fmt='timestamp000')
+        get_date(out_fmt='date')
+        get_date(out_fmt='datetime')
+        get_date(date(year=2020, month=1, day=1))
+        get_date(date(year=2020, month=1, day=1), out_fmt='datetime')
+
 
     :param any_dt: mixed, 输入的日期, 空/日期字符串/日期对象/时间戳
     :param in_fmt: str, 源日期格式
-    :param out_fmt: str, 返回的日期格式, 默认返回日期对象, 特殊: timestamp 时返回时间戳
+    :param out_fmt: str, 返回的日期格式, 默认返回日期对象, 特殊: timestamp 时返回时间戳, timestamp000 毫秒时间戳
     :param default: bool, True 源日期格式不正确时返回今天
     :param add_days: int, 正负数, 与输入日期相差的天数
     :param add_hours: int, 正负数, 与输入日期相差的小时数
+    :param add_seconds: int, 正负数, 与输入日期相差的秒数
     :return: datetime|None|str
     """
     dt = None
@@ -236,12 +245,75 @@ def get_date(any_dt=None, in_fmt='%Y-%m-%d', out_fmt='', default=True, add_days=
     if add_hours and isinstance(add_hours, int):
         dt = dt + timedelta(hours=add_hours)
 
+    if add_seconds and isinstance(add_seconds, int):
+        dt = dt + timedelta(seconds=add_seconds)
+
     if not out_fmt:
         return dt
+    if out_fmt == 'timestamp000':
+        return int(dt.timestamp() * 1000)
     if out_fmt == 'timestamp':
-        return dt.timestamp()
+        return int(dt.timestamp())
+    if out_fmt == 'datetime':
+        if not getattr(dt, 'date', None):
+            dt = datetime(dt.year, dt.month, dt.day)
+        return dt
+    if out_fmt == 'date':
+        return dt.date() if getattr(dt, 'date', None) else dt
 
     return datetime.strftime(dt, out_fmt)
+
+
+def get_iso_date(any_dt=None, in_fmt='%Y-%m-%d', zone='+08:00'):
+    """
+    世界时间格式, 默认当前时间
+
+    e.g.::
+
+        get_iso_date()
+        get_iso_date('2020-01-01')
+        get_iso_date(date(year=2020, month=1, day=1))
+        get_iso_date('2020-01-01 01:02:03', in_fmt='%Y-%m-%d %H:%M:%S')
+
+    :param any_dt: mixed, 输入的日期, 空/日期字符串/日期对象/时间戳
+    :param in_fmt: str, 源日期格式
+    :param zone:
+    :return:
+    """
+    return get_date(any_dt, in_fmt=in_fmt, out_fmt='datetime').isoformat(timespec='seconds') + zone
+
+
+def get_date_range(sdate=None, edate=None, days=None, in_fmt='%Y-%m-%d', out_fmt='', with_edate=True):
+    """
+    获取日期范围
+
+    e.g.::
+
+        # [datetime.datetime(2020, 12, 14, 11, 52, 37, 540895)]
+        list(get_date_range()
+
+        # ['20201212', '20201213']
+        list(get_date_range('2020-12-12', '2020-12-13', out_fmt='%Y%m%d'))
+
+        # ['20201212', '20201213']
+        list(get_date_range('2020-12-12', out_fmt='%Y%m%d', with_edate=False))
+
+    :param sdate: 开始时间
+    :param edate: 结束时间
+    :param days: 时间间隔
+    :param in_fmt: str, 源日期格式
+    :param out_fmt: str, 返回的日期格式, 默认返回日期对象, 特殊: timestamp 时返回时间戳
+    :param with_edate: bool, 是否包含结束日期
+    :return: list
+    """
+    sdate = get_date(sdate, in_fmt=in_fmt)
+    edate = get_date(edate, in_fmt=in_fmt)
+
+    if not isinstance(days, timedelta):
+        days = timedelta(days=1)
+
+    for i in range((edate - sdate).days + (1 if with_edate else 0)):
+        yield get_date(sdate + days * i, out_fmt=out_fmt)
 
 
 def get_ymd(dt=None, in_fmt='%Y-%m-%d', out_fmt='%Y-%m-%d', default=True, add_days=0):
@@ -425,3 +497,17 @@ def get_real_ip(header=''):
         }
     """
     return request.headers.get(header, '0.0.0.0').split(',')[0].strip() if header else request.remote_addr
+
+
+def get_json_loads(s, default=False):
+    """
+    屏蔽错误, 加载 JSON
+
+    :param s:
+    :param default:
+    :return:
+    """
+    try:
+        return json.loads(s)
+    except Exception:
+        return {} if default is False else default

@@ -50,8 +50,33 @@ SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://db_user_demo:db_pass_demo@127.0.0.1:3
 # 调试模式, 显示 SQL
 SQLALCHEMY_ECHO = True
 
+# 额外访问的第三方数据库, 比如只读的表, 可以单独使用驱动
+# Orcale 需要客户端环境, 从官网下载后解压即可
+# Ref: https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
+OCI_LIB_PATH_NT = r'C:\Work\ff.server\ocix32v19'
+OCI_LIB_PATH_POSIX = '/lib/ocix64v19'
+OCI_LIB_PATH = OCI_LIB_PATH_POSIX
+OCI_DATABASE_URI = 'oracle+cx_oracle://ocitest:ocitest@127.0.0.1:1521/spd'
+
+# SQLServer 推荐使用 pyodbc, 各系统中文都显示正常
+# Ref: https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server
+# MSSQL_DATABASE_URI = 'mssql+pymssql://pytest:pytest@127.0.0.1:1433/XY_OA'
+# MSSQL_DATABASE_URI = 'mssql+pyodbc://pytest:pytest@127.0.0.1:1433/XY_OA?driver=SQL+Server+Native+Client+10.0'
+MSSQL_DATABASE_URI = 'mssql+pyodbc://pytest:pytest@127.0.0.1:1433/XY_OA?driver=ODBC+Driver+17+for+SQL+Server'
+
+# MYSQL
+MYSQL_DATABASE_URI = 'mysql+cymysql://db_user_demo:db_pass_demo@127.0.0.1:3306' \
+                     '/db_ff_pyadmin?charset=utf8mb4'
+
 # ASN 列表缓存
 ASN_LIST = set()
+
+# 数据请求模板, 用于数据相关配置分离, 需要可以做个后台管理, 示例见: /result_tpl
+# { key 功能标识: (数据库连接标识, SQL 语句) }
+QUERY_TPL = {
+    'other_mysqldb_test': ('MYSQL_DATABASE_URI', '''SELECT job_number, realname FROM ff_user LIMIT [[.num.]]'''),
+    'mssql_case1_test': ('MSSQL_DATABASE_URI', '''SELECT TOP 5 * FROM oa_user'''),
+}
 
 ##########
 # Mail

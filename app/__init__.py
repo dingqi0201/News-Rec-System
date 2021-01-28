@@ -150,7 +150,7 @@ def init_error(app):
 
         # 自定义异常描述
         err = namedtuple('MyError', ['code', 'description'])(
-            code, app.config.get('EXCEPTION_DESC', {}).get(code, getattr(e, 'description', str(e)))
+            code, getattr(e, 'description', app.config.get('EXCEPTION_DESC', {}).get(code, str(e)))
         )
 
         if app.config.get('API') or is_accept_json():
