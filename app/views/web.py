@@ -31,6 +31,13 @@ def web_index():
     return render_template('index.html')
 
 
+@bp_web.route('/news')
+@login_required
+def web_news():
+    """新闻详情页"""
+    return render_template('news.html')
+
+
 @bp_web.route('/login')
 def web_login():
     """登录页"""
