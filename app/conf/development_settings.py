@@ -45,8 +45,7 @@ OA_REFRESH_TOKEN_URL = 'http://oa/oauth2/refresh_token/'
 # DB
 ##########
 
-SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://db_user_demo:db_pass_demo@127.0.0.1:3306' \
-                          '/db_ff_pyadmin?charset=utf8mb4'
+SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://root:123456@127.0.0.1:3306/news_flask?charset=utf8mb4'
 # 调试模式, 显示 SQL
 SQLALCHEMY_ECHO = True
 
@@ -65,8 +64,7 @@ OCI_DATABASE_URI = 'oracle+cx_oracle://ocitest:ocitest@127.0.0.1:1521/spd'
 MSSQL_DATABASE_URI = 'mssql+pyodbc://pytest:pytest@127.0.0.1:1433/XY_OA?driver=ODBC+Driver+17+for+SQL+Server'
 
 # MYSQL
-MYSQL_DATABASE_URI = 'mysql+cymysql://db_user_demo:db_pass_demo@127.0.0.1:3306' \
-                     '/db_ff_pyadmin?charset=utf8mb4'
+MYSQL_DATABASE_URI = 'mysql+cymysql://root:123456@127.0.0.1:3306/news_flask?charset=utf8mb4'
 
 # ASN 列表缓存
 ASN_LIST = set()

@@ -32,8 +32,7 @@ set_environ('AUTHLIB_INSECURE_TRANSPORT', '1')
 # DB
 ##########
 
-SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://db_user_demo:{}@127.0.0.1:3306' \
-                          '/db_ff_pyadmin?charset=utf8mb4'.format(get_environ('PYADMIN_DBPASS', key=SECRET_KEY))
+SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://root:123456@127.0.0.1:3306/news_flask?charset=utf8mb4'.format(get_environ('PYADMIN_DBPASS', key=SECRET_KEY))
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ENGINE_OPTIONS = {
     'pool_recycle': 3599,

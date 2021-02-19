@@ -24,5 +24,4 @@ WTF_CSRF_ENABLED = False
 ##########
 
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://db_user_demo:db_pass_demo@127.0.0.1:3306' \
-                          '/db_ff_pyadmin?charset=utf8mb4'
+SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://root:123456@127.0.0.1:3306/news_flask?charset=utf8mb4'
