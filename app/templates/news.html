@@ -2,195 +2,216 @@
 {% block title %}新闻网{% endblock %}
 
 {% block body %}
-<div class="header">
-    <script>
-        $(function () {
-            if (window.PIE) {
-                $('.rounded').each(function () {
-                    PIE.attach(this);
-                });
+    <div class="header">
+        <script>
+            $(function () {
+                if (window.PIE) {
+                    $('.rounded').each(function () {
+                        PIE.attach(this);
+                    });
+                }
+            });
+        </script>
+        <script>
+            function mouseOutPic() {
+                if (window.event.toElement.id != "img000") bigPic.style.visibility = "hidden";
             }
-        });
-    </script>
-    <script>
-        function mouseOutPic() {
-            if (window.event.toElement.id != "img000") bigPic.style.visibility = "hidden";
-        }
 
-        function mouseOverPic(imgSrc) {
-            var seeBig = document.getElementById("bigPic");
-            var newImg = document.createElement("img");
-            newImg = "<img src=\'" + imgSrc + "\'/>";
-            seeBig.innerHTML = newImg;
-        }
-    </script>
-    <script>
-        function mouseOutPic1() {
-            if (window.event.toElement.id != "img001") bigPic1.style.visibility = "hidden";
-        }
+            function mouseOverPic(imgSrc) {
+                var seeBig = document.getElementById("bigPic");
+                var newImg = document.createElement("img");
+                newImg = "<img src=\'" + imgSrc + "\'/>";
+                seeBig.innerHTML = newImg;
+            }
+        </script>
+        <script>
+            function mouseOutPic1() {
+                if (window.event.toElement.id != "img001") bigPic1.style.visibility = "hidden";
+            }
 
-        function mouseOverPic1(imgSrc1) {
-            var seeBig1 = document.getElementById("bigPic1");
-            var newImg1 = document.createElement("img");
-            newImg1 = "<img src=\'" + imgSrc1 + "\'/>";
-            seeBig1.innerHTML = newImg1;
-        }
-    </script>
-    <div style="width: 1100px;height:129px;background:url(http://news.bjfu.edu.cn/new_images/header.jpg);margin:0 auto;border: none ">
-        <div style="width: 885px;height: 82px;padding-left: 10px;padding-top: 25px;float: left">
-            <a href="http://news.bjfu.edu.cn"><img src="../static/images/logo.png" alt="新闻网" width="150" height="50"></a>
-        </div>
-
-    </div>
-</div>
-<div class="wrap_box">
-    <div style="width: 100%;height: 44px;background: url(http://news.bjfu.edu.cn/new_images/navbg1.jpg) 0 0 repeat-x;">
-        <div class="nav">
-            <ul>
-                <li><a href="../bljd/index.html">北林焦点</a></li>
-                <li><a href="index.html">绿色要闻</a></li>
-                <li><a href="../ztbd/index.html">专题报道</a></li>
-                <li><a href="../xccc/index.html">宣传橱窗</a></li>
-                <li><a href="../lsxy/index.html">校园动态</a></li>
-                <li><a href="../jxky/index.html">教学科研</a></li>
-                <li><a href="../lswh/index.html">微媒体</a></li>
-                <li><a href="../lscb/index.html">媒体北林</a></li>
-                <li><a href="../djsz/index.html">党建思政</a></li>
-                <li><a href="../xfrw/index.html">绿色人物</a></li>
-                <li><a href="../gdyl/index.html">观点言论</a></li>
-                <li><a href="../lssy/index.html">绿色视野</a></li>
-                <li><a href="../yzph/index.html">一周排行</a></li>
-                <li><a href="http://app.bjfu.edu.cn/xcb">北林报</a></li>
-                <li><a href="../xyly/index.html">校园掠影</a></li>
-                <li><a href="../spxw/index.html">视频新闻</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="wrap">
-        <div class="search_box" style="margin-top: 25px;">
-            <div class="searchcon">
-                <script type="text/javascript">
-                    var oldDate = new Date(2011, 4, 23, 0, 0, 0);
-                    var nowDate = new Date();
-                    var week = "日,一,二,三,四,五,六".split(',');
-                    var str = nowDate.getFullYear() + "年" + (nowDate.getMonth() + 1) + "月" + nowDate.getDate() + "日&nbsp;星期" + week[nowDate.getDay()];
-                    document.write(str);
-                </script>
+            function mouseOverPic1(imgSrc1) {
+                var seeBig1 = document.getElementById("bigPic1");
+                var newImg1 = document.createElement("img");
+                newImg1 = "<img src=\'" + imgSrc1 + "\'/>";
+                seeBig1.innerHTML = newImg1;
+            }
+        </script>
+        <div style="width: 1100px;height:129px;background:url(http://news.bjfu.edu.cn/new_images/header.jpg);margin:0 auto;border: none ">
+            <div style="width: 885px;height: 82px;padding-left: 10px;padding-top: 25px;float: left">
+                <a href="http://news.bjfu.edu.cn"><img src="http://news.bjfu.edu.cn/new_images/logo.png" alt="绿色新闻网"
+                                                       width="275" height="82"></a>
             </div>
-            <div style="float:left;width:210px;margin-top: 3px;">
-                <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=99" width="160" height="36"
-                        frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-            </div>
-            <div style="float:left;margin-top: 5px;">
-                <a href="mailto:bjfunews@163.com"> <img src="http://news.bjfu.edu.cn/new_images/email.png"></a>
-            </div>
-            <div style="float:left;margin-top: 12px;margin-left: 8px">
-                <a style="color: #178055;font-size: 15px;font-weight: bold;font-family: 'Microsoft YaHei';"
-                   href="mailto:bjfunews@163.com">来稿信箱：xxxxx@163.com </a>
-            </div>
-            <div class="searchcon1">
-                <form action="http://cms.bjfu.edu.cn/cms/search/searchResults.jsp" method="post" target="_blank"
-                      style="padding-left:5px;">
-                    <input name="siteID" type="hidden" value=42>
-                    <input style="padding-top:5px;color:#999999" name="query" type="text" value="输入搜索内容后按回车键"
-                           onFocus="if(value==defaultValue){value='';this.style.color='#000'}"
-                           onBlur="if(!value){value=defaultValue;this.style.color='#999'}"/>
-                    <input name="Submit" type="submit" value=""/>
-                </form>
-            </div>
-        </div>
-        <div class="textbox" style="margin-top: 20px;background-color: #ffffff;">
-            <div class="pubtit">
-                <div class="first">&nbsp;&nbsp;您现在的位置>>
-                    <a href="../index.html">新闻首页</a>>> <span>绿色要闻</span>
+            <div style="width: 94px;height: 46px;float: left;padding-top: 10px;">
+                <img id="img001" src="http://news.bjfu.edu.cn/new_images/weibo.png"
+                     onmouseover="mouseOverPic1('http://news.bjfu.edu.cn/new_images/wenboma.png'); bigPic1.style.visibility='visible';bigPic1.style.zIndex=100;bigPic1.style.position='absolute';"
+                     onmouseout="mouseOutPic1()">
+                <div id="bigPic1" style="visibility:hidden;">
                 </div>
             </div>
-            <div class="layui-row">
-                <div class="layui-col-md8">
-                    <h2 align="center" style="margin-bottom: 20px;margin-top: 50px;">校党委书记王洪元同辅导员座谈交流</h2>
-                    <div class="articleAuthor" style="height:15px;margin:0 auto;text-align:center;font-size:13px">
-                        <div style="height:15px;margin:0 auto;text-align:center;"><span>来源：学生处</span>
-                            <span>发表时间：2021/01/08</span>
+            <div style="width: 83px;height: 44px;float: left;padding-top: 10px;">
+                <img id="img000" src="http://news.bjfu.edu.cn/new_images/weixin.png"
+                     onmouseover="mouseOverPic('http://news.bjfu.edu.cn/new_images/weixinma.jpg'); bigPic.style.visibility='visible';bigPic.style.zIndex=100;bigPic.style.position='absolute';"
+                     onmouseout="mouseOutPic()">
+                <div id="bigPic" style="visibility:hidden;">
+                </div>
+            </div>
+            <div style="width: 112px;height: 35px;float: left;padding-top: 22px;">
+                <a href="mailto:bjfunews@163.com"><img src="http://news.bjfu.edu.cn/new_images/sy_email.png"> </a>
+            </div>
+            <div style="width: 65px;height: 37px;float: left;padding-top: 19px;">
+                <a href="http://cms.bjfu.edu.cn/cms/search/searchResults.jsp?query=%20&siteID=42&submit=1"><img
+                        src="http://news.bjfu.edu.cn/new_images/search.png"> </a>
+            </div>
+        </div>
+    </div>
+    <div class="wrap_box">
+        <div style="width: 100%;height: 44px;background: url(http://news.bjfu.edu.cn/new_images/navbg1.jpg) 0 0 repeat-x;">
+            <div class="nav">
+                <ul>
+                    <li><a href="../bljd/index.html">北林焦点</a></li>
+                    <li><a href="index.html">绿色要闻</a></li>
+                    <li><a href="../ztbd/index.html">专题报道</a></li>
+                    <li><a href="../xccc/index.html">宣传橱窗</a></li>
+                    <li><a href="../lsxy/index.html">校园动态</a></li>
+                    <li><a href="../jxky/index.html">教学科研</a></li>
+                    <li><a href="../lswh/index.html">微媒体</a></li>
+                    <li><a href="../lscb/index.html">媒体北林</a></li>
+                    <li><a href="../djsz/index.html">党建思政</a></li>
+                    <li><a href="../xfrw/index.html">绿色人物</a></li>
+                    <li><a href="../gdyl/index.html">观点言论</a></li>
+                    <li><a href="../lssy/index.html">绿色视野</a></li>
+                    <li><a href="../yzph/index.html">一周排行</a></li>
+                    <li><a href="http://app.bjfu.edu.cn/xcb">北林报</a></li>
+                    <li><a href="../xyly/index.html">校园掠影</a></li>
+                    <li><a href="../spxw/index.html">视频新闻</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="search_box" style="margin-top: 25px;">
+                <div class="searchcon">
+                    <script type="text/javascript">
+                        var oldDate = new Date(2011, 4, 23, 0, 0, 0);
+                        var nowDate = new Date();
+                        var week = "日,一,二,三,四,五,六".split(',');
+                        var str = nowDate.getFullYear() + "年" + (nowDate.getMonth() + 1) + "月" + nowDate.getDate() + "日&nbsp;星期" + week[nowDate.getDay()];
+                        document.write(str);
+                    </script>
+                </div>
+                <div style="float:left;width:210px;margin-top: 3px;">
+                    <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=99" width="160" height="36"
+                            frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                </div>
+                <div style="float:left;margin-top: 5px;">
+                    <a href="mailto:bjfunews@163.com"> <img src="http://news.bjfu.edu.cn/new_images/email.png"></a>
+                </div>
+                <div style="float:left;margin-top: 12px;margin-left: 8px">
+                    <a style="color: #178055;font-size: 15px;font-weight: bold;font-family: 'Microsoft YaHei';"
+                       href="mailto:bjfunews@163.com">来稿信箱：xxxxx@163.com </a>
+                </div>
+                <div class="searchcon1">
+                    <form action="http://cms.bjfu.edu.cn/cms/search/searchResults.jsp" method="post" target="_blank"
+                          style="padding-left:5px;">
+                        <input name="siteID" type="hidden" value=42>
+                        <input style="padding-top:5px;color:#999999" name="query" type="text" value="输入搜索内容后按回车键"
+                               onFocus="if(value==defaultValue){value='';this.style.color='#000'}"
+                               onBlur="if(!value){value=defaultValue;this.style.color='#999'}"/>
+                        <input name="Submit" type="submit" value=""/>
+                    </form>
+                </div>
+            </div>
+            <div class="textbox" style="margin-top: 20px;background-color: #ffffff;">
+                <div class="pubtit">
+                    <div class="first">&nbsp;&nbsp;您现在的位置>>
+                        <a href="../index.html">新闻首页</a>>> <span>绿色要闻</span>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md8">
+                        <h2 align="center" style="margin-bottom: 20px;margin-top: 50px;">校党委书记王洪元同辅导员座谈交流</h2>
+                        <div class="articleAuthor" style="height:15px;margin:0 auto;text-align:center;font-size:13px">
+                            <div style="height:15px;margin:0 auto;text-align:center;"><span>来源：学生处</span>
+                                <span>发表时间：2021/01/08</span>
+                                <br>
+                            </div>
                             <br>
                         </div>
-                        <br>
+
+                        <div class="article_con text-justify">
+                            <p>
+                                1月6日，校党委书记王洪元主持召开辅导员座谈会，听取辅导员代表对校领导班子民主生活会和“十四五”规划编制工作的意见建议，并和辅导员座谈交流。校党委副书记孙信丽出席会议。学工部、研工部负责人、辅导员代表参加座谈会。</p>
+                            <p>
+                                王洪元对辅导员工作给予了肯定，指出辅导员队伍富有朝气活力，在落实立德树人根本任务中具有独特功能，发挥着不可替代作用。校党委高度重视辅导员工作，将加大工作支持保障力度，推动辅导员工作高质量发展。</p>
+                            <p>
+                                王洪元对进一步加强辅导员队伍建设提出八个方面要求：一要把握性质任务，增强责任感和使命感。要提高对辅导员工作重要性的认识，把辅导员工作当成事业去做。二要聚焦立德树人，提高针对性和有效性。要认真学习贯彻《深化新时代教育评价改革总体方案》，按照教育评价改革主题主线，提升立德树人工作成效。三要改进工作方法，抓两头带中间。要因人而异、一人一策做好学生培养工作，守牢学生安全稳定工作底线，努力培养堪当民族复兴大任的时代新人。四要研究影响因子，发挥集体作用。要深入探究影响学生成长发展的要素因子，贯通多方资源力量深化协同育人。五要加强学习实践，提高综合素质。要将加强理论学习和注重实践锻炼相结合，提高理论素养和综合能力。六要掌握思想动态，防风险除隐患。要精准把握学生整体和个体的特点，全面了解学生基本情况和思想动态，做好风险防患。七要精准处置问题，区分显性隐性。对于显性问题，要集中力量、攻坚克难，及时快速处理；对于隐性问题，要注重日常、久久为功，防患于未然。八要净化思想灵魂，涵养仁爱之心。要按照“四有”好老师要求，加强师德师风建设，严格要求自己，用责任心爱心做好育人工作。</p>
+                            <p>
+                                座谈会上，辅导员代表围绕推进思想政治教育工作高质量发展，构建“大学工”工作格局，深化“三全育人”机制体制建设，加强辅导员队伍专业化职业化发展，深化育人评价改革等方面提出了有关意见建议。</p>
+                        </div>
+                        <div style="text-align: center">
+                            <div style="height: 20px;"></div>
+
+                            <span>作者：xx；审稿：xx、xx</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>编辑：xxx；</span>
+                            <span>审核：xxx </span>
+
+                            <div style="clear:both;"></div>
+                            <div style="height: 20px;"></div>
+                        </div>
+
                     </div>
-
-                    <div class="article_con text-justify">
-                        <p>
-                            1月6日，校党委书记王洪元主持召开辅导员座谈会，听取辅导员代表对校领导班子民主生活会和“十四五”规划编制工作的意见建议，并和辅导员座谈交流。校党委副书记孙信丽出席会议。学工部、研工部负责人、辅导员代表参加座谈会。</p>
-                        <p>
-                            王洪元对辅导员工作给予了肯定，指出辅导员队伍富有朝气活力，在落实立德树人根本任务中具有独特功能，发挥着不可替代作用。校党委高度重视辅导员工作，将加大工作支持保障力度，推动辅导员工作高质量发展。</p>
-                        <p>
-                            王洪元对进一步加强辅导员队伍建设提出八个方面要求：一要把握性质任务，增强责任感和使命感。要提高对辅导员工作重要性的认识，把辅导员工作当成事业去做。二要聚焦立德树人，提高针对性和有效性。要认真学习贯彻《深化新时代教育评价改革总体方案》，按照教育评价改革主题主线，提升立德树人工作成效。三要改进工作方法，抓两头带中间。要因人而异、一人一策做好学生培养工作，守牢学生安全稳定工作底线，努力培养堪当民族复兴大任的时代新人。四要研究影响因子，发挥集体作用。要深入探究影响学生成长发展的要素因子，贯通多方资源力量深化协同育人。五要加强学习实践，提高综合素质。要将加强理论学习和注重实践锻炼相结合，提高理论素养和综合能力。六要掌握思想动态，防风险除隐患。要精准把握学生整体和个体的特点，全面了解学生基本情况和思想动态，做好风险防患。七要精准处置问题，区分显性隐性。对于显性问题，要集中力量、攻坚克难，及时快速处理；对于隐性问题，要注重日常、久久为功，防患于未然。八要净化思想灵魂，涵养仁爱之心。要按照“四有”好老师要求，加强师德师风建设，严格要求自己，用责任心爱心做好育人工作。</p>
-                        <p>
-                            座谈会上，辅导员代表围绕推进思想政治教育工作高质量发展，构建“大学工”工作格局，深化“三全育人”机制体制建设，加强辅导员队伍专业化职业化发展，深化育人评价改革等方面提出了有关意见建议。</p>
+                    <div class="layui-col-md4 left_box1" style="margin-top: 5px;"><!--一周排行-->
+                        <h2 class="pubtit1"><a href="../yzph/index.html">&nbsp&nbsp&nbsp为你推荐</a></h2>
+                        <ul class="news_ul" style="height: 420px;">
+                            <li>
+                                <a href="index.html" title="校党委书记王洪元同辅导员座谈交流" class="margin_l" target="_blank">
+                                    校党委书记王洪元同辅导员座谈交流
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../lsyw/361919.html" title="学校召开本科教学督导工作总结会" class="margin_l" target="_blank">
+                                    学校召开本科教学督导工作总结会
+                                </a></li>
+                            <li>
+                                <a href="../lsyw/362020.html" title="教育部网站报道我校发挥“五老”优势践行育人使命做法" class="margin_l"
+                                   target="_blank"> 教育部网站报道我校发挥“五老”优势践行育
+                                </a></li>
+                            <li>
+                                <a href="../lsyw/362041.html" title="我校举办2021年辅导员工作专题培训" class="margin_l"
+                                   target="_blank">
+                                    我校举办2021年辅导员工作专题培训
+                                </a></li>
+                            <li>
+                                <a href="../lsxy/361916.html" title="林学院召开2021年首次授课教师试讲考核评审会" class="margin_l"
+                                   target="_blank">
+                                    林学院召开2021年首次授课教师试讲考核
+                                </a></li>
+                            <li>
+                                <a href="../lsxy/362025.html" title="我校获得“2020全国学校物业管理机构50强”称号" class="margin_l"
+                                   target="_blank"> 我校获得“2020全国学校物业管理机构5
+                                </a></li>
+                            <li>
+                                <a href="../lsxy/361914.html" title="生物学院党委理论中心组专题学习十九届五中全会" class="margin_l"
+                                   target="_blank">
+                                    生物学院党委理论中心组专题学习十九届五中
+                                </a></li>
+                            <li>
+                                <a href="../lsxy/361915.html" title="经管学院开展“回望百年足迹，365天学党史”线上教育" class="margin_l"
+                                   target="_blank"> 经管学院开展“回望百年足迹，365天学党
+                                </a></li>
+                        </ul>
                     </div>
-                    <div class="text-center">
-                        <div style="height: 20px;"></div>
-
-                        <span>作者：xx；审稿：xx、xx</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>编辑：xxx；</span>
-                        <span>审核：xxx </span>
-
-                        <div style="clear:both;"></div>
-                        <div style="height: 20px;"></div>
-                    </div>
-
-                </div>
-                <div class="layui-col-md4 left_box1" style="margin-top: 5px;"><!--一周排行-->
-                    <h2 class="pubtit1"><a href="../yzph/index.html">&nbsp&nbsp&nbsp为你推荐</a></h2>
-                    <ul class="news_ul" style="height: 420px;">
-
-                        <li>
-                            <a href="index.html" title="校党委书记王洪元同辅导员座谈交流" class="margin_l" target="_blank">
-                                校党委书记王洪元同辅导员座谈交流
-                            </a>
-                        </li>
-                        <li>
-                            <a href="../lsyw/361919.html" title="学校召开本科教学督导工作总结会" class="margin_l" target="_blank">
-                                学校召开本科教学督导工作总结会
-                            </a></li>
-                        <li>
-                            <a href="../lsyw/362020.html" title="教育部网站报道我校发挥“五老”优势践行育人使命做法" class="margin_l"
-                               target="_blank"> 教育部网站报道我校发挥“五老”优势践行育
-                            </a></li>
-                        <li>
-                            <a href="../lsyw/362041.html" title="我校举办2021年辅导员工作专题培训" class="margin_l" target="_blank">
-                                我校举办2021年辅导员工作专题培训
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/361916.html" title="林学院召开2021年首次授课教师试讲考核评审会" class="margin_l"
-                               target="_blank">
-                                林学院召开2021年首次授课教师试讲考核
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/362025.html" title="我校获得“2020全国学校物业管理机构50强”称号" class="margin_l"
-                               target="_blank"> 我校获得“2020全国学校物业管理机构5
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/361914.html" title="生物学院党委理论中心组专题学习十九届五中全会" class="margin_l"
-                               target="_blank">
-                                生物学院党委理论中心组专题学习十九届五中
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/361915.html" title="经管学院开展“回望百年足迹，365天学党史”线上教育" class="margin_l"
-                               target="_blank"> 经管学院开展“回望百年足迹，365天学党
-                            </a></li>
-                    </ul>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div style="background-color: #003a1d;">
-        <div class="footer1" style="padding-top: 10px;"><a href="../gywm/index.html">关于我们</a> | <a href="?">新闻投稿</a> |
-            <a href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></div>
-        <div class="copyright" style="height: 70px;">
-            <p style="padding-top: 0px;">Copyright &#169; 2021 xxxxxxx 地址：xxxxxxx 邮政编码:100000<br>总编：xxx&nbsp&nbsp&nbsp副总编：xx&nbspxxx&nbspxxx&nbsp&nbsp编辑：xxx&nbspxxx&nbspxxx&nbspxx&nbspxxx&nbspxx一&nbspxxx&nbsp&nbsp&nbsp<a
-                    style="color: #fff;" href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></p>
+        <div style="background-color: #003a1d;">
+            <div class="footer1" style="padding-top: 10px;"><a href="../gywm/index.html">关于我们</a> | <a href="?">新闻投稿</a>
+                |
+                <a href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></div>
+            <div class="copyright" style="height: 70px;">
+                <p style="padding-top: 0px;">Copyright &#169; 2021 xxxxxxx 地址：xxxxxxx 邮政编码:100000<br>总编：xxx&nbsp&nbsp&nbsp副总编：xx&nbspxxx&nbspxxx&nbsp&nbsp编辑：xxx&nbspxxx&nbspxxx&nbspxx&nbspxxx&nbspxx一&nbspxxx&nbsp&nbsp&nbsp<a
+                        style="color: #fff;" href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></p>
+            </div>
         </div>
     </div>
-    <script src="/cms/web/writeLog.jsp?articleID=361886"></script>
-</div>
 
 {% endblock %}

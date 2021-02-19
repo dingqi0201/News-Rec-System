@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xml:lang="zh-CN" class="full">
+<html lang="zh-CN" xml:lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -59,19 +59,10 @@
     </div>
 </div>
 #}
-<div class="layui-fluid mt15 layui-anim layui-anim-upbit">
-    <div class="layui-row body-box">
-        {% block body %}
-            <div class="panel">
-                <div class="panel-title">
-                    <h3 class="fleft">标题</h3>
-                </div>
-                <div class="panel-box pl25">
-                    内容
-                </div>
-            </div>
-        {% endblock %}
-    </div>
+<div class="layui-anim layui-anim-upbit">
+    {% block body %}
+
+    {% endblock %}
 </div>
 <script src="{{ url_for('static', filename='layui/layui.all.js') }}?v2.5.6"></script>
 <script src="{{ url_for('static', filename='js/jq.global.js') }}"></script>
