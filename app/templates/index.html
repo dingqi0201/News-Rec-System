@@ -1,233 +1,427 @@
 {% extends 'base.html' %}
 {% block title %}新闻网{% endblock %}
 {% block css %}
-    <style>
-        .overflow {
-            overflow: auto;
+    <style type="text/css">
+
+        .pubtit2 {
+            width: 50%;
+            height: 32px;
+            float: left;
         }
 
-        .layui-field-box {
-            line-height: 2;
-            padding: 10px 30px 20px;
+        .pubtit2 > a {
+            display: block;
+            width: 109px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 15px;
+            color: #00391e;
+            background: url(http://news.bjfu.edu.cn/new_images/pubtitbg1.png) no-repeat;
+            text-align: center;
         }
 
-        .layui-field-box h2 {
-            font-size: 16px;
-            padding-top: 10px;
+        .pubtit2 strong {
+            padding: 0 30px 0 10px;
+            font-size: 25px;
+            font-weight: normal;
         }
 
-        .layui-field-box ul li:before {
-            font-family: "ficon" !important;
-            font-size: 16px;
-            font-style: normal;
-            -webkit-font-smoothing: antialiased;
-            -webkit-text-stroke-width: .2px;
-            -moz-osx-font-smoothing: grayscale;
-            content: "\e67b";
-            color: #83b944;
+        #all {
+
+            position: relative; /*父元素必须定位，否则无法约束子元素*/
+        }
+
+        #all ul li .news_ul img {
+            width: 290px;
+            height: 185px;
+        }
+
+        #all ul li .news_ul {
+            position: absolute;
+            top: 32px;
+            display: none; /*内部样式中隐藏大图所在div*/
+        }
+
+        #all ul li .pubtit2 {
+            display: block;
+            background: url(http://news.bjfu.edu.cn/new_images/pubtitbg1.png) no-repeat;
+            overflow: hidden;
+        }
+
+        /*实现效果，鼠标悬浮时，相应的大图片显示*/
+        #all ul li:hover .news_ul {
+            display: block;
         }
     </style>
+
 {% endblock %}
 {% block body %}
-    <div class="panel">
-        <div class="panel-title">
-            <h3 class="fleft">
-                主页
-                <span class="layui-badge-rim c-success font-iosevka">
-                    Welcome to FF.PyAdmin!
-                </span>
-            </h3>
-        </div>
-        <div class="panel-box pl25">
-            <div id="grid_main" class="font-iosevka overflow">
-                <fieldset class="layui-elem-field">
-                    <legend><i class="ficon icon-pc text-success f20"></i> v1.2.3</legend>
-                    <div class="layui-field-box">
-                        <h2>2021-01-28 更新:</h2>
-                        <hr>
-                        <ul>
-                            <li>
-                                修正自定义异常描述显示问题
-                            </li>
-                            <li>
-                                新增访问第三方数据库的快捷方式, 数据源与逻辑分离, 详见: `/result_tpl`, 配置见: `development_settings.py`
-                            </li>
-                            <li>
-                                `OCI` Oracle 需要下载客户端环境, 安装 `cx-oracle`
-                            </li>
-                            <li>
-                                `MSSQL` SQLServer 推荐使用 `pyodbc`, 也可以用 `pymssql`
-                            </li>
-                            <li>
-                                `MYSQL` 驱动任选
-                            </li>
-                            <li>
-                                助手函数新增 `get_json_loads`, `get_iso_date`
-                            </li>
-                            <li>
-                                助手函数 `get_date` 增加秒参数, 增加输出时间戳(毫秒), 增加输出时间日期对象
-                            </li>
-                        </ul>
-                    </div>
-                </fieldset>
-                <fieldset class="layui-elem-field">
-                    <legend><i class="ficon icon-pc text-success f20"></i> v1.2.2</legend>
-                    <div class="layui-field-box">
-                        <h2>2020-09-21 更新:</h2>
-                        <hr>
-                        <ul>
-                            <li>
-                                助手函数 `get_date` 增加支持传入时间戳
-                            </li>
-                            <li>
-                                增加 `DEBUG_RESPONSE` 配置参数, 开关是否在 DEBUG` 模式下启用响应日志
-                            </li>
-                            <li>
-                                API 返回结果增加 `info` 字段, 无论成功或失败都可以附带该信息
-                            </li>
-                            <li>
-                                新版 WTForms 同样有例外问题, 启用自定义 `CSRFProtect`
-                            </li>
-                            <li>
-                                SQLAlchemy 增加默认参数: `max_overflow': -1`
-                            </li>
-                            <li>
-                                新增 `init_db_cache` 机制, 用于将更新频率低, 使用频率高的数据存入全局变量(如 IP 白名单, 示例中是 ASN 表:
-                                `/show_asn_cache`), 并实时更新, 应用启动后不再请求数据库
-                            </li>
-                            <li>
-                                视图函数可直接返回集合数据类型 `return set()`
-                            </li>
-                            <li>
-                                表单验证 `StripString()` 新增 `cls_whitespace=True` 用于清除所有空白字符
-                            </li>
-                            <li>
-                                权限禁用 `role_deny` 限制只能禁用小权限(视图函数级别)
-                            </li>
-                        </ul>
-                    </div>
-                </fieldset>
-                <fieldset class="layui-elem-field">
-                    <legend><i class="ficon icon-pc text-success f20"></i> v1.2.1</legend>
-                    <div class="layui-field-box">
-                        <h2>2020.08.14 更新:</h2>
-                        <hr>
-                        <ul>
-                            <li>
-                                增加助手函数 `get_real_ip`, 方便获取客户端 IP
-                            </li>
-                            <li>
-                                增加部署方案示例配置: `script/gunicorn` `script/uwsgi`
-                            </li>
-                        </ul>
-                    </div>
-                </fieldset>
-                <fieldset class="layui-elem-field">
-                    <legend><i class="ficon icon-pc text-success f20"></i> v1.2</legend>
-                    <div class="layui-field-box">
-                        <h2>2020.07.10 更新:</h2>
-                        <hr>
-                        <ul>
-                            <li>
-                                升级所有包为最新版本(Python3.8测试通过): `Flask==1.1.2, WTForms==2.3.1`, 旧依赖库(正常可用):
-                                `requirements.old.txt`
-                            </li>
-                            <li>
-                                升级 `LayUI==2.5.6`
-                            </li>
-                            <li>
-                                自动表格 `$.autoTbl` 增加属性 `colsFields`, 可指定要显示的表格字段. 增加属性 `colsAlign` 指定默认对齐方式
-                            </li>
-                            <li>
-                                新增示例: 真分页, 真排序, 前端增加字段, 后端隐藏字段, 指定显示字段, 控制表格字段显示顺序, 指定对齐方式等, 详见 `/bgp` 及前后端注释
-                            </li>
-                            <li>
-                                异步请求 `$.mkAjax` 增加回调方法 `done_err`, Ajax 请求成功但返回 `ok!=1` 时可触发
-                            </li>
-                            <li>
-                                增加信号中异步任务示例: `/async_signal_demo`
-                            </li>
-                            <li>
-                                使用 `flask_wtf` 原生 `CSRFProtect`, 增加例外示例: `/log/csrf_exempt_demo`
-                            </li>
-                            <li>
-                                表单校验增加 `FloatRound` 用于校验浮点数, 金额等, 银行家舍入法, 默认保留2位小数
-                            </li>
-                            <li>
-                                增加默认消息页面: `base-msg.html`
-                            </li>
-                            <li>
-                                增加开发环境快捷启动方式: `python3 dev.py`, `PyCharm Script path` 可指向该文件
-                            </li>
-                            <li>
-                                增加助手函数: `get_round` `get_ymd` `get_next_month_first` `get_month_last`
-                                `get_last_month_last`
-                            </li>
-                            <li>
-                                增加模板函数: `get_date`, 示例表单默认昨天日期: `&lt;input
-                                value="{{ 'get_date(out_fmt="%Y-%m-%d", add_days=-1)' }}"&gt;`
-                            </li>
-                            <li>
-                                对称加密类库更新: `AESCipher`, 增加助手函数, 用法详见注释
-                            </li>
-                            <li>
-                                `flask.json` 增加 `JSONEncoder` 对 `Decimal` 支持
-                            </li>
-                            <li>
-                                数据库日志服务改用 `flask.json`, 以适应常见各类数据类型
-                            </li>
-                            <li>
-                                ORM 增加 `hide_keys_dicts` 方法, 将 `.all()` 转为字典并隐藏指定字段
-                            </li>
-                            <li>
-                                调试模式且 Ajax POST 请求时将 Response JSON 显示在控制器方便调试
-                            </li>
-                            <li>
-                                修正 `logger` 文件日志级别
-                            </li>
-                        </ul>
-                    </div>
-                </fieldset>
-                <fieldset class="layui-elem-field">
-                    <legend><i class="ficon icon-pc text-success f20"></i> v1.1</legend>
-                    <div class="layui-field-box">
-                        <h2>2019.12.20 更新:</h2>
-                        <hr>
-                        <ul>
-                            <li>
-                                新增配置项: `MAIL_OPEN` 邮件发送开关, 与邮件配置项配合使用, 默认 `False`
-                            </li>
-                            <li>
-                                新增配置项: `EXCEPTION_LOG_CODE` 触发记录文件日志的响应码, 默认 `[500]`
-                            </li>
-                            <li>
-                                新增配置项: `SYS_ROLE_ID` 保留角色(权限组) ID 设置, 禁止将其他用户授权为该角色, 默认 `0`
-                            </li>
-                            <li>
-                                用户表使用 `id` 字段配合 `flask_login` (原使用 `job_number` 字段)
-                            </li>
-                            <li>
-                                用户权限组关联使用 `role_id` 字段 (原使用 `role` 标识)
-                            </li>
-                            <li>
-                                日志表增加 `log_content` 字段, 用于记录日志详情, 日志记录方式见 ASNCharge.add()
-                            </li>
-                            <li>
-                                数据库操作使用 `replace` 方法新增数据时, 确保总能获取到最新插入数据后的自增主键 ID
-                            </li>
-                            <li>
-                                自定义信号机制(事件订阅-发布), 使用见示例代码: 系统管理事件, 用户登录成功事件
-                            </li>
-                            <li>
-                                封装了邮件发送类, 基于 `flask_mail`, 支持邮件内容按模板渲染(HTML, TEXT), 支持异步发送邮件(默认)
-                            </li>
-                            <li>
-                                附带了一个通用的邮件模板, 通过手机系统邮件/钉钉/QQ/微信/Foxmail/Outlook等邮件客户端兼容性测试
-                            </li>
-                        </ul>
-                    </div>
-                </fieldset>
+    <div class="header">
+        <script>
+            $(function () {
+                if (window.PIE) {
+                    $('.rounded').each(function () {
+                        PIE.attach(this);
+                    });
+                }
+            });
+        </script>
+        <script>
+            function mouseOutPic() {
+                if (window.event.toElement.id != "img000") bigPic.style.visibility = "hidden";
+            }
+
+            function mouseOverPic(imgSrc) {
+                var seeBig = document.getElementById("bigPic");
+                var newImg = document.createElement("img");
+                newImg = "<img src=\'" + imgSrc + "\'/>";
+                seeBig.innerHTML = newImg;
+            }
+        </script>
+        <script>
+            function mouseOutPic1() {
+                if (window.event.toElement.id != "img001") bigPic1.style.visibility = "hidden";
+            }
+
+            function mouseOverPic1(imgSrc1) {
+                var seeBig1 = document.getElementById("bigPic1");
+                var newImg1 = document.createElement("img");
+                newImg1 = "<img src=\'" + imgSrc1 + "\'/>";
+                seeBig1.innerHTML = newImg1;
+            }
+        </script>
+        <div style="width: 1100px;height:129px;background:url(http://news.bjfu.edu.cn/new_images/header.jpg);margin:0 auto;border: none ">
+            <div style="width: 885px;height: 82px;padding-left: 10px;padding-top: 25px;float: left">
+                <a href="http://news.bjfu.edu.cn"><img src="http://news.bjfu.edu.cn/new_images/logo.png" alt="绿色新闻网"
+                                                       width="275" height="82"></a>
+            </div>
+            <div style="width: 94px;height: 46px;float: left;padding-top: 10px;">
+                <img id="img001" src="http://news.bjfu.edu.cn/new_images/weibo.png"
+                     onmouseover="mouseOverPic1('http://news.bjfu.edu.cn/new_images/wenboma.png'); bigPic1.style.visibility='visible';bigPic1.style.zIndex=100;bigPic1.style.position='absolute';"
+                     onmouseout="mouseOutPic1()">
+                <div id="bigPic1" style="visibility:hidden;">
+                </div>
+            </div>
+            <div style="width: 83px;height: 44px;float: left;padding-top: 10px;">
+                <img id="img000" src="http://news.bjfu.edu.cn/new_images/weixin.png"
+                     onmouseover="mouseOverPic('http://news.bjfu.edu.cn/new_images/weixinma.jpg'); bigPic.style.visibility='visible';bigPic.style.zIndex=100;bigPic.style.position='absolute';"
+                     onmouseout="mouseOutPic()">
+                <div id="bigPic" style="visibility:hidden;">
+                </div>
+            </div>
+            <div style="width: 112px;height: 35px;float: left;padding-top: 22px;">
+                <a href="mailto:bjfunews@163.com"><img src="http://news.bjfu.edu.cn/new_images/sy_email.png"> </a>
+            </div>
+            <div style="width: 65px;height: 37px;float: left;padding-top: 19px;">
+                <a href="http://cms.bjfu.edu.cn/cms/search/searchResults.jsp?query=%20&siteID=42&submit=1"><img
+                        src="http://news.bjfu.edu.cn/new_images/search.png"> </a>
             </div>
         </div>
     </div>
+    <div class="wrap_box" style="padding-bottom: 20px;">
+
+        <div style="width: 100%;height: 44px;background: url(http://news.bjfu.edu.cn/new_images/navbg1.jpg) 0 0 repeat-x;">
+            <div class="nav">
+                <ul>
+                    <li><a href="index.html">北林焦点</a></li>
+                    <li><a href="../lsyw/index.html">绿色要闻</a></li>
+                    <li><a href="../ztbd/index.html">专题报道</a></li>
+                    <li><a href="../xccc/index.html">宣传橱窗</a></li>
+                    <li><a href="../lsxy/index.html">校园动态</a></li>
+                    <li><a href="../jxky/index.html">教学科研</a></li>
+                    <li><a href="../lswh/index.html">微媒体</a></li>
+                    <li><a href="../lscb/index.html">媒体北林</a></li>
+                    <li><a href="../djsz/index.html">党建思政</a></li>
+                    <li><a href="../xfrw/index.html">绿色人物</a></li>
+                    <li><a href="../gdyl/index.html">观点言论</a></li>
+                    <li><a href="../lssy/index.html">绿色视野</a></li>
+                    <li><a href="../yzph/index.html">一周排行</a></li>
+                    <li><a href="http://app.bjfu.edu.cn/xcb">北林报</a></li>
+                    <li><a href="http://pic.bjfu.edu.cn/" target="_blank">北林图片</a></li>
+                    <li><a href="../spxw/index.html">视频新闻</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="wrap">
+            <div class="search_box" style="margin-top: 25px;">
+                <div class="searchcon">
+                    <script type="text/javascript">
+                        var oldDate = new Date(2011, 4, 23, 0, 0, 0);
+                        var nowDate = new Date();
+                        var week = "日,一,二,三,四,五,六".split(',');
+                        var str = nowDate.getFullYear() + "年" + (nowDate.getMonth() + 1) + "月" + nowDate.getDate() + "日&nbsp;星期" + week[nowDate.getDay()];
+                        document.write(str);
+                    </script>
+                </div>
+                <div style="float:left;width:210px;margin-top: 3px;">
+                    <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=99" width="160" height="36"
+                            frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                </div>
+                <div style="float:left;margin-top: 5px;">
+                    <a href="mailto:bjfunews@163.com"> <img src="http://news.bjfu.edu.cn/new_images/email.png"></a>
+                </div>
+                <div style="float:left;margin-top: 12px;margin-left: 8px">
+                    <a style="color: #178055;font-size: 15px;font-weight: bold;font-family: 'Microsoft YaHei';"
+                       href="mailto:bjfunews@163.com">来稿信箱：bjfunews@163.com </a>
+                </div>
+                <div class="searchcon1">
+                    <form action="http://cms.bjfu.edu.cn/cms/search/searchResults.jsp" method="post" target="_blank"
+                          style="padding-left:5px;">
+                        <input name="siteID" type="hidden" value=42/>
+                        <input style="padding-top:5px;color:#999999" name="query" type="text" value="输入搜索内容后按回车键"
+                               onFocus="if(value==defaultValue){value='';this.style.color='#000'}"
+                               onBlur="if(!value){value=defaultValue;this.style.color='#999'}"/>
+                        <input name="Submit" type="submit" value="">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="margin: 0 auto">
+            <div class="list_con" style="margin-top: 15px; width: 360px;padding-left: 10px; margin-left: -385px">
+                <!--左边栏目-->
+                <div class="left_box1" style="margin-top: 5px;"><!--一周排行-->
+                    <h2 class="pubtit1"><a href="../yzph/index.html">&nbsp&nbsp&nbsp一周排行</a></h2>
+                    <ul class="news_ul" style="height: 420px;">
+
+                        <li>
+                            <a th:href="@{/news}" title="校党委书记王洪元同辅导员座谈交流" class="margin_l" target="_blank">
+                                校党委书记王洪元同辅导员座谈交流
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../lsyw/361919.html" title="学校召开本科教学督导工作总结会" class="margin_l" target="_blank">
+                                学校召开本科教学督导工作总结会
+                            </a></li>
+                        <li>
+                            <a href="../lsyw/362020.html" title="教育部网站报道我校发挥“五老”优势践行育人使命做法" class="margin_l"
+                               target="_blank"> 教育部网站报道我校发挥“五老”优势践行育
+                            </a></li>
+                        <li>
+                            <a href="../lsyw/362041.html" title="我校举办2021年辅导员工作专题培训" class="margin_l" target="_blank">
+                                我校举办2021年辅导员工作专题培训
+                            </a></li>
+                        <li>
+                            <a href="../lsxy/361916.html" title="林学院召开2021年首次授课教师试讲考核评审会" class="margin_l"
+                               target="_blank">
+                                林学院召开2021年首次授课教师试讲考核
+                            </a></li>
+                        <li>
+                            <a href="../lsxy/362025.html" title="我校获得“2020全国学校物业管理机构50强”称号" class="margin_l"
+                               target="_blank"> 我校获得“2020全国学校物业管理机构5
+                            </a></li>
+                        <li>
+                            <a href="../lsxy/361914.html" title="生物学院党委理论中心组专题学习十九届五中全会" class="margin_l"
+                               target="_blank">
+                                生物学院党委理论中心组专题学习十九届五中
+                            </a></li>
+                        <li>
+                            <a href="../lsxy/361915.html" title="经管学院开展“回望百年足迹，365天学党史”线上教育" class="margin_l"
+                               target="_blank"> 经管学院开展“回望百年足迹，365天学党
+                            </a></li>
+                    </ul>
+                </div>
+            </div><!--左边end-->
+            <div class="list_conr" style="width: 600px;">
+                <div class="pubtit"
+                     style="background: url(http://news.bjfu.edu.cn/new_images/2_header.png) no-repeat;margin-top: 20px;">
+                    <div class="first">&nbsp&nbsp您现在的位置：
+                        <a href="../index.html">新闻首页</a>>> <span>北林焦点</span></div>
+                </div>
+                <div style="height: 457px;">
+                    <ul class="news_ul" style="height: 420px;">
+
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-30)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/kjyq/" target="_blank"> 众志成城 抗击疫情
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-06-05)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/mlzgblzxd/" target="_blank"> 美丽中国 北林在行动
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-10-21)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/sbhhhcx/index.html" target="_blank"> 保护黄河流域 建设美丽中国
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-10-12)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/jnjx68znzt/index.html" target="_blank"> 纪念建校68周年专题
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-09-11)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/qzd36gjsj/index.html" target="_blank"> 专题丨庆祝第36个教师节
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-07-01)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/qzzggcdcl99zn/index.html" target="_blank">
+                            专题丨庆祝中国共产党成立99周年
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-03-17)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/zys/" target="_blank"> 战“疫”说|网络思政交流平台
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-12-13)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/sjblby/" target="_blank"> 他们就是“北林榜样”！
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-06)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/2019nhm/" target="_blank"> 2019年回眸专题
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-06)</span><a
+                                href=""
+                                target="_blank">
+                            2019年回眸专题丨回顾2019年，我们心怀感恩、
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-09-23)</span><a
+                                href="http://cxsm.bjfu.edu.cn/" target="_blank"> “不忘初心、牢记使命”主题教育专题网站正式上线
+                        </a></li>
+                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-09-03)</span><a
+                                href="http://news.bjfu.edu.cn/ztbd/wzqqdls/" target="_blank"> 我在前旗当老师
+                        </a></li>
+                    </ul>
+
+                    <div id="page" style="margin-left: -385px">
+                    <span>
+                        <DIV align=center>
+                            <form name=pageForm action="" method=post><tr><td width=70%>共101条，分9页，当前第<font
+                                    color=red>1</font>页&nbsp;&nbsp;<a href="index.html">最前页</a>
+<a href="index.html">上一页</a>
+<a href="index1.html">下一页</a>
+<a href="index8.html">最后页</a>
+转到<select name="page" onchange="javascript:PageFormSubmit()">
+<option value="index.html" selected>1</option>
+<option value="index1.html">2</option>
+<option value="index2.html">3</option>
+<option value="index3.html">4</option>
+<option value="index4.html">5</option>
+<option value="index5.html">6</option>
+<option value="index6.html">7</option>
+<option value="index7.html">8</option>
+<option value="index8.html">9</option>
+</select>页
+</td></tr></form>
+                            <SCRIPT language=JavaScript>
+                                function PageFormSubmit() {
+                                    document.location.href = document.pageForm.page.options[document.pageForm.page.selectedIndex].value;
+                                }
+                            </SCRIPT>
+                        </DIV>
+                    </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div style="background-color: #003a1d;">
+        <div class="footer1" style="padding-top: 10px;"><a href="../gywm/index.html">关于我们</a> | <a href="?">新闻投稿</a> |
+            <a
+                    href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></div>
+        <div class="copyright" style="height: 70px;">
+            <p style="padding-top: 0px;">Copyright &#169; 2005- 2018 北京林业大学新闻办公室 地址：北京市海淀区清华东路35号 邮政编码:100083<br>总编：刘广超&nbsp&nbsp&nbsp副总编：朱天磊&nbsp杨金融&nbsp&nbsp编辑：高大为&nbsp李佳&nbsp邢海涛&nbsp王燕俊&nbsp张薇&nbsp张嘉月&nbsp赵弘一&nbsp杨一楠&nbsp&nbsp&nbsp<a
+                    style="color: #fff;" href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></p>
+        </div>
+    </div>
+    <script src="/cms/web/writeLog.jsp?channelID=8817"></script>
+
+    <script type=text/javascript>
+        var t_x = n_x = 0, count_x = $("#playShow_x a").size();
+        var t = n = 0, count = $("#playShow a").size();
+        var t_y = n_y = 0, count_y = $("#playShow_y a").size();
+        $(function () {
+
+            $("#playShow a:not(:first-child)").hide();
+            $("#playText").html($("#playShow a:first-child").find("img").attr('alt'));
+            $("#playNum a:first").css({"background": "#333333", 'color': '#ffffff'});
+            $("#playText").click(function () {
+                window.open($("#playShow a:first-child").attr('href'), "_self")
+            });
+            $("#playNum a").click(function () {
+                var i = $(this).text() - 1;
+                n = i;
+                if (i >= count) return;
+                $("#playText").html($("#playShow a").eq(i).find("img").attr('alt'));
+                $("#playText").unbind().click(function () {
+                    window.open($("#playShow a").eq(i).attr('href'), "_self")
+                })
+                $("#playShow a").filter(":visible").hide().parent().children().eq(i).fadeIn(1200);
+                $(this).css({"background": "#cccccc", 'color': '#ffffff'}).siblings().css({
+                    "background": "#666666",
+                    'color': '#333333'
+                });
+            });
+            t = setInterval("showAuto()", 5000);
+            $("#play").hover(function () {
+                clearInterval(t)
+            }, function () {
+                t = setInterval("showAuto()", 5000);
+            });
+
+            $("#playShow_x a:not(:first-child)").hide();
+            $("#playText_x").html($("#playShow_x a:first-child").find("img").attr('alt'));
+            $("#playNum_x a:first").css({"background": "#cccccc", 'color': '#ffffff'});
+            $("#playText_x").click(function () {
+                window.open($("#playShow_x a:first-child").attr('href'), "_self")
+            });
+            $("#playNum_x a").click(function () {
+                var i_x = $(this).text() - 1;
+                n_x = i_x;
+                if (i_x >= count_x) return;
+                $("#playText_x").html($("#playShow_x a").eq(i_x).find("img").attr('alt'));
+                $("#playText_x").unbind().click(function () {
+                    window.open($("#playShow_x a").eq(i_x).attr('href'), "_self")
+                })
+                $("#playShow_x a").filter(":visible").hide().parent().children().eq(i_x).fadeIn(1200);
+                $(this).css({"background": "#cccccc", 'color': '#ffffff'}).siblings().css({
+                    "background": "#666666",
+                    'color': '#333333'
+                });
+            });
+            t_x = setInterval("showAuto_x()", 5000);
+            $("#play_x").hover(function () {
+                clearInterval(t_x)
+            }, function () {
+                t_x = setInterval("showAuto_x()", 5000);
+            });
+
+            $("#playShow_y a:not(:first-child)").hide();
+            $("#playText_y").html($("#playShow_y a:first-child").find("img").attr('alt'));
+            $("#playNum_y a:first").css({"background": "#cccccc", 'color': '#ffffff'});
+            $("#playText_y").click(function () {
+                window.open($("#playShow_y a:first-child").attr('href'), "_self")
+            });
+            $("#playNum_y a").click(function () {
+                var i_x = $(this).text() - 1;
+                n_x = i_x;
+                if (i_x >= count_y) return;
+                $("#playText_y").html($("#playShow_y a").eq(i_x).find("img").attr('alt'));
+                $("#playText_y").unbind().click(function () {
+                    window.open($("#playShow_y a").eq(i_x).attr('href'), "_self")
+                })
+                $("#playShow_y a").filter(":visible").hide().parent().children().eq(i_x).fadeIn(1200);
+                $(this).css({"background": "#cccccc", 'color': '#ffffff'}).siblings().css({
+                    "background": "#666666",
+                    'color': '#333333'
+                });
+            });
+            t_y = setInterval("showAuto_y()", 5000);
+            $("#play_y").hover(function () {
+                clearInterval(t_y)
+            }, function () {
+                t_y = setInterval("showAuto_y()", 5000);
+            });
+        })
+
+        function showAuto_x() {
+            n_x = n_x >= (count_x - 1) ? 0 : ++n_x;
+            $("#playNum_x a").eq(n_x).trigger('click');
+        }
+
+        function showAuto() {
+            n = n >= (count - 1) ? 0 : ++n;
+            $("#playNum a").eq(n).trigger('click');
+        }
+
+        function showAuto_y() {
+            n_y = n_y >= (count_y - 1) ? 0 : ++n_y;
+            $("#playNum_y a").eq(n_y).trigger('click');
+        }
+    </script>
 {% endblock %}
