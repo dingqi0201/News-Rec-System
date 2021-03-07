@@ -11,61 +11,24 @@
     {% block css %}{% endblock %}
 </head>
 <body>
-{#
-<div class="layui-header header">
-    <div class="layui-fluid">
-        <a href="{{ url_for('web.web_index') }}" class="logo">主页</a>
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
-                <a href="{{ url_for('bgp.bgp_index') }}" class="icon-md"><i
-                        class="ficon icon-xitongguanli"></i>BGP 管理</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="{{ url_for('asn.asn_index') }}" class="icon-md"><i
-                        class="ficon icon-iconset0401"></i>ASN 管理</a>
-            </li>
-            {% if is_can('user.user_index') %}
-                <li class="layui-nav-item">
-                    <a href="{{ url_for('user.user_index') }}" class="icon-md"><i
-                            class="ficon icon-wode1"></i>用户管理</a>
-                </li>
-            {% endif %}
-            <li class="layui-nav-item">
-                <a href="{{ url_for('log.log_index') }}" class="icon-md"><i
-                        class="ficon icon-dingdan"></i>日志查询</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:void(0);"><i class="ficon icon-favor_fill_light"></i> 常用工具</a>
-                <dl class="layui-nav-child">
-                    <dd><a target="_blank" href="https://github.com/fufuok">GitHub</a></dd>
-                    <dd><a target="_blank" href="https://gitee.com/fufuok">Gitee</a></dd>
-                    <dd><a target="_blank" href="https://www.ipip.net/ip.html">IPIP</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:void(0);">
-                    <img src="{{ url_for('static', filename='images/photo.jpg') }}" class="layui-nav-img" alt="">
-                    <span class="layui-hide-xs">{{ current_user.realname }}</span>
-                </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="{{ url_for('web.web_login') }}">重新登录</a></dd>
-                    <dd>
-                        <hr>
-                    </dd>
-                    <dd><a href="{{ url_for('web.web_logout') }}">安全退出</a></dd>
-                </dl>
-            </li>
-        </ul>
-    </div>
-</div>
-#}
 <div class="layui-anim layui-anim-upbit">
     {% block body %}
 
     {% endblock %}
+
+    {% block footer %}
+        <div style="background-color: #003a1d;">
+            <div class="footer1" style="padding-top: 10px;"><a href="../gywm/index.html">关于我们</a> | <a href="?">新闻投稿</a>
+                |
+                <a href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></div>
+            <div class="copyright" style="height: 70px;">
+                <p style="padding-top: 0px;">Copyright &#169; 2021 xxxxxxx 地址：xxxxxxx 邮政编码:100000<br>总编：xxx&nbsp&nbsp&nbsp副总编：xx&nbspxxx&nbspxxx&nbsp&nbsp编辑：xxx&nbspxxx&nbspxxx&nbspxx&nbspxxx&nbspxx一&nbspxxx&nbsp&nbsp&nbsp<a
+                        style="color: #fff;" href="http://cms.bjfu.edu.cn/cms/index.jsp">管理员登陆</a></p>
+            </div>
+        </div>
+    {% endblock %}
 </div>
 <script src="{{ url_for('static', filename='layui/layui.all.js') }}?v2.5.6"></script>
 <script src="{{ url_for('static', filename='js/jq.global.js') }}"></script>
-{% block js %}{% endblock %}
 </body>
 </html>
