@@ -1,15 +1,11 @@
-import os
-import gensim
 import numpy as np
 
 MAX_TITLE_LENGTH = 29
 WORD_FREQ_THRESHOLD = 1
 WORD_EMBEDDING_DIM = 50
-
 print('loading word2id map...')
 # Load 读出word2id字典
-word2id = np.load('../real_data/word2id.npy').item()
-
+word2id = np.load('app/real_data/word2id.npy').item()
 
 def align_and_transform_for_test(file, output_file):
     """

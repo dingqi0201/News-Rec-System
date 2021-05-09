@@ -13,12 +13,16 @@ from flask import (Blueprint, current_app, send_from_directory, redirect, url_fo
 from flask_login import logout_user, login_required
 from requests.exceptions import RequestException
 
+from app.models.news import HOTNews, HOMENews
+from app.src.model_loader import load_model
+
 from ..forms import csrf
 from ..libs.exceptions import APISuccess
-from ..models.dao.mssql import MSSQL
 from ..models.dao.mysql import MYSQL
 from ..services.auth import oauth, chk_user_login, set_user_login
 from ..services.events import event_async_with_app_demo
+from ..models import db
+
 
 bp_web = Blueprint('web', __name__)
 csrf.exempt(bp_web)
@@ -28,13 +32,24 @@ csrf.exempt(bp_web)
 @login_required
 def web_index():
     """主页"""
-    return render_template('index.html')
+    hot = db.session.query(HOTNews)
+    home = db.session.query(HOMENews)
+
+    # print(q.to_dicts)
+    print(home)
+    print(hot)
+
+    return render_template('index.html', hot=hot, home=home)
 
 
-@bp_web.route('/news')
+@bp_web.route('/news/<k>', methods=['GET'])
 @login_required
-def web_news():
+def web_news(k):
+    print(k)
     """新闻详情页"""
+
+    # load_model()
+
     return render_template('news.html')
 
 

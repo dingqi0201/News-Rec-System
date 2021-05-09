@@ -17,3 +17,11 @@ Flask-Migrate==2.5.3
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.3
 Flask-WTF==0.14.3
+python==3.6.5
+numpy==1.16.0
+pandas==1.0.3
+gensim==3.8.3
+tensorflow==1.14.0
+scikit-learn==0.22.2
+
+

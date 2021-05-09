@@ -183,42 +183,14 @@
                 <div class="left_box1" style="margin-top: 5px;"><!--一周排行-->
                     <h2 class="pubtit1"><a href="#">&nbsp&nbsp&nbsp一周排行</a></h2>
                     <ul class="news_ul" style="height: 420px;">
-
-                        <li>
-                            <a href="./news" title="校党委书记王洪元同辅导员座谈交流" class="margin_l" target="_blank">
-                                校党委书记王洪元同辅导员座谈交流
-                            </a>
-                        </li>
-                        <li>
-                            <a href="../lsyw/361919.html" title="学校召开本科教学督导工作总结会" class="margin_l" target="_blank">
-                                学校召开本科教学督导工作总结会
-                            </a></li>
-                        <li>
-                            <a href="../lsyw/362020.html" title="教育部网站报道我校发挥“五老”优势践行育人使命做法" class="margin_l"
-                               target="_blank"> 教育部网站报道我校发挥“五老”优势践行育
-                            </a></li>
-                        <li>
-                            <a href="../lsyw/362041.html" title="我校举办2021年辅导员工作专题培训" class="margin_l" target="_blank">
-                                我校举办2021年辅导员工作专题培训
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/361916.html" title="林学院召开2021年首次授课教师试讲考核评审会" class="margin_l"
-                               target="_blank">
-                                林学院召开2021年首次授课教师试讲考核
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/362025.html" title="我校获得“2020全国学校物业管理机构50强”称号" class="margin_l"
-                               target="_blank"> 我校获得“2020全国学校物业管理机构5
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/361914.html" title="生物学院党委理论中心组专题学习十九届五中全会" class="margin_l"
-                               target="_blank">
-                                生物学院党委理论中心组专题学习十九届五中
-                            </a></li>
-                        <li>
-                            <a href="../lsxy/361915.html" title="经管学院开展“回望百年足迹，365天学党史”线上教育" class="margin_l"
-                               target="_blank"> 经管学院开展“回望百年足迹，365天学党
-                            </a></li>
+                        {% for k in hot %}
+                            <li>
+                                <a href="./news/{{ k.news_id }}" title={{ k.news_words }} class="margin_l"
+                                   target="_blank">
+                                    {{ k.news_words }}
+                                </a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div><!--左边end-->
@@ -226,50 +198,17 @@
                 <div class="pubtit"
                      style="background: url(http://news.bjfu.edu.cn/new_images/2_header.png) no-repeat;margin-top: 20px;">
                     <div class="first">&nbsp&nbsp您现在的位置：
-                        <a href="../index.html">新闻首页</a>>> <span>北林焦点</span></div>
+                        <a href="#">新闻首页</a>>> <span>北林焦点</span></div>
                 </div>
                 <div style="height: 457px;">
                     <ul class="news_ul" style="height: 420px;">
-
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-30)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/kjyq/" target="_blank"> 众志成城 抗击疫情
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-06-05)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/mlzgblzxd/" target="_blank"> 美丽中国 北林在行动
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-10-21)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/sbhhhcx/index.html" target="_blank"> 保护黄河流域 建设美丽中国
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-10-12)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/jnjx68znzt/index.html" target="_blank"> 纪念建校68周年专题
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-09-11)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/qzd36gjsj/index.html" target="_blank"> 专题丨庆祝第36个教师节
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-07-01)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/qzzggcdcl99zn/index.html" target="_blank">
-                            专题丨庆祝中国共产党成立99周年
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-03-17)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/zys/" target="_blank"> 战“疫”说|网络思政交流平台
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-12-13)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/sjblby/" target="_blank"> 他们就是“北林榜样”！
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-06)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/2019nhm/" target="_blank"> 2019年回眸专题
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-06)</span><a
-                                href=""
-                                target="_blank">
-                            2019年回眸专题丨回顾2019年，我们心怀感恩、
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-09-23)</span><a
-                                href="http://cxsm.bjfu.edu.cn/" target="_blank"> “不忘初心、牢记使命”主题教育专题网站正式上线
-                        </a></li>
-                        <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2019-09-03)</span><a
-                                href="http://news.bjfu.edu.cn/ztbd/wzqqdls/" target="_blank"> 我在前旗当老师
-                        </a></li>
+                        {% for m in home %}
+                            <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-30)</span>
+                                <a href="/news/{{ m.news_id }}" target="_blank">
+                                    {{ m.news_words }}
+                                </a>
+                            </li>
+                        {% endfor %}
                     </ul>
 
                     <div id="page" style="margin-left: -385px">
@@ -305,8 +244,11 @@
             </div>
         </div>
     </div>
-
     <script type=text/javascript>
+        layui.use(['laytpl'], function () {
+            var laytpl = layui.laytpl;
+
+        });
         var t_x = n_x = 0, count_x = $("#playShow_x a").size();
         var t = n = 0, count = $("#playShow a").size();
         var t_y = n_y = 0, count_y = $("#playShow_y a").size();
@@ -408,5 +350,6 @@
             n_y = n_y >= (count_y - 1) ? 0 : ++n_y;
             $("#playNum_y a").eq(n_y).trigger('click');
         }
+
     </script>
 {% endblock %}

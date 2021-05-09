@@ -3,9 +3,6 @@ import pandas as pd
 import numpy as np
 from collections import namedtuple
 
-Data = namedtuple('Data', ['size', 'clicked_words', 'hot_words', 'news_words','labels'])
-
-
 def load_data(args):
     test_df = read(args.test_file)
     history_df = read_history(args.history_file)
@@ -65,6 +62,7 @@ def aggregate_test(df, history_df, max_click_history, hot_df, max_hot_news):
 
 
 def transform(df):  # 最终形成一个data的具名元组，包含size,clicked_words,,,labels等内容
+    Data = namedtuple('Data', ['size', 'clicked_words', 'hot_words', 'news_words', 'labels'])
     data = Data(size=df.shape[0],  # 10401
                 clicked_words=np.array(df['clicked_words'].tolist()),  # shape为（10401,30,10）
                 hot_words=np.array(df['hot_words'].tolist()),  # (10401,15,10)
