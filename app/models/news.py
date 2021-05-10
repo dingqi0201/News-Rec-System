@@ -2,20 +2,14 @@ from sqlalchemy import Column, Integer, SmallInteger, String, DateTime, func, Bi
 from . import DBModel
 
 
-class HOTNews(DBModel):
-    __tablename__ = 'hot_news'
+class HotHomeNews(DBModel):
+    __tablename__ = 'hot_home_news'
     news_id = Column(Integer, autoincrement=True, primary_key=True)
     news_words = Column(String(255), nullable=False)
     count = Column(Integer)
     month = Column(Integer)
     content = Column(String)
-
-
-class HOMENews(DBModel):
-    __tablename__ = 'home_news'
-    news_id = Column(Integer, autoincrement=True, primary_key=True)
-    news_words = Column(String(255), nullable=False)
-    content = Column(String)
+    hot = Column(Integer)
 
 
 class TESTNews(DBModel):

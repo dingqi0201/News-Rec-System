@@ -13,16 +13,15 @@ from flask import (Blueprint, current_app, send_from_directory, redirect, url_fo
 from flask_login import logout_user, login_required
 from requests.exceptions import RequestException
 
-from app.models.news import HOTNews, HOMENews
-from app.src.model_loader import load_model
+from app.models.news import HotHomeNews, TESTNews
 
+from app.src.model_loader import load_model
 from ..forms import csrf
 from ..libs.exceptions import APISuccess
 from ..models.dao.mysql import MYSQL
 from ..services.auth import oauth, chk_user_login, set_user_login
 from ..services.events import event_async_with_app_demo
 from ..models import db
-
 
 bp_web = Blueprint('web', __name__)
 csrf.exempt(bp_web)
@@ -32,30 +31,102 @@ csrf.exempt(bp_web)
 @login_required
 def web_index():
     """主页"""
-    hot = db.session.query(HOTNews)
-    home = db.session.query(HOMENews)
 
-    # print(q.to_dicts)
-    print(home)
-    print(hot)
+    news = db.session.query(HotHomeNews).to_dicts
+    home = list()
+    hot = list()
+    for i in news:
+        if i['hot'] == 1:
+            hot.append(i)
+        else:
+            home.append(i)
 
     return render_template('index.html', hot=hot, home=home)
 
 
-@bp_web.route('/news/<k>', methods=['GET'])
+@bp_web.route('/news/<id>', methods=['GET'])
 @login_required
-def web_news(k):
-    print(k)
-    """新闻详情页"""
+def web_news(id):
+    """新闻详情页
+    1. 浏览记录写raw_history.txt
+    2. 热点表不更新，首页表不更新
+    3. 调用模型
+    4. 得分对应关系以及排序
+    5. 查询
+    """
+    clicked_news = db.session.query(HotHomeNews).get(id).to_dict
+    print(clicked_news)
 
-    # load_model()
+    writer = open("app/real_data/raw_history.txt", 'a', encoding='utf-8')
+    writer.write(
+        '%s\t%s\t%s\t%s\n' % (0, clicked_news["news_id"], clicked_news["news_words"], clicked_news["month"]))
+    writer.close()
 
-    return render_template('news.html')
+    res = load_model()
+    news_dict = dict()
+    for index, i in enumerate(res):
+        news_dict[index + 10000] = i
+
+    result_dict = sorted(news_dict.items(), key=lambda d: d[1], reverse=True)
+    recommend_news = []
+    print("==============index result_dict[:5]==============\n", result_dict[:5])
+    for i in result_dict[:5]:
+        recommend_news.append(db.session.query(TESTNews).get(i[0]).to_dict)
+    print(recommend_news)
+
+    return render_template('news.html', recommend_news=recommend_news, clicked_news=clicked_news)
+
+
+@bp_web.route('/news/recommend/<id>', methods=['GET'])
+@login_required
+def recommend_news(id):
+    # 根据前端点击从TESTNews表中找到所点击的新闻
+    clicked_news = db.session.query(TESTNews).get(id).to_dict
+    print(clicked_news)
+
+    # 将已点击的新闻写进raw_history.txt
+    writer = open("app/real_data/raw_history.txt", 'a', encoding='utf-8')
+    writer.write(
+        '%s\t%s\t%s\t%s\n' % (0, clicked_news["news_id"], clicked_news["news_words"], 3))
+    writer.close()
+
+    # 调用模型，喂入数据，得到预测得分
+    res = load_model()
+
+    # 将候选新闻id和其得分写成dict格式
+    news_dict = dict()
+    for index, i in enumerate(res):
+        news_dict[index + 10000] = i
+
+    # 将dict中已经点击的新闻去掉，即不会推荐已经点击过的新闻
+    clicked_id = []
+    reader = open("app/real_data/raw_history.txt", encoding='utf-8')
+    for line in reader:
+        array = line.strip().split('\t')
+        news_id = array[1]
+        clicked_id.append(eval(news_id))
+    reader.close()
+
+    for i in list(news_dict.keys()):
+        if i in clicked_id:
+            news_dict.pop(i)
+
+    # 将候选新闻按得分由高到低排序，并取前5个写入recommend_news
+    result_dict = sorted(news_dict.items(), key=lambda d: d[1], reverse=True)
+    print("==============recommend result_dict[:5]==============\n", result_dict[:5])
+    recommend_news = []
+    for i in result_dict[:5]:
+        recommend_news.append(db.session.query(TESTNews).get(i[0]).to_dict)
+    print(recommend_news)
+
+    return render_template('news.html', recommend_news=recommend_news, clicked_news=clicked_news)
 
 
 @bp_web.route('/login')
 def web_login():
     """登录页"""
+    # 首先清理history数据
+
     return render_template('login.html')
 
 

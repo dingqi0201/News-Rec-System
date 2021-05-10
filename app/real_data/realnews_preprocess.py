@@ -115,8 +115,8 @@ def encoding_title(title):
 
 
 # if __name__ == '__main__':
-def transform_words_to_id(args):
+def transform_words_to_id():
     print('transforming real word to id ...')
-    align_and_transform_for_test(args.raw_test_file, args.test_file)
-    align_and_transform_for_history(args.raw_history_file, args.history_file)
-    align_and_transform_for_hot(args.raw_hot_news_file, args.hot_news_file)
+    align_and_transform_for_test('app/real_data/raw_test.txt', 'app/real_data/raw_test_aligned_encoding.txt')
+    align_and_transform_for_history('app/real_data/raw_history.txt', 'app/real_data/raw_history_aligned_encoding.txt')
+    align_and_transform_for_hot('app/real_data/raw_hot.txt', 'app/real_data/raw_hot_aligned_encoding.txt')

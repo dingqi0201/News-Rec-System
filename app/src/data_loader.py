@@ -3,11 +3,11 @@ import pandas as pd
 import numpy as np
 from collections import namedtuple
 
-def load_data(args):
-    test_df = read(args.test_file)
-    history_df = read_history(args.history_file)
-    hot_df = read_hot_news(args.hot_news_file)
-    test = aggregate_test(test_df, history_df, args.max_click_history, hot_df, args.max_hot_news)
+def load_data():
+    test_df = read('app/real_data/raw_test_aligned_encoding.txt')
+    history_df = read_history('app/real_data/raw_history_aligned_encoding.txt')
+    hot_df = read_hot_news('app/real_data/raw_hot_aligned_encoding.txt')
+    test = aggregate_test(test_df, history_df, 20, hot_df, 3)
     test_data = transform(test)
     return test_data
 

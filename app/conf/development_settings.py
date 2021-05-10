@@ -47,7 +47,7 @@ OA_REFRESH_TOKEN_URL = 'http://oa/oauth2/refresh_token/'
 
 SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://root:123456@127.0.0.1:3306/news_flask?charset=utf8mb4'
 # 调试模式, 显示 SQL
-SQLALCHEMY_ECHO = True
+SQLALCHEMY_ECHO = False
 
 # 额外访问的第三方数据库, 比如只读的表, 可以单独使用驱动
 # Orcale 需要客户端环境, 从官网下载后解压即可

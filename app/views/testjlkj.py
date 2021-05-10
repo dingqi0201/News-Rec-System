@@ -1,3 +1,2 @@
-from app.src.model_loader import load_model
-
-load_model()
+test = [(10007, 0.6311606), (10004, 0.62243956), (10001, 0.4411313)]
+print(test[0][0])
