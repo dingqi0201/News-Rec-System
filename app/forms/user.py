@@ -3,7 +3,7 @@
     ~~~~~~~~
     views.user 数据校验
 
-    :author: Fufu, 2019/9/21
+    2020/9/21
 """
 from flask import current_app
 from flask_login import current_user

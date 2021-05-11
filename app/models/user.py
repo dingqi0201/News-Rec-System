@@ -4,7 +4,7 @@
     ~~~~~~~~
     用户相关表
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
     :update: Fufu, 2019/12/20 User 表使用 id 字段配合 flask_login; 用户权限组关联使用 role_id; 日志增加 log_content
 """
 from flask_login import UserMixin

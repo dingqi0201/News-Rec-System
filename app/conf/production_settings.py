@@ -11,7 +11,7 @@
         chmod +x /etc/profile.d/ffpyadmin.sh
         source /etc/profile.d/ffpyadmin.sh
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 
 ##########

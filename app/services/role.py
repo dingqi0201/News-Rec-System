@@ -4,7 +4,7 @@
     ~~~~~~~~
     权限组及权限明细管理
 
-    :author: Fufu, 2019/9/21
+    2020/9/21
 """
 from flask import current_app
 

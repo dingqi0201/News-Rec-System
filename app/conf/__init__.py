@@ -3,7 +3,7 @@
     ~~~~~~~~
     配置项
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 import os
 import xxtea

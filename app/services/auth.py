@@ -4,7 +4,7 @@
     ~~~~~~~~
     登录认证相关
 
-    :author: Fufu, 2019/9/15
+    2020/9/15
 """
 import pickle
 from functools import wraps

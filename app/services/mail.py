@@ -4,7 +4,7 @@
     ~~~~~~~~
     邮件发送
 
-    :author: Fufu, 2019/12/19
+    2020/12/19
 """
 from flask import current_app, render_template
 from flask_mail import Mail, Message

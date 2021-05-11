@@ -4,7 +4,7 @@
     ~~~~~~~~
     BGP 相关表
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 from sqlalchemy import Column, Integer, BigInteger, String, DateTime, Numeric, Float
 

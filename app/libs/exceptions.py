@@ -6,7 +6,7 @@
     API 通用返回值处理
     注: 为适应内部各系统和前端, 并非标准 RESTful (兼容)
 
-    :author: Fufu, 2019/8/15
+    2020/8/15
 """
 from flask import json
 from werkzeug.exceptions import HTTPException

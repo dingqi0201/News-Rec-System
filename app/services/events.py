@@ -4,7 +4,7 @@
     ~~~~~~~~
     自定义信号, 事件
 
-    :author: Fufu, 2019/12/20
+    2020/12/20
 """
 from blinker import signal
 

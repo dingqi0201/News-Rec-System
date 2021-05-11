@@ -4,7 +4,7 @@
     ~~~~~~~~
     处理用户登录成功事件
 
-    :author: Fufu, 2019/12/20
+    2020/12/20
 """
 from flask import current_app, request
 from flask_login import current_user

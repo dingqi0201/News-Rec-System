@@ -4,7 +4,7 @@
     test_get_ips.py
     ~~~~~~~~
 
-    :author: Fufu, 2019/12/26
+    2020/12/26
 """
 try:
     import __init__

@@ -1,10 +1,3 @@
-"""
-    bp_web.py
-    ~~~~~~~~
-    主页
-
-    :author: Fufu, 2019/9/2
-"""
 import os
 
 from authlib.common.errors import AuthlibBaseError

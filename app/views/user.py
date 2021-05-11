@@ -4,7 +4,7 @@
     ~~~~~~~~
     用户管理和权限分配
 
-    :author: Fufu, 2019/9/17
+    2020/9/17
 """
 from flask import Blueprint, render_template
 from flask_login import current_user

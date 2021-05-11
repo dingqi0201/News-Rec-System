@@ -5,7 +5,7 @@
     ~~~~~~~~
     启动服务(使用环境变量中的配置文件)：python3 start.py
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 from app import create_app
 

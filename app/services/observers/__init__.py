@@ -4,7 +4,7 @@
     ~~~~~~~~
     信号, 事件增加订阅
 
-    :author: Fufu, 2019/12/20
+    2020/12/20
 """
 from .async_with_app_demo import async_width_app_handler
 from .observer import Observer

@@ -5,7 +5,7 @@
     ~~~~~~~~
     启动服务(使用 development 配置)：python3 dev.py
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 from app import create_app
 

@@ -4,7 +4,7 @@
     ~~~~~~~~
     处理系统配置事件
 
-    :author: Fufu, 2019/12/20
+    2020/12/20
 """
 from ..log import LogCharge
 

@@ -4,7 +4,7 @@
     ~~~~~~~~
     日志查询
 
-    :author: Fufu, 2019/9/21
+    2020/9/21
 """
 from flask import Blueprint, render_template
 from flask_login import login_required

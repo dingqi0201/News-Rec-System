@@ -3,7 +3,7 @@
     ~~~~~~~~
     模型基类
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
     :update: Fufu, 2019/12/20 replace 方法新增记录时, 避免待插入数据中主键字段为 0 时, 插入后无法获取新 ID 的问题
     :update: Fufu, 2020/7/10 增加 hide_keys_dicts 方法, 与 to_dicts 类似, 将 .all() 转为字典并隐藏指定字段
 """

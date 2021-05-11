@@ -3,7 +3,7 @@
     ~~~~~~~~
     初始化蓝图：web(公用/单蓝图)...
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 from .web import bp_web
 from .bgp import bp_bgp

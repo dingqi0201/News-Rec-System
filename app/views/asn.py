@@ -4,7 +4,7 @@
     ~~~~~~~~
     ASN 码表及关系关联
 
-    :author: Fufu, 2019/9/17
+    2020/9/17
 """
 from flask import Blueprint, render_template
 from flask_login import login_required

@@ -5,7 +5,7 @@
     注册蓝图到 app
     日志及环境配置
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 import logging
 import os

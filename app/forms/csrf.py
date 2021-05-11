@@ -5,7 +5,7 @@
     修正 Flask-wtf 0.14.2 FlaskForm, @csrf.exempt 无效的问题
     后续版本有修复时直接使用 from flask_wtf.csrf import CSRFProtect 即可
 
-    :author: Fufu, 2019/10/24
+    2020/10/24
 """
 from flask import request, g
 from flask_wtf.csrf import generate_csrf, CSRFProtect as _CSRFProtect

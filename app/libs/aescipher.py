@@ -23,7 +23,7 @@
         print(decrypt_aes_cbc_hex(encrypted_data, my_key_hex, my_iv_hex).decode())
         print(decrypt_aes_cbc_hex_src(encrypted_data, my_key, my_iv).decode())
 
-    :author: Fufu, 2019/11/5
+    2020/11/5
 """
 from Crypto.Cipher import AES
 from Crypto.Util import Padding

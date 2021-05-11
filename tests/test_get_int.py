@@ -4,7 +4,7 @@
     test_get_int.py
     ~~~~~~~~
 
-    :author: Fufu, 2019/9/12
+    2020/9/12
 """
 try:
     import __init__

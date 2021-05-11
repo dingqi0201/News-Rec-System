@@ -4,7 +4,7 @@
     ~~~~~~~~
     日志相关服务
 
-    :author: Fufu, 2019/9/16
+    2020/9/16
 """
 from flask import request, json
 from flask_login import current_user

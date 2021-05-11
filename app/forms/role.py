@@ -3,7 +3,7 @@
     ~~~~~~~~
     views.role 数据校验
 
-    :author: Fufu, 2019/12/5
+    2020/12/5
 """
 from wtforms import StringField
 from wtforms.validators import ValidationError

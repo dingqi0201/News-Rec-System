@@ -5,7 +5,7 @@
     ~~~~~~~~
     启动服务(测试使用)：python3 manage.py runserver
 
-    :author: Fufu, 2019/9/2
+    2020/9/2
 """
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand

@@ -4,7 +4,7 @@
     test_get_hash.py
     ~~~~~~~~
 
-    :author: Fufu, 2019/9/25
+    2020/9/25
 """
 try:
     import __init__

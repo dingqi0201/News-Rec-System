@@ -3,7 +3,7 @@
     ~~~~~~~~
     views.asn 数据校验
 
-    :author: Fufu, 2019/9/19
+    2020/9/19
 """
 from wtforms import StringField
 from wtforms.validators import ValidationError

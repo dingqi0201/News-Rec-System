@@ -3,7 +3,7 @@
     ~~~~~~~~
     助手函数集
 
-    :author: Fufu, 2019/9/9
+    2020/9/9
     :update: Fufu, 2020/9/7 get_date() 增加支持时间戳(秒/毫秒)
     :update: Fufu, 2020/12/16 get_iso_date()
 """
