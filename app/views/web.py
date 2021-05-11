@@ -54,25 +54,44 @@ def web_news(id):
     4. 得分对应关系以及排序
     5. 查询
     """
+    # 根据前端点击从TESTNews表中找到所点击的新闻
     clicked_news = db.session.query(HotHomeNews).get(id).to_dict
     print(clicked_news)
 
+    # 将已点击的新闻写进raw_history.txt
     writer = open("app/real_data/raw_history.txt", 'a', encoding='utf-8')
     writer.write(
         '%s\t%s\t%s\t%s\n' % (0, clicked_news["news_id"], clicked_news["news_words"], clicked_news["month"]))
     writer.close()
 
+    # 调用模型，喂入数据，得到预测得分
     res = load_model()
+
+    # 将候选新闻id和其得分写成dict格式
     news_dict = dict()
     for index, i in enumerate(res):
         news_dict[index + 10000] = i
 
+    # 将dict中已经点击的新闻去掉，即不会推荐已经点击过的新闻
+    clicked_id = []
+    reader = open("app/real_data/raw_history.txt", encoding='utf-8')
+    for line in reader:
+        array = line.strip().split('\t')
+        news_id = array[1]
+        clicked_id.append(eval(news_id))
+    reader.close()
+
+    for i in list(news_dict.keys()):
+        if i in clicked_id:
+            news_dict.pop(i)
+
+    # 将候选新闻按得分由高到低排序，并取前5个写入recommend_news
     result_dict = sorted(news_dict.items(), key=lambda d: d[1], reverse=True)
     recommend_news = []
     print("==============index result_dict[:5]==============\n", result_dict[:5])
     for i in result_dict[:5]:
         recommend_news.append(db.session.query(TESTNews).get(i[0]).to_dict)
-    print(recommend_news)
+    # print(recommend_news)
 
     return render_template('news.html', recommend_news=recommend_news, clicked_news=clicked_news)
 
@@ -117,7 +136,7 @@ def recommend_news(id):
     recommend_news = []
     for i in result_dict[:5]:
         recommend_news.append(db.session.query(TESTNews).get(i[0]).to_dict)
-    print(recommend_news)
+    # print(recommend_news)
 
     return render_template('news.html', recommend_news=recommend_news, clicked_news=clicked_news)
 
