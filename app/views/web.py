@@ -137,8 +137,6 @@ def recommend_news(id):
 @bp_web.route('/login')
 def web_login():
     """登录页"""
-    # 首先清理history数据
-
     return render_template('login.html')
 
 
@@ -176,6 +174,11 @@ def web_authorized():
 @login_required
 def web_logout():
     """退出登录"""
+    # 首先清理history数据
+    with open('app/real_data/raw_history.txt', 'r+') as fp:
+        fp.truncate(0)
+    with open('app/real_data/raw_history_aligned_encoding.txt', 'r+') as file:
+        file.truncate(0)
     logout_user()
     session.clear()
 
