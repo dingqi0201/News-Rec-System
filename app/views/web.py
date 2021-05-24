@@ -15,6 +15,7 @@ from ..models.dao.mysql import MYSQL
 from ..services.auth import oauth, chk_user_login, set_user_login
 from ..services.events import event_async_with_app_demo
 from ..models import db
+import socket
 
 bp_web = Blueprint('web', __name__)
 csrf.exempt(bp_web)
@@ -52,7 +53,7 @@ def web_news(id):
     print(clicked_news)
 
     # 将已点击的新闻写进raw_history.txt
-    writer = open("app/real_data/raw_history.txt", 'a', encoding='utf-8')
+    writer = open('app/real_data/' + get_host_ip() + 'raw_history.txt', 'a', encoding='utf-8')
     writer.write(
         '%s\t%s\t%s\t%s\n' % (0, clicked_news["news_id"], clicked_news["news_words"], clicked_news["month"]))
     writer.close()
@@ -97,7 +98,7 @@ def recommend_news(id):
     print(clicked_news)
 
     # 将已点击的新闻写进raw_history.txt
-    writer = open("app/real_data/raw_history.txt", 'a', encoding='utf-8')
+    writer = open('app/real_data/' + get_host_ip() + 'raw_history.txt', 'a', encoding='utf-8')
     writer.write(
         '%s\t%s\t%s\t%s\n' % (0, clicked_news["news_id"], clicked_news["news_words"], 3))
     writer.close()
@@ -134,9 +135,23 @@ def recommend_news(id):
     return render_template('news.html', recommend_news=recommend_news, clicked_news=clicked_news)
 
 
+def get_host_ip():
+    """
+    查询本机ip地址
+    :return:
+    """
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('8.8.8.8', 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
+
 @bp_web.route('/login')
 def web_login():
     """登录页"""
+    with open('app/real_data/' + get_host_ip() + '_raw_history.txt', 'a') as fp:
+        fp.write('')
     return render_template('login.html')
 
 
@@ -174,11 +189,6 @@ def web_authorized():
 @login_required
 def web_logout():
     """退出登录"""
-    # 首先清理history数据
-    with open('app/real_data/raw_history.txt', 'r+') as fp:
-        fp.truncate(0)
-    with open('app/real_data/raw_history_aligned_encoding.txt', 'r+') as file:
-        file.truncate(0)
     logout_user()
     session.clear()
 
