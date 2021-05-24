@@ -48,12 +48,12 @@ def web_news(id):
     4. 得分对应关系以及排序
     5. 查询
     """
-    # 根据前端点击从TESTNews表中找到所点击的新闻
+    # 根据前端点击从HotHome表中找到所点击的新闻
     clicked_news = db.session.query(HotHomeNews).get(id).to_dict
     print(clicked_news)
 
     # 将已点击的新闻写进raw_history.txt
-    writer = open('app/real_data/' + get_host_ip() + 'raw_history.txt', 'a', encoding='utf-8')
+    writer = open('app/real_data/' + get_host_ip() + '_raw_history.txt', 'a', encoding='utf-8')
     writer.write(
         '%s\t%s\t%s\t%s\n' % (0, clicked_news["news_id"], clicked_news["news_words"], clicked_news["month"]))
     writer.close()
@@ -68,7 +68,7 @@ def web_news(id):
 
     # 将dict中已经点击的新闻去掉，即不会推荐已经点击过的新闻
     clicked_id = []
-    reader = open("app/real_data/raw_history.txt", encoding='utf-8')
+    reader = open('app/real_data/' + get_host_ip() + '_raw_history.txt', encoding='utf-8')
     for line in reader:
         array = line.strip().split('\t')
         news_id = array[1]
@@ -98,7 +98,7 @@ def recommend_news(id):
     print(clicked_news)
 
     # 将已点击的新闻写进raw_history.txt
-    writer = open('app/real_data/' + get_host_ip() + 'raw_history.txt', 'a', encoding='utf-8')
+    writer = open('app/real_data/' + get_host_ip() + '_raw_history.txt', 'a', encoding='utf-8')
     writer.write(
         '%s\t%s\t%s\t%s\n' % (0, clicked_news["news_id"], clicked_news["news_words"], 3))
     writer.close()
@@ -113,7 +113,7 @@ def recommend_news(id):
 
     # 将dict中已经点击的新闻去掉，即不会推荐已经点击过的新闻
     clicked_id = []
-    reader = open("app/real_data/raw_history.txt", encoding='utf-8')
+    reader = open('app/real_data/' + get_host_ip() + '_raw_history.txt', encoding='utf-8')
     for line in reader:
         array = line.strip().split('\t')
         news_id = array[1]

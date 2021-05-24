@@ -1,4 +1,5 @@
 import numpy as np
+import socket
 
 MAX_TITLE_LENGTH = 29
 WORD_FREQ_THRESHOLD = 1
@@ -6,6 +7,7 @@ WORD_EMBEDDING_DIM = 50
 print('loading word2id map...')
 # Load 读出word2id字典
 word2id = np.load('app/real_data/word2id.npy').item()
+
 
 def align_and_transform_for_test(file, output_file):
     """
@@ -114,9 +116,22 @@ def encoding_title(title):
     return word_encoding
 
 
+def get_host_ip():
+    """
+    查询本机ip地址
+    :return:
+    """
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('8.8.8.8', 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
+
 # if __name__ == '__main__':
 def transform_words_to_id():
     print('transforming real word to id ...')
     align_and_transform_for_test('app/real_data/raw_test.txt', 'app/real_data/raw_test_aligned_encoding.txt')
-    align_and_transform_for_history('app/real_data/raw_history.txt', 'app/real_data/raw_history_aligned_encoding.txt')
+    align_and_transform_for_history('app/real_data/' + get_host_ip() + '_raw_history.txt',
+                                    'app/real_data/' + get_host_ip() + '_raw_history_aligned_encoding.txt')
     align_and_transform_for_hot('app/real_data/raw_hot.txt', 'app/real_data/raw_hot_aligned_encoding.txt')
