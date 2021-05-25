@@ -4,9 +4,10 @@ import numpy as np
 from collections import namedtuple
 from app.real_data.realnews_preprocess import get_host_ip
 
+
 def load_data():
     test_df = read('app/real_data/raw_test_aligned_encoding.txt')
-    history_df = read_history('app/real_data/' + get_host_ip() +'_raw_history_aligned_encoding.txt')
+    history_df = read_history('app/real_data/' + get_host_ip() + '_raw_history_aligned_encoding.txt')
     hot_df = read_hot_news('app/real_data/raw_hot_aligned_encoding.txt')
     test = aggregate_test(test_df, history_df, 20, hot_df, 3)
     test_data = transform(test)

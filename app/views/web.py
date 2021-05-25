@@ -50,7 +50,7 @@ def web_news(id):
     """
     # 根据前端点击从HotHome表中找到所点击的新闻
     clicked_news = db.session.query(HotHomeNews).get(id).to_dict
-    print(clicked_news)
+    print("======================= 点击新闻 ========================\n", clicked_news)
 
     # 将已点击的新闻写进raw_history.txt
     writer = open('app/real_data/' + get_host_ip() + '_raw_history.txt', 'a', encoding='utf-8')
@@ -82,7 +82,7 @@ def web_news(id):
     # 将候选新闻按得分由高到低排序，并取前5个写入recommend_news
     result_dict = sorted(news_dict.items(), key=lambda d: d[1], reverse=True)
     recommend_news = []
-    print("==============index result_dict[:5]==============\n", result_dict[:5])
+    print("================ 前5条推荐新闻 ================\n", result_dict[:5])
     for i in result_dict[:5]:
         recommend_news.append(db.session.query(TESTNews).get(i[0]).to_dict)
     # print(recommend_news)
@@ -95,7 +95,7 @@ def web_news(id):
 def recommend_news(id):
     # 根据前端点击从TESTNews表中找到所点击的新闻
     clicked_news = db.session.query(TESTNews).get(id).to_dict
-    print(clicked_news)
+    print("======================= 点击新闻 ========================\n", clicked_news)
 
     # 将已点击的新闻写进raw_history.txt
     writer = open('app/real_data/' + get_host_ip() + '_raw_history.txt', 'a', encoding='utf-8')
@@ -126,7 +126,7 @@ def recommend_news(id):
 
     # 将候选新闻按得分由高到低排序，并取前5个写入recommend_news
     result_dict = sorted(news_dict.items(), key=lambda d: d[1], reverse=True)
-    print("==============recommend result_dict[:5]==============\n", result_dict[:5])
+    print("================ 前5条推荐新闻 ================\n", result_dict[:5])
     recommend_news = []
     for i in result_dict[:5]:
         recommend_news.append(db.session.query(TESTNews).get(i[0]).to_dict)

@@ -32,7 +32,7 @@ def load_model():
     transform_words_to_id()
 
     """ 加载数据；加载模型；模型计算 """
-    print('loading data ... loading model ... computing ... ')
+    print('============ loading data ... loading model ... computing ... ==============')
 
     # 加载数据
     test_data = load_data()
@@ -62,7 +62,7 @@ def load_model():
 
     labels, scores = sess.run([labels, op_scores], feed_dict)
     auc = roc_auc_score(y_true=labels, y_score=scores)
-    print(auc, scores)
+    print("====================== 候选新闻得分 =====================\n", auc, scores)
     return scores
 
 # sess.close()
