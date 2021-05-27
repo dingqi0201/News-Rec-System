@@ -91,8 +91,9 @@
         </script>
         <div style="width: 1100px;height:129px;background:url(http://news.bjfu.edu.cn/new_images/header.jpg);margin:0 auto;border: none ">
             <div style="width: 885px;height: 82px;padding-left: 10px;padding-top: 25px;float: left">
-                <a href={{ url_for('web.web_logout') }}><img src="http://news.bjfu.edu.cn/new_images/logo.png" alt="绿色新闻网"
-                                                      width="275" height="82"></a>
+                <a href={{ url_for('web.web_logout') }}><img src="http://news.bjfu.edu.cn/new_images/logo.png"
+                                                             alt="绿色新闻网"
+                                                             width="275" height="82"></a>
             </div>
             <div style="width: 94px;height: 46px;float: left;padding-top: 10px;">
                 <img id="img001" src="http://news.bjfu.edu.cn/new_images/weibo.png"
@@ -185,7 +186,7 @@
                     <ul class="news_ul" style="height: 420px;">
                         {% for k in hot %}
                             <li>
-                                <a href="./news/{{ k.news_id }}" title={{ k.news_words }} class="margin_l"
+                                <a href="./news/{{ k.news_id }}/{{ k.date }}" title={{ k.news_words }} class="margin_l"
                                    target="_blank">
                                     {{ k.news_words }}
                                 </a>
@@ -203,8 +204,8 @@
                 <div style="height: 457px;">
                     <ul class="news_ul" style="height: 420px;">
                         {% for m in home %}
-                            <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>(2020-01-30)</span>
-                                <a href="/news/{{ m.news_id }}" target="_blank">
+                            <li style="margin: 10px 35px;border-bottom: dotted 1px #ddd;"><span>{{ m.date }}</span>
+                                <a href="/news/{{ m.news_id }}/{{ m.date }}" target="_blank">
                                     {{ m.news_words }}
                                 </a>
                             </li>

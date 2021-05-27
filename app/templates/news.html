@@ -38,8 +38,9 @@
         </script>
         <div style="width: 1100px;height:129px;background:url(http://news.bjfu.edu.cn/new_images/header.jpg);margin:0 auto;border: none ">
             <div style="width: 885px;height: 82px;padding-left: 10px;padding-top: 25px;float: left">
-                <a href={{ url_for('web.web_logout') }}><img src="http://news.bjfu.edu.cn/new_images/logo.png" alt="绿色新闻网"
-                                                       width="275" height="82"></a>
+                <a href={{ url_for('web.web_logout') }}><img src="http://news.bjfu.edu.cn/new_images/logo.png"
+                                                             alt="绿色新闻网"
+                                                             width="275" height="82"></a>
             </div>
             <div style="width: 94px;height: 46px;float: left;padding-top: 10px;">
                 <img id="img001" src="http://news.bjfu.edu.cn/new_images/weibo.png"
@@ -107,7 +108,7 @@
                 </div>
                 <div style="float:left;margin-top: 12px;margin-left: 8px">
                     <a style="color: #178055;font-size: 15px;font-weight: bold;font-family: 'Microsoft YaHei';"
-                       href="mailto:bjfunews@163.com">来稿信箱：xxxxx@163.com </a>
+                       href="mailto:bjfunews@163.com">来稿信箱：mailto:bjfunews@163.com </a>
                 </div>
                 <div class="searchcon1">
                     <form action="http://cms.bjfu.edu.cn/cms/search/searchResults.jsp" method="post" target="_blank"
@@ -128,11 +129,13 @@
                 </div>
                 <div class="layui-row">
                     <div class="layui-col-md8">
-                        <h2 align="center"
-                            style="margin-bottom: 20px;margin-top: 50px;">{{ clicked_news.news_words }}</h2>
+                        <h2 align="center" style="margin-bottom: 20px;margin-top: 50px;">
+                            {{ clicked_news.news_words }}
+                        </h2>
                         <div class="articleAuthor" style="height:15px;margin:0 auto;text-align:center;font-size:13px">
-                            <div style="height:15px;margin:0 auto;text-align:center;"><span>来源：学生处</span>
-                                <span>发表时间：2021/01/08</span>
+                            <div style="height:15px;margin:0 auto;text-align:center;">
+                                <span>来源：学生处</span>
+                                <span>发表时间：{{ clicked_news.date }}</span>
                                 <br>
                             </div>
                             <br>
@@ -152,12 +155,13 @@
                         </div>
 
                     </div>
-                    <div class="layui-col-md4 left_box1" style="margin-top: 5px;"><!--一周排行-->
+                    <div class="layui-col-md4 left_box1" style="margin-top: 5px;">
                         <h2 class="pubtit1"><a href="../yzph/index.html">&nbsp&nbsp&nbsp为您推荐</a></h2>
                         <ul class="news_ul" style="height: 420px;">
                             {% for news in recommend_news %}
                                 <li>
-                                    <a href="/news/recommend/{{ news.news_id }}" title={{ news.news_words }} class="margin_l"
+                                    <a href="/news/recommend/{{ news.news_id }}"
+                                       title={{ news.news_words }} class="margin_l"
                                        target="_blank">
                                         {{ news.news_words }}
                                     </a>

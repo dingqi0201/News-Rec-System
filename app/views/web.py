@@ -16,6 +16,7 @@ from ..services.auth import oauth, chk_user_login, set_user_login
 from ..services.events import event_async_with_app_demo
 from ..models import db
 import socket
+import random
 
 bp_web = Blueprint('web', __name__)
 csrf.exempt(bp_web)
@@ -29,7 +30,10 @@ def web_index():
     news = db.session.query(HotHomeNews).to_dicts
     home = list()
     hot = list()
-    for i in news:
+    temp = 30
+    for index, i in enumerate(news):
+        temp -= random.randint(0, 2)
+        i['date'] = '2021-04' + '-' + str(temp)
         if i['hot'] == 1:
             hot.append(i)
         else:
@@ -38,9 +42,9 @@ def web_index():
     return render_template('index.html', hot=hot, home=home)
 
 
-@bp_web.route('/news/<id>', methods=['GET'])
+@bp_web.route('/news/<id>/<date>', methods=['GET'])
 @login_required
-def web_news(id):
+def web_news(id, date):
     """新闻详情页
     1. 浏览记录写raw_history.txt
     2. 热点表不更新，首页表不更新
@@ -51,6 +55,7 @@ def web_news(id):
     # 根据前端点击从HotHome表中找到所点击的新闻
     clicked_news = db.session.query(HotHomeNews).get(id).to_dict
     print("======================= 点击新闻 ========================\n", clicked_news)
+    clicked_news['date'] = date
 
     # 将已点击的新闻写进raw_history.txt
     writer = open('app/real_data/' + get_host_ip() + '_raw_history.txt', 'a', encoding='utf-8')
@@ -96,6 +101,7 @@ def recommend_news(id):
     # 根据前端点击从TESTNews表中找到所点击的新闻
     clicked_news = db.session.query(TESTNews).get(id).to_dict
     print("======================= 点击新闻 ========================\n", clicked_news)
+    clicked_news['date'] = random_date()
 
     # 将已点击的新闻写进raw_history.txt
     writer = open('app/real_data/' + get_host_ip() + '_raw_history.txt', 'a', encoding='utf-8')
@@ -225,3 +231,7 @@ def web_result_tpl():
     # res = MSSQL.result_tpl('mssql_case1_test')
     # res = OCI.result_tpl('...')
     return APISuccess(res)
+
+
+def random_date():
+    return '2021-' + str(random.randint(3, 4)) + '-' + str(random.randint(1, 30))
