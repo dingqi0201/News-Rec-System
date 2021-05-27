@@ -55,10 +55,10 @@ def load_model():
     op_scores = graph.get_tensor_by_name("Sigmoid:0")
 
     # 喂入数据并计算得分
-    feed_dict = {clicked_words: test_data.clicked_words[0:10],
-                 hot_words: test_data.hot_words[0:10],
-                 news_words: test_data.news_words[0:10],
-                 labels: test_data.labels[0:10]}
+    feed_dict = {clicked_words: test_data.clicked_words[0:50],
+                 hot_words: test_data.hot_words[0:50],
+                 news_words: test_data.news_words[0:50],
+                 labels: test_data.labels[0:50]}
 
     labels, scores = sess.run([labels, op_scores], feed_dict)
     auc = roc_auc_score(y_true=labels, y_score=scores)
